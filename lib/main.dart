@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:rewire/core/utils/app_colors.dart';
+import 'package:rewire/core/utils/app_router.dart';
 
 void main() {
   runApp(const ReWire());
@@ -9,6 +12,13 @@ class ReWire extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp();
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: AppRouter.router,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: AppColors.background,
+        textTheme: GoogleFonts.nunitoSansTextTheme(ThemeData.dark().textTheme),
+      ),
+    );
   }
 }

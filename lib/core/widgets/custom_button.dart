@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/core/utils/app_styles.dart';
+import '../utils/app_colors.dart';
+import '../utils/app_styles.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.title});
+  const CustomButton({super.key, required this.title, this.onPressed});
   final String title;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class CustomButton extends StatelessWidget {
       width: double.infinity,
       height: 50,
       child: TextButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: TextButton.styleFrom(
           backgroundColor: AppColors.transparentPrimary,
           shape: RoundedRectangleBorder(

@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/features/auth/presentation/views/widgets/login_view_body.dart';
+import '../../../../core/utils/app_colors.dart';
+import 'widgets/login_view_body.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late GlobalKey<FormState> loginKey;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    loginKey = GlobalKey<FormState>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +32,15 @@ class LoginView extends StatelessWidget {
           colors: AppColors.gradientColors,
         ),
       ),
-      child: const Scaffold(body: SafeArea(child: LoginViewBody())),
+      child: Scaffold(
+        body: SafeArea(
+          child: LoginViewBody(
+            emailController: emailController,
+            passwordController: passwordController,
+            loginKey: loginKey,
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/core/utils/app_colors.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/validator.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -7,20 +8,31 @@ class CustomTextFormField extends StatelessWidget {
     required this.title,
     this.isPassword = false,
     required this.icon,
+    this.controller,
+    required this.inputType,
+    this.isLastOne = false,
+    this.passwordValue,
   });
   final String title;
   final bool isPassword;
+  final bool isLastOne;
   final IconData icon;
+  final TextEditingController? controller;
+  final InputType inputType;
+  final String? passwordValue;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: (value) => validator(inputType, value, passwordValue),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      controller: controller,
       cursorColor: AppColors.white,
       obscureText: isPassword,
       keyboardType: isPassword
           ? TextInputType.text
           : TextInputType.emailAddress,
-      textInputAction: isPassword ? TextInputAction.done : TextInputAction.next,
+      textInputAction: isLastOne ? TextInputAction.done : TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 16, right: 4),

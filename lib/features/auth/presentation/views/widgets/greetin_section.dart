@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rewire/core/utils/app_styles.dart';
+import '../../../../../core/utils/app_styles.dart';
 
 class GreetingSection extends StatelessWidget {
   const GreetingSection({

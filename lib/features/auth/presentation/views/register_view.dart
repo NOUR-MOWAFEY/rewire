@@ -1,10 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/core/widgets/custom_back_button.dart';
-import 'package:rewire/features/auth/presentation/views/widgets/register_view_body.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/widgets/custom_back_button.dart';
+import 'widgets/register_view_body.dart';
 
-class RegisterView extends StatelessWidget {
+class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
+
+  @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late TextEditingController confirmPasswordController;
+  late TextEditingController nameController;
+  late GlobalKey<FormState> registerKey;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    confirmPasswordController = TextEditingController();
+    nameController = TextEditingController();
+    registerKey = GlobalKey<FormState>();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    nameController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +54,15 @@ class RegisterView extends StatelessWidget {
           scrolledUnderElevation: 0,
           elevation: 0,
         ),
-        body: const SafeArea(child: RegisterViewBody()),
+        body: SafeArea(
+          child: RegisterViewBody(
+            emailController: emailController,
+            passwordController: passwordController,
+            confirmPasswordController: confirmPasswordController,
+            nameController: nameController,
+            registerKey: registerKey,
+          ),
+        ),
       ),
     );
   }

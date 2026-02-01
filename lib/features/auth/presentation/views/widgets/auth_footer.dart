@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/core/utils/app_styles.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_styles.dart';
 
 class AuthFooter extends StatelessWidget {
   const AuthFooter({

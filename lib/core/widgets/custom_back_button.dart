@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/utils/app_colors.dart';
+import '../utils/app_colors.dart';
 
 class CustomBackIcon extends StatelessWidget {
   const CustomBackIcon({super.key});

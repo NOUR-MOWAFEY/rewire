@@ -3,7 +3,8 @@ import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key});
+  const CustomButton({super.key, required this.title});
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class CustomButton extends StatelessWidget {
           ),
         ),
         child: Text(
-          'Login',
+          title,
           style: AppStyles.textStyle16.copyWith(
             color: AppColors.white,
             fontWeight: FontWeight.bold,

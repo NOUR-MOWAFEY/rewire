@@ -8,11 +8,10 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: AlignmentGeometry.topLeft,
           end: AlignmentGeometry.bottomRight,
-          // transform: GradientRotation(6),
           colors: AppColors.gradientColors,
         ),
       ),
@@ -20,5 +19,3 @@ class LoginView extends StatelessWidget {
     );
   }
 }
-
-

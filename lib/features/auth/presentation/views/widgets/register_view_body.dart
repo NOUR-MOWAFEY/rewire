@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rewire/core/utils/constants.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
+import 'package:rewire/features/auth/presentation/views/widgets/auth_footer.dart';
 import 'package:rewire/features/auth/presentation/views/widgets/custom_text_form_field.dart';
 import 'package:rewire/features/auth/presentation/views/widgets/greetin_section.dart';
-import 'package:rewire/features/auth/presentation/views/widgets/login_view_body.dart';
 
 class RegisterViewBody extends StatelessWidget {
   const RegisterViewBody({super.key});
@@ -47,10 +47,10 @@ class RegisterViewBody extends StatelessWidget {
           const CustomButton(title: 'Register'),
           const SizedBox(height: 12),
 
-          AuthFooter(
+          const AuthFooter(
             text: 'Already have an account?  ',
             buttonTitle: 'Login',
-            navigatedView: '/',
+            navigateTo: '/',
           ),
         ],
       ),

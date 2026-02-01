@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/features/auth/presentation/views/widgets/login_view_body.dart';
 
 class LoginView extends StatelessWidget {
@@ -6,6 +7,18 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: SafeArea(child: LoginViewBody()));
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: AlignmentGeometry.topLeft,
+          end: AlignmentGeometry.bottomRight,
+          // transform: GradientRotation(6),
+          colors: AppColors.gradientColors,
+        ),
+      ),
+      child: const Scaffold(body: SafeArea(child: LoginViewBody())),
+    );
   }
 }
+
+

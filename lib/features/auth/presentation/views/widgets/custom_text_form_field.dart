@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/validator.dart';
 
@@ -11,7 +12,7 @@ class CustomTextFormField extends StatelessWidget {
     this.controller,
     required this.inputType,
     this.isLastOne = false,
-    this.passwordValue,
+    this.passwordController,
   });
   final String title;
   final bool isPassword;
@@ -19,12 +20,12 @@ class CustomTextFormField extends StatelessWidget {
   final IconData icon;
   final TextEditingController? controller;
   final InputType inputType;
-  final String? passwordValue;
+  final TextEditingController? passwordController;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: (value) => validator(inputType, value, passwordValue),
+      validator: (value) => validator(inputType, value, passwordController),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller,
       cursorColor: AppColors.white,

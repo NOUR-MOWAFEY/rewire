@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/utils/app_colors.dart';
 import 'widgets/login_view_body.dart';
 
@@ -20,6 +21,13 @@ class _LoginViewState extends State<LoginView> {
     emailController = TextEditingController();
     passwordController = TextEditingController();
     loginKey = GlobalKey<FormState>();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
   }
 
   @override

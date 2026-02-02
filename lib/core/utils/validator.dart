@@ -1,4 +1,10 @@
-String? validator(InputType inputType, String? value, String? passwordValue) {
+import 'package:flutter/material.dart';
+
+String? validator(
+  InputType inputType,
+  String? value,
+  TextEditingController? passwordController,
+) {
   if (value == null || value.isEmpty) {
     return 'Requied field';
   } else {
@@ -21,10 +27,8 @@ String? validator(InputType inputType, String? value, String? passwordValue) {
           return 'Name is too short';
         }
       case InputType.confirmPassword:
-        if (passwordValue == null || passwordValue.isEmpty) {
-          return 'Please enter password first';
-        }
-        if (value != passwordValue) {
+        if (value.isEmpty) return null;
+        if (value != passwordController!.text) {
           return 'Passwords do not match';
         }
     }

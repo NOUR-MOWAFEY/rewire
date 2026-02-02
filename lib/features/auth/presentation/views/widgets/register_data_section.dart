@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../../../../core/utils/validator.dart';
 import 'custom_text_form_field.dart';
 
@@ -52,7 +53,7 @@ class RegisterDataSection extends StatelessWidget {
           inputType: InputType.confirmPassword,
           controller: confirmPasswordController,
           isLastOne: true,
-          passwordValue: passwordController.text,
+          passwordController: passwordController,
         ),
         const SizedBox(height: 20),
       ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_styles.dart';
 
@@ -8,11 +8,11 @@ class AuthFooter extends StatelessWidget {
     super.key,
     required this.text,
     required this.buttonTitle,
-    required this.navigateTo,
+    this.onTap,
   });
   final String text;
   final String buttonTitle;
-  final String navigateTo;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,7 @@ class AuthFooter extends StatelessWidget {
       children: [
         Text(text, style: AppStyles.textStyle16),
         InkWell(
-          onTap: () {
-            navigateTo == '/'
-                ? GoRouter.of(context).go('/')
-                : GoRouter.of(context).push(navigateTo);
-          },
+          onTap: onTap,
           child: Text(
             buttonTitle,
             style: AppStyles.textStyle16.copyWith(

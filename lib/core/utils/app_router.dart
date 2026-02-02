@@ -1,25 +1,41 @@
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/utils/app_animations.dart';
+import 'package:rewire/core/services/firebase_service.dart';
+import 'package:rewire/features/home/presentation/views/home_view.dart';
 
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/register_view.dart';
 
 abstract class AppRouter {
+  static const loginView = '/LoginView';
   static const registerView = '/RegisterView';
+  static const homeView = '/HomeView';
+  static final firebaseService = FirebaseService();
 
   static final router = GoRouter(
+    initialLocation: loginView,
+
+    redirect: (context, state) {
+      final isLoggedIn = firebaseService.isUserAuthenticated();
+      final goingToLoginOrRegister =
+          state.uri.toString() == loginView ||
+          state.uri.toString() == registerView;
+
+      // Logged in → skip login/register → go home
+      if (isLoggedIn && goingToLoginOrRegister) return homeView;
+
+      // Not logged in → trying to access home → go login
+      if (!isLoggedIn && state.uri.toString() == homeView) return loginView;
+
+      return null; // no redirect
+    },
+
     routes: [
-      GoRoute(path: '/', builder: (context, state) => const LoginView()),
+      GoRoute(path: loginView, builder: (context, state) => const LoginView()),
       GoRoute(
         path: registerView,
-        pageBuilder: (context, state) {
-          return CustomTransitionPage(
-            child: RegisterView(),
-            transitionsBuilder: AppAnimation.rightToLeftFade,
-          );
-        },
+        builder: (context, state) => const RegisterView(),
       ),
-      // GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
+      GoRoute(path: homeView, builder: (context, state) => const HomeView()),
     ],
   );
 }

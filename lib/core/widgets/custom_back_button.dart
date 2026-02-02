@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+
 import '../utils/app_colors.dart';
 
 class CustomBackIcon extends StatelessWidget {
@@ -15,7 +16,7 @@ class CustomBackIcon extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: () {
-          GoRouter.of(context).pop();
+          context.pop();
         },
         icon: const Icon(FontAwesomeIcons.chevronLeft),
       ),

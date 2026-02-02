@@ -16,7 +16,7 @@ class AuthCubit extends Cubit<AuthState> {
   final FirebaseService _firebaseService;
   final FirestoreService _firestoreService;
 
-  void login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     try {
       emit(AuthLoading());
       await _firebaseService.signIn(email.trim(), password);
@@ -41,6 +41,7 @@ class AuthCubit extends Cubit<AuthState> {
         name.trim(),
         userCredential.user!.uid,
       );
+      await logout();
       emit(AuthSuccess());
     } on FirebaseAuthException catch (e) {
       emit(AuthFailure(errMessage: FirebaseAuthErrorHandler.message(e)));

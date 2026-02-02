@@ -17,6 +17,8 @@ class FirebaseAuthErrorHandler {
         return 'No internet connection';
       case 'too-many-requests':
         return 'Too many attempts. Try again later';
+      case 'invalid-credential':
+        return 'The provided credentials are invalid. Please try again.';
       default:
         return 'Authentication failed. Please try again';
     }

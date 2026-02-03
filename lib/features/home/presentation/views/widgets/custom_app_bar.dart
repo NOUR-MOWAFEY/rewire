@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/app_colors.dart';
+import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
+import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -34,7 +38,12 @@ class CustomAppBar extends StatelessWidget {
           ),
           Spacer(),
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              await context.read<AuthCubit>().logout();
+              if (context.mounted) {
+                context.go(AppRouter.loginView);
+              }
+            },
             icon: Icon(FontAwesomeIcons.gear, color: AppColors.white),
           ),
         ],

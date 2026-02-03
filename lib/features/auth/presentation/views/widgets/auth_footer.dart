@@ -22,11 +22,16 @@ class AuthFooter extends StatelessWidget {
         Text(text, style: AppStyles.textStyle16),
         InkWell(
           onTap: onTap,
-          child: Text(
-            buttonTitle,
-            style: AppStyles.textStyle16.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+          borderRadius: BorderRadius.circular(32),
+
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Text(
+              buttonTitle,
+              style: AppStyles.textStyle16.copyWith(
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary,
+              ),
             ),
           ),
         ),

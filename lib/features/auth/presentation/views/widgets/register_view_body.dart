@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../../core/utils/app_router.dart';
-import '../../../../../core/utils/show_toastification.dart';
-import '../../../../../core/widgets/custom_loading.dart';
 
+import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/show_toastification.dart';
 import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_loading.dart';
 import '../../view_model/auth_cubit/auth_cubit.dart';
 import 'auth_footer.dart';
 import 'greetin_section.dart';
@@ -81,7 +81,7 @@ class RegisterViewBody extends StatelessWidget {
                 const SizedBox(height: 12),
 
                 AuthFooter(
-                  text: 'Already have an account?  ',
+                  text: 'Already have an account?',
                   buttonTitle: 'Login',
                   onTap: () => context.go(AppRouter.loginView),
                 ),

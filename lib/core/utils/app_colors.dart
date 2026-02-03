@@ -13,9 +13,12 @@ class AppColors {
   static const secondary2 = Color(0xFF97B067);
 
   // other colors
-  static const white = Colors.white;
   static const black = Colors.black;
+  static const white = Colors.white;
+  static const red = Colors.red;
+  static const green = Colors.green;
 
+  // gradient colors for background
   static const List<Color> gradientColors = [
     AppColors.background3,
     AppColors.background2,

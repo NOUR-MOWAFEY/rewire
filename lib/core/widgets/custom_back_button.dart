@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../utils/app_colors.dart';
 
-class CustomBackIcon extends StatelessWidget {
-  const CustomBackIcon({super.key});
+class CustomBackButton extends StatelessWidget {
+  const CustomBackButton({super.key});
 
   @override
   Widget build(BuildContext context) {

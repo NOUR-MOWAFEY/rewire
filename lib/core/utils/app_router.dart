@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/services/firebase_service.dart';
-import 'package:rewire/features/home/presentation/views/home_view.dart';
+import '../services/firebase_service.dart';
+import '../../features/home/presentation/views/home_view.dart';
 
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/register_view.dart';

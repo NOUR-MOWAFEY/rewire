@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewire/core/utils/firebase_auth_error_handler.dart';
+import '../../../../../core/utils/firebase_auth_error_handler.dart';
 
 import '../../../../../core/services/firebase_service.dart';
 import '../../../../../core/services/firestore_service.dart';

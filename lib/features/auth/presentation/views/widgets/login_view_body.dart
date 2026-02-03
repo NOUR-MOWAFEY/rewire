@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/utils/show_toastification.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
-import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
+import '../../../../../core/utils/show_toastification.dart';
+import '../../../../../core/widgets/custom_loading.dart';
+import '../../view_model/auth_cubit/auth_cubit.dart';
 
 import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/constants.dart';

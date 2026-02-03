@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/core/utils/app_colors.dart';
+import 'app_colors.dart';
 import 'package:toastification/toastification.dart';
 
 class ShowToastification {

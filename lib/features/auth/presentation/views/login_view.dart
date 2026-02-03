@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../../core/utils/app_colors.dart';
+import '../../../../core/widgets/view_background_container.dart';
 import 'widgets/login_view_body.dart';
 
 class LoginView extends StatefulWidget {
@@ -32,22 +31,11 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: AlignmentGeometry.topLeft,
-          end: AlignmentGeometry.bottomRight,
-          colors: AppColors.gradientColors,
-        ),
-      ),
-      child: Scaffold(
-        body: SafeArea(
-          child: LoginViewBody(
-            emailController: emailController,
-            passwordController: passwordController,
-            loginKey: loginKey,
-          ),
-        ),
+    return ViewBackGroundContainer(
+      viewBody: LoginViewBody(
+        emailController: emailController,
+        passwordController: passwordController,
+        loginKey: loginKey,
       ),
     );
   }

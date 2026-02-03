@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/utils/app_router.dart';
-import 'package:rewire/core/utils/show_toastification.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import '../../../../../core/utils/app_router.dart';
+import '../../../../../core/utils/show_toastification.dart';
+import '../../../../../core/widgets/custom_loading.dart';
 
 import '../../../../../core/utils/constants.dart';
 import '../../../../../core/widgets/custom_button.dart';
@@ -32,7 +32,7 @@ class RegisterViewBody extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (BuildContext context, AuthState state) {
         if (state is AuthSuccess) {
-          context.go('/');
+          context.go(AppRouter.loginView);
           ShowToastification.success(context, 'Account created Successfully');
         } else if (state is AuthFailure) {
           ShowToastification.failure(

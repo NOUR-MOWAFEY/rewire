@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:rewire/core/utils/service_locator.dart';
 import '../services/firebase_service.dart';
 import '../../features/home/presentation/views/home_view.dart';
 
@@ -9,7 +10,7 @@ abstract class AppRouter {
   static const loginView = '/LoginView';
   static const registerView = '/RegisterView';
   static const homeView = '/HomeView';
-  static final firebaseService = FirebaseService();
+  static final firebaseService = getIt.get<FirebaseService>();
 
   static final router = GoRouter(
     initialLocation: loginView,

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rewire/core/utils/service_locator.dart';
 
 import 'core/services/firebase_service.dart';
 import 'core/services/firestore_service.dart';
@@ -12,7 +13,7 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  setupServiceLocator();
   runApp(const ReWire());
 }
 
@@ -22,7 +23,10 @@ class ReWire extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthCubit(FirebaseService(), FirestoreService()),
+      create: (context) => AuthCubit(
+        getIt.get<FirebaseService>(),
+        getIt.get<FirestoreService>(),
+      ),
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         routerConfig: AppRouter.router,

@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/utils/firebase_auth_error_handler.dart';
+import 'package:rewire/features/home/data/models/user_model.dart';
 
 import '../../../../../core/services/firebase_service.dart';
 import '../../../../../core/services/firestore_service.dart';
+import '../../../../../core/utils/firebase_auth_error_handler.dart';
 
 part 'auth_state.dart';
 
@@ -37,9 +38,13 @@ class AuthCubit extends Cubit<AuthState> {
         password,
       );
       await _firestoreService.createUser(
-        email.trim(),
-        name.trim(),
-        userCredential.user!.uid,
+        UserModel(
+          uid: userCredential.user!.uid,
+          name: name.trim(),
+          email: email.trim(),
+          joinedAt: DateTime.now(),
+          overallScore: 0,
+        ),
       );
       await logout();
       emit(AuthSuccess());

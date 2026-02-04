@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../utils/app_colors.dart';
 
@@ -7,9 +8,13 @@ class ViewBackGroundContainer extends StatelessWidget {
     super.key,
     required this.viewBody,
     this.appBar,
+    this.showFloatingActionButton = false,
+    this.floatingButtonOnPressed,
   });
   final Widget viewBody;
   final PreferredSizeWidget? appBar;
+  final bool showFloatingActionButton;
+  final void Function()? floatingButtonOnPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +28,14 @@ class ViewBackGroundContainer extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: appBar,
+        floatingActionButton: showFloatingActionButton
+            ? FloatingActionButton(
+                backgroundColor: AppColors.transparentPrimary,
+                shape: CircleBorder(),
+                onPressed: floatingButtonOnPressed,
+                child: Icon(FontAwesomeIcons.plus),
+              )
+            : null,
         body: SafeArea(child: viewBody),
       ),
     );

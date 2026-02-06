@@ -1,22 +1,26 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
-import '../services/firebase_service.dart';
-import '../../features/home/presentation/views/home_view.dart';
+import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
 
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/register_view.dart';
+import '../../features/home/presentation/views/home_view.dart';
+import '../services/firebase_service.dart';
 
 abstract class AppRouter {
   static const loginView = '/LoginView';
   static const registerView = '/RegisterView';
   static const homeView = '/HomeView';
-  static final firebaseService = getIt.get<FirebaseService>();
+  static final _firebaseAuthService = getIt.get<FirebaseAuthService>();
 
   static final router = GoRouter(
     initialLocation: loginView,
 
     redirect: (context, state) {
-      final isLoggedIn = firebaseService.isUserAuthenticated();
+      final isLoggedIn = _firebaseAuthService.isUserAuthenticated();
       final goingToLoginOrRegister =
           state.uri.toString() == loginView ||
           state.uri.toString() == registerView;
@@ -32,11 +36,23 @@ abstract class AppRouter {
 
     routes: [
       GoRoute(path: loginView, builder: (context, state) => const LoginView()),
+
       GoRoute(
         path: registerView,
         builder: (context, state) => const RegisterView(),
       ),
-      GoRoute(path: homeView, builder: (context, state) => const HomeView()),
+
+      GoRoute(
+        path: homeView,
+        builder: (context, state) {
+          var user = BlocProvider.of<AuthCubit>(context).getUser();
+          return BlocProvider(
+            create: (context) =>
+                HabitCubit(getIt.get<FirestoreService>(), user),
+            child: HomeView(user: user),
+          );
+        },
+      ),
     ],
   );
 }

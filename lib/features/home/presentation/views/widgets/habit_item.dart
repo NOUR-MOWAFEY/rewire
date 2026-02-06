@@ -3,7 +3,8 @@ import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 
 class HabitItem extends StatelessWidget {
-  const HabitItem({super.key});
+  const HabitItem({super.key, required this.title});
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +18,7 @@ class HabitItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           border: BoxBorder.all(color: AppColors.primary, width: 2),
         ),
-        child: const Center(
-          child: Text('Habit Name', style: AppStyles.textStyle32),
-        ),
+        child: Center(child: Text(title, style: AppStyles.textStyle32)),
       ),
     );
   }

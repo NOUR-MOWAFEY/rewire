@@ -5,6 +5,6 @@ import 'package:rewire/core/services/firestore_service.dart';
 final getIt = GetIt.instance;
 
 void setupServiceLocator() {
-  getIt.registerSingleton<FirebaseService>(FirebaseService());
+  getIt.registerSingleton<FirebaseAuthService>(FirebaseAuthService());
   getIt.registerSingleton<FirestoreService>(FirestoreService());
 }

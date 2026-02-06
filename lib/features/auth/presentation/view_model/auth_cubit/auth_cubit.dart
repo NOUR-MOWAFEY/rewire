@@ -12,16 +12,26 @@ import '../../../../../core/utils/firebase_auth_error_handler.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._firebaseService, this._firestoreService)
+  AuthCubit(this._firebaseAuthService, this._firestoreService)
     : super(AuthInitial());
-  final FirebaseService _firebaseService;
+  final FirebaseAuthService _firebaseAuthService;
   final FirestoreService _firestoreService;
+  User? user;
 
+  //get user
+  User? getUser() {
+    return _firebaseAuthService.getCurrentUser();
+  }
+
+  // login
   Future<void> login(String email, String password) async {
     try {
       emit(AuthLoading());
-      await _firebaseService.signIn(email.trim(), password);
-      emit(AuthSuccess());
+      var userCredential = await _firebaseAuthService.signIn(
+        email.trim(),
+        password,
+      );
+      emit(AuthAuthenticated(user: userCredential.user));
     } on FirebaseAuthException catch (e) {
       emit(AuthFailure(errMessage: FirebaseAuthErrorHandler.message(e)));
     } catch (e) {
@@ -30,10 +40,11 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // register
   Future<void> register(String email, String password, String name) async {
     try {
       emit(AuthLoading());
-      var userCredential = await _firebaseService.signUp(
+      var userCredential = await _firebaseAuthService.signUp(
         email.trim(),
         password,
       );
@@ -47,7 +58,7 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
       await logout();
-      emit(AuthSuccess());
+      emit(AuthUnAuthenticated());
     } on FirebaseAuthException catch (e) {
       emit(AuthFailure(errMessage: FirebaseAuthErrorHandler.message(e)));
     } catch (e) {
@@ -56,7 +67,8 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  //  logout
   Future<void> logout() async {
-    await _firebaseService.signOut();
+    await _firebaseAuthService.signOut();
   }
 }

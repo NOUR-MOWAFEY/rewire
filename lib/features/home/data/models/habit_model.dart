@@ -1,13 +1,13 @@
 class HabitModel {
-  final String id;
+  // final String id;
   final String title;
   final String createdBy;
   final List<String> participants;
-  final DateTime createdAt;
+  final dynamic createdAt;
   final bool isActive;
 
   HabitModel({
-    required this.id,
+    // required this.id,
     required this.title,
     required this.createdBy,
     required this.participants,
@@ -15,13 +15,13 @@ class HabitModel {
     required this.isActive,
   });
 
-  factory HabitModel.fromMap(String id, Map<String, dynamic> map) {
+  factory HabitModel.fromMap(Map<String, dynamic> map) {
     return HabitModel(
-      id: id,
+      // id: id,
       title: map['title'] ?? '',
       createdBy: map['createdBy'],
       participants: List<String>.from(map['participants'] ?? []),
-      createdAt: DateTime.parse(map['createdAt']),
+      createdAt: map['createdAt'],
       isActive: map['isActive'] ?? true,
     );
   }
@@ -31,7 +31,7 @@ class HabitModel {
       'title': title,
       'createdBy': createdBy,
       'participants': participants,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt,
       'isActive': isActive,
     };
   }

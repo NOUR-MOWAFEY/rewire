@@ -31,15 +31,10 @@ class RegisterViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (BuildContext context, AuthState state) {
-        if (state is AuthSuccess) {
+        if (state is AuthUnAuthenticated) {
           context.go(AppRouter.loginView);
           ShowToastification.success(context, 'Account created Successfully');
-        } else if (state is AuthFailure) {
-          ShowToastification.failure(
-            context,
-            state.errMessage ?? 'Somthing went Wrong, Try again',
-          );
-        }
+        } else if (state is AuthFailure) {}
       },
       builder: (context, state) {
         if (state is AuthLoading) {

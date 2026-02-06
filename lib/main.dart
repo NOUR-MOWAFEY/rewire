@@ -24,7 +24,7 @@ class ReWire extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthCubit(
-        getIt.get<FirebaseService>(),
+        getIt.get<FirebaseAuthService>(),
         getIt.get<FirestoreService>(),
       ),
       child: MaterialApp.router(

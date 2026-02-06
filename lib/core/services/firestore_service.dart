@@ -62,7 +62,7 @@ class FirestoreService {
   // =====================
 
   Future<void> createHabit(HabitModel habit) async {
-    await _habits.doc(habit.id).set(habit.toMap());
+    await _habits.doc().set(habit.toMap());
   }
 
   Future<List<HabitModel>> getUserHabits(String uid) async {
@@ -71,9 +71,7 @@ class FirestoreService {
         .where('isActive', isEqualTo: true)
         .get();
 
-    return query.docs
-        .map((doc) => HabitModel.fromMap(doc.id, doc.data()))
-        .toList();
+    return query.docs.map((doc) => HabitModel.fromMap(doc.data())).toList();
   }
 
   Future<void> addParticipant({
@@ -83,6 +81,17 @@ class FirestoreService {
     await _habits.doc(habitId).update({
       'participants': FieldValue.arrayUnion([userId]),
     });
+  }
+
+  Stream<List<HabitModel>> listenToHabits(String userId) {
+    return _habits
+        .where('participants', arrayContains: userId)
+        .where('isActive', isEqualTo: true)
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((e) => HabitModel.fromMap(e.data())).toList(),
+        );
   }
 
   // =====================

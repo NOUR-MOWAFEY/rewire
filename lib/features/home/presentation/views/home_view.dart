@@ -17,7 +17,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewBackGroundContainer(
       showFloatingActionButton: true,
-      floatingButtonOnPressed: () async {
+      floatingButtonOnPressed: () {
         showModalBottomSheet(
           isScrollControlled: true,
           context: context,

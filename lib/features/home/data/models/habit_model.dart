@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class HabitModel {
   // final String id;
   final String title;
   final String createdBy;
   final List<String> participants;
-  final dynamic createdAt;
+  final Timestamp? createdAt;
   final bool isActive;
 
   HabitModel({
@@ -11,7 +13,7 @@ class HabitModel {
     required this.title,
     required this.createdBy,
     required this.participants,
-    required this.createdAt,
+    this.createdAt,
     required this.isActive,
   });
 
@@ -31,7 +33,7 @@ class HabitModel {
       'title': title,
       'createdBy': createdBy,
       'participants': participants,
-      'createdAt': createdAt,
+      'createdAt': FieldValue.serverTimestamp(),
       'isActive': isActive,
     };
   }

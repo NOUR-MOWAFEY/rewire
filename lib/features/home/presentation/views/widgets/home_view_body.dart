@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
@@ -15,14 +13,13 @@ class HomeViewBody extends StatelessWidget {
     return BlocBuilder<HabitCubit, HabitState>(
       builder: (context, state) {
         if (state is HabitSucess) {
-          log(state.habits.toString());
           return Column(
             children: [
               Padding(
                 padding: const EdgeInsets.only(
                   left: 16,
                   right: 16,
-                  bottom: 16,
+                  bottom: 12,
                   top: 4,
                 ),
                 child: const CustomAppBar(),
@@ -37,7 +34,7 @@ class HomeViewBody extends StatelessWidget {
                         right: 32,
                         bottom: 8,
                       ),
-                      child: HabitItem(title: state.habits[index].title),
+                      child: HabitItem(habitModel: state.habits[index]),
                     );
                   },
                 ),

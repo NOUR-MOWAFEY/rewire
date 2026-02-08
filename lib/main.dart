@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rewire/core/utils/service_locator.dart';
+import 'core/utils/service_locator.dart';
 
 import 'core/services/firebase_service.dart';
 import 'core/services/firestore_service.dart';

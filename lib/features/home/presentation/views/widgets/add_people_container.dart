@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/core/utils/app_styles.dart';
-import 'package:rewire/features/home/presentation/views/widgets/add_people_container_item.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_styles.dart';
+import 'add_people_container_item.dart';
 
 class AddPeopleContainer extends StatelessWidget {
   const AddPeopleContainer({super.key});

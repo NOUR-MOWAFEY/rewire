@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/services/firestore_service.dart';
-import 'package:rewire/core/utils/service_locator.dart';
-import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
-import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
+import '../services/firestore_service.dart';
+import 'service_locator.dart';
+import '../../features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
+import '../../features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
+import '../../features/home/presentation/views/group_details_view.dart';
 
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/register_view.dart';
@@ -14,6 +15,7 @@ abstract class AppRouter {
   static const loginView = '/LoginView';
   static const registerView = '/RegisterView';
   static const homeView = '/HomeView';
+  static const groupDetailsView = '/GroupDetailsView';
   static final _firebaseAuthService = getIt.get<FirebaseAuthService>();
 
   static final router = GoRouter(
@@ -52,6 +54,10 @@ abstract class AppRouter {
             child: HomeView(user: user),
           );
         },
+      ),
+      GoRoute(
+        path: groupDetailsView,
+        builder: (context, state) => const GroupDetailsView(),
       ),
     ],
   );

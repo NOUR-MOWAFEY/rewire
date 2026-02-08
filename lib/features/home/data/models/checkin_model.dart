@@ -2,7 +2,7 @@ enum CheckInStatus { success, fail, pending }
 
 class CheckInModel {
   final String userId;
-  final String date; // YYYY-MM-DD
+  final String date; 
   final CheckInStatus status;
   final String? messagePublic;
   final DateTime createdAt;

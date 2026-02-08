@@ -31,9 +31,9 @@ class ViewBackGroundContainer extends StatelessWidget {
         floatingActionButton: showFloatingActionButton
             ? FloatingActionButton(
                 backgroundColor: AppColors.transparentPrimary,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 onPressed: floatingButtonOnPressed,
-                child: Icon(FontAwesomeIcons.plus),
+                child: const Icon(FontAwesomeIcons.plus),
               )
             : null,
         body: SafeArea(child: viewBody),

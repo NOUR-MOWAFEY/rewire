@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rewire/features/home/data/models/checkin_model.dart';
-import 'package:rewire/features/home/data/models/habit_model.dart';
-import 'package:rewire/features/home/data/models/monthly_stats_model.dart';
-import 'package:rewire/features/home/data/models/public_message_model.dart';
-import 'package:rewire/features/home/data/models/user_model.dart';
+import '../../features/home/data/models/checkin_model.dart';
+import '../../features/home/data/models/habit_model.dart';
+import '../../features/home/data/models/monthly_stats_model.dart';
+import '../../features/home/data/models/public_message_model.dart';
+import '../../features/home/data/models/user_model.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -87,6 +87,7 @@ class FirestoreService {
     return _habits
         .where('participants', arrayContains: userId)
         .where('isActive', isEqualTo: true)
+        .orderBy('createdAt', descending: true)
         .snapshots()
         .map(
           (snapshot) =>

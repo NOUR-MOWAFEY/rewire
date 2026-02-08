@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/core/utils/app_styles.dart';
-import 'package:rewire/features/home/presentation/views/widgets/check_icon_button.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_styles.dart';
+import 'check_icon_button.dart';
 
 class CheckGroupItem extends StatelessWidget {
   const CheckGroupItem({super.key});

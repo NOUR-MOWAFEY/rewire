@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
-import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
-import 'package:rewire/features/home/presentation/views/widgets/custom_app_bar.dart';
-import 'package:rewire/features/home/presentation/views/widgets/habit_item.dart';
+import '../../../../../core/widgets/custom_loading.dart';
+import '../../view_model/habit_cubit/habit_cubit.dart';
+import 'custom_app_bar.dart';
+import 'habit_item.dart';
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
@@ -15,23 +15,15 @@ class HomeViewBody extends StatelessWidget {
         if (state is HabitSucess) {
           return Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 16,
-                  bottom: 12,
-                  top: 4,
-                ),
-                child: const CustomAppBar(),
-              ),
+              const CustomAppBar(),
               Expanded(
                 child: ListView.builder(
                   itemCount: state.habits.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(
-                        left: 32,
-                        right: 32,
+                        left: 24,
+                        right: 24,
                         bottom: 8,
                       ),
                       child: HabitItem(habitModel: state.habits[index]),
@@ -44,7 +36,7 @@ class HomeViewBody extends StatelessWidget {
         } else if (state is HabitFailure) {
           return Center(child: Text(state.errMessage));
         } else {
-          return CustomLoading();
+          return const CustomLoading();
         }
       },
     );

@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'package:rewire/core/services/firebase_service.dart';
-import 'package:rewire/core/services/firestore_service.dart';
+import '../services/firebase_service.dart';
+import '../services/firestore_service.dart';
 
 final getIt = GetIt.instance;
 

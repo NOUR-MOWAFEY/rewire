@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/core/utils/validator.dart';
-import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/features/auth/presentation/views/widgets/custom_text_form_field.dart';
-import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
-import 'package:rewire/features/home/presentation/views/widgets/add_people_container.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/validator.dart';
+import '../../../../../core/widgets/custom_button.dart';
+import '../../../../auth/presentation/views/widgets/custom_text_form_field.dart';
+import '../../view_model/habit_cubit/habit_cubit.dart';
+import 'add_people_container.dart';
 
 class CreateGroupModalBottomSheetBody extends StatefulWidget {
   const CreateGroupModalBottomSheetBody({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:popover/popover.dart';
-import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/features/home/presentation/views/widgets/popup_menu.dart';
+import '../../../../../core/utils/app_colors.dart';
+import 'popup_menu.dart';
 
 class CheckIconButton extends StatelessWidget {
   const CheckIconButton({
@@ -21,8 +21,8 @@ class CheckIconButton extends StatelessWidget {
           context: context,
           bodyBuilder: (context) => const PopUpMenu(),
           direction: PopoverDirection.bottom,
-          height: 200,
-          width: 250,
+          height: 265,
+          width: 280,
           backgroundColor: AppColors.transparentPrimary,
         );
       },

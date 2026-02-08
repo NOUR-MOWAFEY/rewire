@@ -10,17 +10,19 @@ class CustomButton extends StatelessWidget {
     this.onPressed,
     this.width = double.infinity,
     this.child,
+    this.height = 50,
   });
   final String? title;
   final void Function()? onPressed;
   final double? width;
+  final double? height;
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      height: 50,
+      height: height,
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(

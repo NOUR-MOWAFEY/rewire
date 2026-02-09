@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../core/widgets/custom_loading.dart';
 import '../../view_model/habit_cubit/habit_cubit.dart';
 import 'custom_app_bar.dart';
@@ -12,13 +13,13 @@ class HomeViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HabitCubit, HabitState>(
       builder: (context, state) {
-        if (state is HabitSucess) {
+        if (state is HabitSuccess) {
           return Column(
             children: [
               const CustomAppBar(),
               Expanded(
                 child: ListView.builder(
-                  itemCount: state.habits.length,
+                  itemCount: state.habits!.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(
@@ -26,7 +27,7 @@ class HomeViewBody extends StatelessWidget {
                         right: 24,
                         bottom: 8,
                       ),
-                      child: HabitItem(habitModel: state.habits[index]),
+                      child: HabitItem(habitModel: state.habits![index]),
                     );
                   },
                 ),

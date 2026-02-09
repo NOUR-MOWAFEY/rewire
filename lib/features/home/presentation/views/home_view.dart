@@ -1,12 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/services/firestore_service.dart';
-import '../../../../core/utils/service_locator.dart';
-import '../../../../core/widgets/view_background_container.dart';
-import '../view_model/habit_cubit/habit_cubit.dart';
-import 'widgets/create_group_modal_bottom_sheet_body.dart';
 
+import '../../../../core/widgets/view_background_container.dart';
+import 'widgets/create_group_modal_bottom_sheet_body.dart';
 import 'widgets/home_view_body.dart';
 
 class HomeView extends StatelessWidget {
@@ -21,11 +17,7 @@ class HomeView extends StatelessWidget {
         showModalBottomSheet(
           isScrollControlled: true,
           context: context,
-          builder: (context) => BlocProvider(
-            create: (context) =>
-                HabitCubit(getIt.get<FirestoreService>(), user),
-            child: const CreateGroupModalBottomSheetBody(),
-          ),
+          builder: (context) => const CreateGroupModalBottomSheetBody(),
         );
       },
       viewBody: const HomeViewBody(),

@@ -4,6 +4,9 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/services/shared_preferences_service.dart';
+import 'package:rewire/core/utils/service_locator.dart';
+
 import '../../../../../core/services/firestore_service.dart';
 import '../../../data/models/habit_model.dart';
 
@@ -18,25 +21,47 @@ class HabitCubit extends Cubit<HabitState> {
   final User? user;
   StreamSubscription? _subscription;
 
-  // listen to habits
-  void listenToHabits(String userId) {
-    _subscription = _firestoreService
-        .listenToHabits(userId)
-        .listen((habits) => emit(HabitSucess(habits: habits)));
+  // =====================
+  // Date Check
+  // =====================
+
+  Future<bool> isNewDay() async {
+    final storage = getIt.get<SharedPreferencesService>();
+
+    final today = DateTime.now();
+    final normalizedToday = DateTime(today.day, today.month, today.year);
+
+    final storedDate = storage.getStoredDate();
+
+    if (storedDate == null) {
+      await storage.setTodayDate();
+      return true;
+    }
+
+    log(normalizedToday.isAfter(storedDate).toString());
+
+    if (normalizedToday.isAfter(storedDate)) {
+      await storage.setTodayDate();
+
+      return true;
+    }
+    return false;
   }
 
-  // get all habits
-  // Future<void> getHabits() async {
-  //   try {
-  //     emit(HabitLoading());
-  //     var habits = await _firestoreService.getUserHabits(user!.uid);
-  //     emit(HabitSucess(habits: habits));
-  //   } catch (e) {
-  //     emit(HabitFailure(errMessage: 'Failed to get habits, error:$e'));
-  //   }
-  // }
+  // =====================
+  // Listen to habits
+  // =====================
 
-  // create habit
+  void listenToHabits(String userId) {
+    _subscription = _firestoreService.listenToHabits(userId).listen((habits) {
+      emit(HabitSuccess(habits: habits));
+    });
+  }
+
+  // =====================
+  // Create habits
+  // =====================
+
   Future<void> createHabit(String title) async {
     try {
       emit(HabitLoading());
@@ -47,6 +72,7 @@ class HabitCubit extends Cubit<HabitState> {
         isActive: true,
       );
       await _firestoreService.createHabit(habitModel);
+      emit(HabitCreated());
     } catch (e) {
       emit(HabitFailure(errMessage: 'Error to create habit, error: $e'));
       log(e.toString());

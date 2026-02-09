@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rewire/features/home/presentation/views/widgets/check_icon_button.dart';
+
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_styles.dart';
-import 'check_icon_button.dart';
 
 class CheckGroupItem extends StatelessWidget {
   const CheckGroupItem({super.key});
@@ -24,38 +24,32 @@ class CheckGroupItem extends StatelessWidget {
             color: AppColors.transparentPrimary,
             borderRadius: BorderRadius.circular(16),
           ),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CheckIconButton(icon: FontAwesomeIcons.circleCheck),
-              VerticalDivider(
-                color: AppColors.secondary,
-                indent: 10,
-                endIndent: 10,
-              ),
-              CheckIconButton(),
-              VerticalDivider(
-                color: AppColors.secondary,
-                indent: 10,
-                endIndent: 10,
-              ),
-              CheckIconButton(),
-              VerticalDivider(
-                color: AppColors.secondary,
-                indent: 10,
-                endIndent: 10,
-              ),
-              CheckIconButton(),
-              VerticalDivider(
-                color: AppColors.secondary,
-                indent: 10,
-                endIndent: 10,
-              ),
-              CheckIconButton(),
-            ],
+            children: getCheckGroupItems(),
           ),
         ),
       ],
     );
   }
 }
+
+List<Widget> getCheckGroupItems() {
+  final List<Widget> widgets = [];
+  for (int i = 0; i < members.length; i++) {
+    widgets.add(const CheckIconButton());
+    if (i == members.length - 1) {
+      continue;
+    }
+    widgets.add(
+      const VerticalDivider(
+        color: AppColors.secondary,
+        indent: 10,
+        endIndent: 10,
+      ),
+    );
+  }
+  return widgets;
+}
+
+const List<String> members = ['1', '2', '3', '4', '5'];

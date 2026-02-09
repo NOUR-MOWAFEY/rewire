@@ -7,10 +7,10 @@ sealed class HabitState {
 
 final class HabitInitial extends HabitState {}
 
-final class HabitSucess extends HabitState {
-  final List<HabitModel> habits;
+final class HabitSuccess extends HabitState {
+  final List<HabitModel>? habits;
 
-  const HabitSucess({required this.habits});
+  const HabitSuccess({this.habits});
 }
 
 final class HabitFailure extends HabitState {
@@ -20,3 +20,5 @@ final class HabitFailure extends HabitState {
 }
 
 final class HabitLoading extends HabitState {}
+
+final class HabitCreated extends HabitState {}

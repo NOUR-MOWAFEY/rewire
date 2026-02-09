@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rewire/core/utils/show_toastification.dart';
+import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/features/home/presentation/views/widgets/group_bottom_sheet_footer.dart';
+
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/validator.dart';
-import '../../../../../core/widgets/custom_button.dart';
 import '../../../../auth/presentation/views/widgets/custom_text_form_field.dart';
 import '../../view_model/habit_cubit/habit_cubit.dart';
 import 'add_people_container.dart';
@@ -57,63 +60,42 @@ class _CreateGroupModalBottomSheetBodyState
               topRight: Radius.circular(16),
             ),
           ),
-          child: Column(
-            children: [
-              CustomTextFormField(
-                title: 'Group name',
-                icon: FontAwesomeIcons.peopleGroup,
-                inputType: InputType.name,
-                isLastOne: true,
-                controller: groupNameController,
-              ),
-              const AddPeopleContainer(),
-              GroupBottomSheetFooter(
-                groupNameKey: groupNameKey,
-                groupNameController: groupNameController,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class GroupBottomSheetFooter extends StatelessWidget {
-  const GroupBottomSheetFooter({
-    super.key,
-    required this.groupNameKey,
-    required this.groupNameController,
-  });
-
-  final GlobalKey<FormState> groupNameKey;
-  final TextEditingController groupNameController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: CustomButton(
-            title: 'Create Group',
-            onPressed: () async {
-              if (!groupNameKey.currentState!.validate()) return;
-              await BlocProvider.of<HabitCubit>(
-                context,
-              ).createHabit(groupNameController.text.trim());
-              if (context.mounted) {
+          child: BlocConsumer<HabitCubit, HabitState>(
+            listener: (BuildContext context, HabitState state) {
+              if (state is HabitFailure) {
+                ShowToastification.failure(
+                  context,
+                  'Cannot creat group, error: ${state.errMessage}',
+                );
+              }
+              if (state is HabitCreated) {
                 context.pop();
               }
             },
+            builder: (context, state) {
+              if (state is HabitLoading) {
+                return const CustomLoading();
+              }
+              return Column(
+                children: [
+                  CustomTextFormField(
+                    title: 'Group name',
+                    icon: FontAwesomeIcons.peopleGroup,
+                    inputType: InputType.name,
+                    isLastOne: true,
+                    controller: groupNameController,
+                  ),
+                  const AddPeopleContainer(),
+                  GroupBottomSheetFooter(
+                    groupNameKey: groupNameKey,
+                    groupNameController: groupNameController,
+                  ),
+                ],
+              );
+            },
           ),
         ),
-        const SizedBox(width: 8),
-        CustomButton(
-          onPressed: () {},
-          width: 50,
-          child: const Icon(FontAwesomeIcons.plus, color: AppColors.white),
-        ),
-      ],
+      ),
     );
   }
 }

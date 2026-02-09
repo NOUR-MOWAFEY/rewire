@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../features/home/data/models/checkin_model.dart';
 import '../../features/home/data/models/habit_model.dart';
 import '../../features/home/data/models/monthly_stats_model.dart';
@@ -146,5 +147,20 @@ class FirestoreService {
     return query.docs
         .map((doc) => PublicMessageModel.fromMap(doc.id, doc.data()))
         .toList();
+  }
+
+  // =====================
+  // Today Date
+  // =====================
+
+  Future<void> updateToday() async {
+    await _firestore.collection('core').doc('date').set({
+      'today': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getToday() async {
+    var day = await _firestore.collection('core').doc('date').get();
+    return day;
   }
 }

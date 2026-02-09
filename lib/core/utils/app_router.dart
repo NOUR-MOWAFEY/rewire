@@ -1,15 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../services/firestore_service.dart';
-import 'service_locator.dart';
-import '../../features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
-import '../../features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
-import '../../features/home/presentation/views/group_details_view.dart';
 
+import '../../features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/register_view.dart';
+import '../../features/home/presentation/views/group_details_view.dart';
 import '../../features/home/presentation/views/home_view.dart';
 import '../services/firebase_service.dart';
+import 'service_locator.dart';
 
 abstract class AppRouter {
   static const loginView = '/LoginView';
@@ -48,11 +46,7 @@ abstract class AppRouter {
         path: homeView,
         builder: (context, state) {
           var user = BlocProvider.of<AuthCubit>(context).getUser();
-          return BlocProvider(
-            create: (context) =>
-                HabitCubit(getIt.get<FirestoreService>(), user),
-            child: HomeView(user: user),
-          );
+          return HomeView(user: user);
         },
       ),
       GoRoute(

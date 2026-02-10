@@ -104,12 +104,17 @@ class FirestoreService {
     required String habitId,
     required CheckInModel checkIn,
   }) async {
-    final docId = '${checkIn.date}_${checkIn.userId}';
+    final dayRef = _habits.doc(habitId).collection('day').doc(checkIn.date);
 
-    await _habits
-        .doc(habitId)
+    // optional: store day metadata
+    await dayRef.set({
+      'date': checkIn.date,
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
+    await dayRef
         .collection('checkins')
-        .doc(docId)
+        .doc(checkIn.userId)
         .set(checkIn.toMap());
   }
 
@@ -119,8 +124,9 @@ class FirestoreService {
   }) async {
     final query = await _habits
         .doc(habitId)
+        .collection('day')
+        .doc(date)
         .collection('checkins')
-        .where('date', isEqualTo: date)
         .get();
 
     return query.docs.map((doc) => CheckInModel.fromMap(doc.data())).toList();

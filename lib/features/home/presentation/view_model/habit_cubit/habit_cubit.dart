@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/services/shared_preferences_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
+import 'package:rewire/features/home/data/models/checkin_model.dart';
 
 import '../../../../../core/services/firestore_service.dart';
 import '../../../data/models/habit_model.dart';
@@ -15,6 +16,7 @@ part 'habit_state.dart';
 class HabitCubit extends Cubit<HabitState> {
   HabitCubit(this._firestoreService, this.user) : super(HabitInitial()) {
     listenToHabits(user!.uid);
+    isNewDay();
   }
 
   final FirestoreService _firestoreService;
@@ -29,7 +31,7 @@ class HabitCubit extends Cubit<HabitState> {
     final storage = getIt.get<SharedPreferencesService>();
 
     final today = DateTime.now();
-    final normalizedToday = DateTime(today.day, today.month, today.year);
+    final normalizedToday = DateTime(today.year, today.month, today.day);
 
     final storedDate = storage.getStoredDate();
 
@@ -77,6 +79,20 @@ class HabitCubit extends Cubit<HabitState> {
       emit(HabitFailure(errMessage: 'Error to create habit, error: $e'));
       log(e.toString());
     }
+  }
+
+  //  Checkin methods
+
+  Future<void> createChceckIn() async {
+    await _firestoreService.addCheckIn(
+      habitId: '26IFJDndba5yYr8IcMyA',
+      checkIn: CheckInModel(
+        userId: user!.uid,
+        date: DateTime.now().toIso8601String(),
+        status: CheckInStatus.success,
+        createdAt: DateTime.now(),
+      ),
+    );
   }
 
   @override

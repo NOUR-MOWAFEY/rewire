@@ -1,7 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
+import 'package:rewire/core/services/shared_preferences_service.dart';
+import 'package:rewire/core/utils/service_locator.dart';
 
 import '../../../../../core/utils/app_colors.dart';
 import 'user_main_info.dart';
@@ -25,7 +27,13 @@ class CustomAppBar extends StatelessWidget {
                 // if (context.mounted) {
                 //   context.go(AppRouter.loginView);
                 // }
-                await BlocProvider.of<HabitCubit>(context).isNewDay();
+                log(
+                  getIt
+                      .get<SharedPreferencesService>()
+                      .getStoredDate()
+                      .toString(),
+                );
+                // await BlocProvider.of<HabitCubit>(context).createChceckIn();
               },
               icon: const Icon(FontAwesomeIcons.gear, color: AppColors.white),
             ),

@@ -11,6 +11,7 @@ class AppColors {
   static const transparentPrimary = Color.fromARGB(132, 94, 147, 108);
   static const secondary = Color(0xFF3E5F44);
   static const secondary2 = Color(0xFF97B067);
+  static const transparentDarkBackground = Color.fromARGB(136, 32, 49, 29);
 
   // other colors
   static const black = Colors.black;

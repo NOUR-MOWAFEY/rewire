@@ -38,7 +38,7 @@ class _MainNavigationViewState extends State<MainNavigationView> {
 
   List<PersistentBottomNavBarItem> _items() => [
     _persistentBottomNavBarItem(FontAwesomeIcons.houseChimney, 'Home'),
-    _persistentBottomNavBarItem(FontAwesomeIcons.solidBell, 'Notifications'),
+    _persistentBottomNavBarItem(FontAwesomeIcons.solidBell, 'Messages'),
     _persistentBottomNavBarItem(FontAwesomeIcons.gear, 'Settings'),
     _persistentBottomNavBarItem(FontAwesomeIcons.solidCircleUser, 'Profile'),
   ];
@@ -52,7 +52,7 @@ class _MainNavigationViewState extends State<MainNavigationView> {
       title: title,
       textStyle: AppStyles.textStyle12,
       inactiveColorPrimary: Colors.white60,
-      activeColorPrimary: AppColors.primary,
+      activeColorPrimary: AppColors.transparentPrimary,
       activeColorSecondary: AppColors.white,
     );
   }
@@ -67,8 +67,8 @@ class _MainNavigationViewState extends State<MainNavigationView> {
       navBarStyle: NavBarStyle.style7,
       resizeToAvoidBottomInset: true,
       hideNavigationBarWhenKeyboardAppears: true,
-      backgroundColor: AppColors.transparentPrimary,
-      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 24),
+      backgroundColor: AppColors.transparentDarkBackground,
+      margin: EdgeInsets.symmetric(horizontal: 38, vertical: 24),
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(60),
         border: Border.all(color: AppColors.primary, width: 2),

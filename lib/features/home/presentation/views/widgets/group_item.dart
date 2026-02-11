@@ -7,8 +7,8 @@ import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../data/models/habit_model.dart';
 
-class HabitItem extends StatelessWidget {
-  const HabitItem({
+class GroupItem extends StatelessWidget {
+  const GroupItem({
     super.key,
     required this.habitModel,
     required this.isLastItem,
@@ -34,7 +34,7 @@ class HabitItem extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.transparentPrimary,
               borderRadius: BorderRadius.circular(16),
-              border: BoxBorder.all(color: AppColors.primary, width: 2),
+              // border: BoxBorder.all(color: AppColors.primary, width: 2),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

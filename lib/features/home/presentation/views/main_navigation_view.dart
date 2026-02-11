@@ -38,7 +38,7 @@ class _MainNavigationViewState extends State<MainNavigationView> {
 
   List<PersistentBottomNavBarItem> _items() => [
     _persistentBottomNavBarItem(FontAwesomeIcons.houseChimney, 'Home'),
-    _persistentBottomNavBarItem(FontAwesomeIcons.solidBell, 'Messages'),
+    _persistentBottomNavBarItem(FontAwesomeIcons.solidMessage, 'Messages'),
     _persistentBottomNavBarItem(FontAwesomeIcons.gear, 'Settings'),
     _persistentBottomNavBarItem(FontAwesomeIcons.solidCircleUser, 'Profile'),
   ];
@@ -68,27 +68,12 @@ class _MainNavigationViewState extends State<MainNavigationView> {
       resizeToAvoidBottomInset: true,
       hideNavigationBarWhenKeyboardAppears: true,
       backgroundColor: AppColors.transparentDarkBackground,
-      margin: EdgeInsets.symmetric(horizontal: 38, vertical: 24),
+      margin: EdgeInsets.symmetric(horizontal: 38, vertical: 28),
+      padding: EdgeInsets.symmetric(horizontal: 6),
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(60),
-        border: Border.all(color: AppColors.primary, width: 2),
+        border: Border.all(color: AppColors.transparentPrimary, width: 2),
       ),
-
-      // floatingActionButton: Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: FloatingActionButton(
-      //     backgroundColor: AppColors.transparentPrimary,
-      //     shape: const CircleBorder(),
-      //     onPressed: () {
-      //       showModalBottomSheet(
-      //         isScrollControlled: true,
-      //         context: context,
-      //         builder: (context) => const CreateGroupModalBottomSheetBody(),
-      //       );
-      //     },
-      //     child: const Icon(FontAwesomeIcons.plus),
-      //   ),
-      // ),
     );
   }
 }

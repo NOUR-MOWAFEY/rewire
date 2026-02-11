@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
+import 'package:rewire/features/home/presentation/views/widgets/create_group_modal_bottom_sheet_body.dart';
 
 import '../../../../../core/widgets/custom_loading.dart';
 import '../../view_model/habit_cubit/habit_cubit.dart';
@@ -28,7 +29,13 @@ class HomeViewBody extends StatelessWidget {
                         width: 90,
                         height: 40,
                         title: 'Create',
-                        onPressed: () {},
+                        onPressed: () async {
+                          await showModalBottomSheet(
+                            context: context,
+                            builder: (context) =>
+                                CreateGroupModalBottomSheetBody(),
+                          );
+                        },
                       ),
                       const SizedBox(width: 6),
                       CustomButton(

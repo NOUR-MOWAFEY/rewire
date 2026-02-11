@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../utils/app_colors.dart';
 
@@ -28,15 +27,13 @@ class ViewBackGroundContainer extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: appBar,
-        floatingActionButton: showFloatingActionButton
-            ? FloatingActionButton(
-                backgroundColor: AppColors.transparentPrimary,
-                shape: const CircleBorder(),
-                onPressed: floatingButtonOnPressed,
-                child: const Icon(FontAwesomeIcons.plus),
-              )
-            : null,
-        body: SafeArea(child: viewBody),
+
+        // floatingActionButton: showFloatingActionButton
+        //     ? FloatingActionButton(
+
+        //       )
+        // : null,
+        body: SafeArea(bottom: false, child: viewBody),
       ),
     );
   }

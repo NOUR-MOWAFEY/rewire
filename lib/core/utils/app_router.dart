@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rewire/features/home/presentation/views/main_navigation_view.dart';
 
 import '../../features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import '../../features/auth/presentation/views/login_view.dart';
@@ -14,6 +15,8 @@ abstract class AppRouter {
   static const registerView = '/RegisterView';
   static const homeView = '/HomeView';
   static const groupDetailsView = '/GroupDetailsView';
+  static const mainNavigationView = '/MainNavigationView';
+
   static final _firebaseAuthService = getIt.get<FirebaseAuthService>();
 
   static final router = GoRouter(
@@ -26,7 +29,7 @@ abstract class AppRouter {
           state.uri.toString() == registerView;
 
       // Logged in → skip login/register → go home
-      if (isLoggedIn && goingToLoginOrRegister) return homeView;
+      if (isLoggedIn && goingToLoginOrRegister) return mainNavigationView;
 
       // Not logged in → trying to access home → go login
       if (!isLoggedIn && state.uri.toString() == homeView) return loginView;
@@ -52,6 +55,10 @@ abstract class AppRouter {
       GoRoute(
         path: groupDetailsView,
         builder: (context, state) => const GroupDetailsView(),
+      ),
+      GoRoute(
+        path: mainNavigationView,
+        builder: (context, state) => const MainNavigationView(),
       ),
     ],
   );

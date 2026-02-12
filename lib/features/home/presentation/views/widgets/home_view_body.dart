@@ -33,7 +33,7 @@ class HomeViewBody extends StatelessWidget {
                           await showModalBottomSheet(
                             context: context,
                             builder: (context) =>
-                                CreateGroupModalBottomSheetBody(),
+                                const CreateGroupModalBottomSheetBody(),
                           );
                         },
                       ),
@@ -49,7 +49,7 @@ class HomeViewBody extends StatelessWidget {
                 ),
               ),
               SliverPadding(
-                padding: EdgeInsetsGeometry.symmetric(horizontal: 28),
+                padding: EdgeInsetsGeometry.symmetric(horizontal: 18),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     childCount: state.habits?.length ?? 0,

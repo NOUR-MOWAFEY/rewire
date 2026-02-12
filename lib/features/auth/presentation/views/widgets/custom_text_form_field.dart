@@ -13,6 +13,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.inputType,
     this.isLastOne = false,
     this.passwordController,
+    this.isEnabled = true,
   });
   final String title;
   final bool isPassword;
@@ -21,10 +22,12 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final InputType inputType;
   final TextEditingController? passwordController;
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: isEnabled,
       validator: (value) => validator(inputType, value, passwordController),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller,

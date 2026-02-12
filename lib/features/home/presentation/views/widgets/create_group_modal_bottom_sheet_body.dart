@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
 import 'package:rewire/features/home/presentation/views/widgets/group_bottom_sheet_footer.dart';
@@ -69,7 +68,7 @@ class _CreateGroupModalBottomSheetBodyState
                 );
               }
               if (state is HabitCreated) {
-                context.pop();
+                // context.pop();
               }
             },
             builder: (context, state) {

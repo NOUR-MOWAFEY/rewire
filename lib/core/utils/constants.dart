@@ -9,4 +9,6 @@ EdgeInsets viewPadding(BuildContext context) {
 class StorageKeys{
   static const storedDate = 'stored_date';
   static const isFirstLaunch = 'is_first_launch';
+  static const userProfileImage = 'user_profile_image';
+  
 }

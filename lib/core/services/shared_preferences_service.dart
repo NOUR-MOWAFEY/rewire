@@ -6,18 +6,6 @@ class SharedPreferencesService {
 
   final SharedPreferences _preferences;
 
-  // is first launch
-
-  // bool isFirstLaunch() {
-  //   return _preferences.getBool(StorageKeys.isFirstLaunch) ?? true;
-  // }
-
-  // Future<void> setFirstLaunchDone() async {
-  //   await _preferences.setBool(StorageKeys.isFirstLaunch, false);
-  // }
-
-  // Date
-
   Future<void> setTodayDate() async {
     final today = _today().toIso8601String();
     await _preferences.setString(StorageKeys.storedDate, today);

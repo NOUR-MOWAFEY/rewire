@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/services/firebase_service.dart';
 import 'core/services/firestore_service.dart';
@@ -13,6 +14,10 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://fuujqzoikxyucyycmlpk.supabase.co',
+    anonKey: 'sb_publishable_GHKz2sopjedJ-09xYO6NIA_gtWXFKd9',
+  );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupServiceLocator();
 

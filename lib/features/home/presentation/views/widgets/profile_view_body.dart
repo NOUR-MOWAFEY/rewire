@@ -25,7 +25,6 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
       storageService: getIt.get<SupabaseStorageService>(),
       authService: getIt.get<FirebaseAuthService>(),
     );
-
     viewModel.loadImage();
   }
 
@@ -51,7 +50,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
             const SizedBox(height: 18),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 135),
+              padding: const EdgeInsets.symmetric(horizontal: 130),
               child: CustomButton(
                 title: viewModel.isLoading ? 'Uploading...' : 'Upload Image',
                 height: 40,

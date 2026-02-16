@@ -28,7 +28,7 @@ class LoginViewBody extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthAuthenticated) {
-          context.go(AppRouter.homeView, extra: state.user);
+          context.go(AppRouter.mainNavigationView);
         } else if (state is AuthFailure) {
           ShowToastification.failure(
             context,

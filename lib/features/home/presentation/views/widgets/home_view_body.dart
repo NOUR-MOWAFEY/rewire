@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
+import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:rewire/features/home/presentation/views/widgets/create_group_modal_bottom_sheet_body.dart';
 
 import '../../../../../core/widgets/custom_loading.dart';
@@ -42,7 +45,10 @@ class HomeViewBody extends StatelessWidget {
                         width: 65,
                         height: 40,
                         title: 'join',
-                        onPressed: () {},
+                        onPressed: () async {
+                          await context.read<AuthCubit>().logout();
+                          context.go(AppRouter.loginView);
+                        },
                       ),
                     ],
                   ),

@@ -23,6 +23,9 @@ class ProfileViewModel extends ChangeNotifier {
     try {
       final XFile? pickedFile = await ImagePicker().pickImage(
         source: ImageSource.gallery,
+        imageQuality: 60,
+        maxWidth: 600,
+        maxHeight: 600,
       );
 
       if (pickedFile != null) {

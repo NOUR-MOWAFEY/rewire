@@ -39,6 +39,7 @@ class CustomAvatar extends StatelessWidget {
                     FontAwesomeIcons.triangleExclamation,
                     size: 34,
                   ),
+                  
                 )
               : const ProfileDefaultAvatar(),
         ),

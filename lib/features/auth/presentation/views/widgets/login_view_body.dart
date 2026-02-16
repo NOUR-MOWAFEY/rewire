@@ -37,7 +37,7 @@ class LoginViewBody extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is AuthLoading) {
+        if (state is AuthLoading || state is AuthAuthenticated) {
           return const CustomLoading();
         }
         return Padding(

@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/services/firebase_service.dart';
@@ -29,21 +28,11 @@ class Rewire extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AuthCubit(
-            getIt.get<FirebaseAuthService>(),
-            getIt.get<FirestoreService>(),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => HabitCubit(
-            getIt.get<FirestoreService>(),
-            getIt.get<FirebaseAuthService>().getCurrentUser(),
-          ),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => AuthCubit(
+        getIt.get<FirebaseAuthService>(),
+        getIt.get<FirestoreService>(),
+      ),
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         routerConfig: AppRouter.router,

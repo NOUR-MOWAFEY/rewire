@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/services/shared_preferences_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/features/home/data/models/checkin_model.dart';
+import 'package:rewire/features/home/data/models/user_model.dart';
 
 import '../../../../../core/services/firestore_service.dart';
 import '../../../data/models/habit_model.dart';
@@ -19,8 +20,9 @@ class HabitCubit extends Cubit<HabitState> {
     isNewDay();
   }
 
+  UserModel? userModel;
   final FirestoreService _firestoreService;
-  final User? user;
+  User? user;
   StreamSubscription? _subscription;
 
   // =====================
@@ -54,7 +56,8 @@ class HabitCubit extends Cubit<HabitState> {
   // Listen to habits
   // =====================
 
-  void listenToHabits(String userId) {
+  void listenToHabits(String userId) async {
+    await getUserData()?.then((value) => userModel = value);
     _subscription = _firestoreService.listenToHabits(userId).listen((habits) {
       emit(HabitSuccess(habits: habits));
     });
@@ -94,6 +97,13 @@ class HabitCubit extends Cubit<HabitState> {
       ),
     );
   }
+
+  // get user data
+  Future<UserModel?>? getUserData() async {
+    var data = await _firestoreService.getUser(user!.uid);
+    return data;
+  }
+
 
   @override
   Future<void> close() {

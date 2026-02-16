@@ -34,12 +34,9 @@ class CustomAvatar extends StatelessWidget {
               ? CachedNetworkImage(
                   fit: BoxFit.cover,
                   imageUrl: _imageUrl,
-                  placeholder: (context, url) => const CustomLoading(size: 30),
-                  errorWidget: (context, url, error) => const Icon(
-                    FontAwesomeIcons.triangleExclamation,
-                    size: 34,
-                  ),
-                  
+                  placeholder: (context, url) => const CustomLoading(size: 28),
+                  errorWidget: (context, url, error) =>
+                      const ProfileDefaultAvatar(),
                 )
               : const ProfileDefaultAvatar(),
         ),

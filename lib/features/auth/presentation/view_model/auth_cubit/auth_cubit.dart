@@ -16,7 +16,6 @@ class AuthCubit extends Cubit<AuthState> {
     : super(AuthInitial());
   final FirebaseAuthService _firebaseAuthService;
   final FirestoreService _firestoreService;
-  User? user;
 
   //get user
   User? getUser() {
@@ -68,7 +67,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   //  logout
-  Future<void> logout() async {
+  Future<void> logout([BuildContext? context]) async {
     await _firebaseAuthService.signOut();
   }
 }

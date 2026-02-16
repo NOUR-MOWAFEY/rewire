@@ -26,7 +26,10 @@ class HomeViewBody extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 16, right: 24, left: 24),
                   child: Row(
                     children: [
-                      const Text('Hi, Nour', style: AppStyles.textStyle28),
+                      Text(
+                        'Hi, ${BlocProvider.of<HabitCubit>(context).userModel?.name.split(RegExp(r'\s+'))[0] ?? ''}',
+                        style: AppStyles.textStyle28,
+                      ),
                       const Spacer(),
                       CustomButton(
                         width: 90,

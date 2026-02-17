@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/app_animations.dart';
 import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
+import 'package:rewire/features/home/presentation/views/create_group_view.dart';
 import 'package:rewire/features/home/presentation/views/main_navigation_view.dart';
 
 import '../../features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
@@ -18,6 +19,7 @@ abstract class AppRouter {
   static const registerView = '/RegisterView';
   static const homeView = '/HomeView';
   static const groupDetailsView = '/GroupDetailsView';
+  static const createGroupView = '/CreateGroupView';
   static const mainNavigationView = '/MainNavigationView';
 
   static final _firebaseAuthService = getIt.get<FirebaseAuthService>();
@@ -59,6 +61,11 @@ abstract class AppRouter {
         path: groupDetailsView,
         builder: (context, state) => const GroupDetailsView(),
       ),
+      GoRoute(
+        path: createGroupView,
+        builder: (context, state) => const CreateGroupView(),
+      ),
+
       GoRoute(
         path: mainNavigationView,
         pageBuilder: (context, state) {

@@ -20,6 +20,7 @@ class HabitCubit extends Cubit<HabitState> {
     isNewDay();
   }
 
+  bool? isLoading = false;
   UserModel? userModel;
   final FirestoreService _firestoreService;
   User? user;
@@ -69,6 +70,7 @@ class HabitCubit extends Cubit<HabitState> {
 
   Future<void> createHabit(String title) async {
     try {
+      isLoading = true;
       emit(HabitLoading());
       HabitModel habitModel = HabitModel(
         title: title,
@@ -79,7 +81,8 @@ class HabitCubit extends Cubit<HabitState> {
       await _firestoreService.createHabit(habitModel);
       emit(HabitCreated());
     } catch (e) {
-      emit(HabitFailure(errMessage: 'Error to create habit, error: $e'));
+      isLoading = false;
+      emit(HabitFailure(errMessage: e.toString()));
       log(e.toString());
     }
   }
@@ -104,9 +107,9 @@ class HabitCubit extends Cubit<HabitState> {
     return data;
   }
 
-
   @override
   Future<void> close() {
+    log('closed');
     _subscription?.cancel();
     return super.close();
   }

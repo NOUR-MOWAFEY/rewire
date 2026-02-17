@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:rewire/core/utils/app_router.dart';
-import 'package:rewire/core/utils/app_styles.dart';
-import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
-import 'package:rewire/features/home/presentation/views/widgets/create_group_modal_bottom_sheet_body.dart';
+import 'package:rewire/features/home/presentation/views/widgets/custom_app_bar.dart';
 
 import '../../../../../core/widgets/custom_loading.dart';
 import '../../view_model/habit_cubit/habit_cubit.dart';
@@ -21,40 +16,10 @@ class HomeViewBody extends StatelessWidget {
         if (state is HabitSuccess) {
           return CustomScrollView(
             slivers: [
-              SliverToBoxAdapter(
+              const SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 16, right: 24, left: 24),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Hi, ${BlocProvider.of<HabitCubit>(context).userModel?.name.split(RegExp(r'\s+'))[0] ?? ''}',
-                        style: AppStyles.textStyle28,
-                      ),
-                      const Spacer(),
-                      CustomButton(
-                        width: 90,
-                        height: 40,
-                        title: 'Create',
-                        onPressed: () async {
-                          await showModalBottomSheet(
-                            context: context,
-                            builder: (context) =>
-                                const CreateGroupModalBottomSheetBody(),
-                          );
-                        },
-                      ),
-                      const SizedBox(width: 6),
-                      CustomButton(
-                        width: 65,
-                        height: 40,
-                        title: 'join',
-                        onPressed: () async {
-                          await context.read<AuthCubit>().logout();
-                          context.go(AppRouter.loginView);
-                        },
-                      ),
-                    ],
-                  ),
+                  padding: EdgeInsets.only(top: 16, right: 24, left: 24),
+                  child: CustomAppBar(),
                 ),
               ),
               SliverPadding(

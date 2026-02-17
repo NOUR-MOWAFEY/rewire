@@ -18,7 +18,7 @@ class FirebaseAuthErrorHandler {
       case 'too-many-requests':
         return 'Too many attempts. Try again later';
       case 'invalid-credential':
-        return 'The provided credentials are invalid. Please try again.';
+        return 'Incorrect email or password. Please try again.';
       default:
         return 'Authentication failed. Please try again';
     }

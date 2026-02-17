@@ -63,7 +63,13 @@ class FirestoreService {
   // =====================
 
   Future<void> createHabit(HabitModel habit) async {
-    await _habits.doc().set(habit.toMap());
+    await _habits
+        .doc()
+        .set(habit.toMap())
+        .timeout(
+          Duration(seconds: 5),
+          onTimeout: () => throw 'Bad internet connection',
+        );
   }
 
   Future<List<HabitModel>> getUserHabits(String uid) async {

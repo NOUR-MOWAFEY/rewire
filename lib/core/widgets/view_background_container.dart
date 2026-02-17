@@ -7,13 +7,9 @@ class ViewBackGroundContainer extends StatelessWidget {
     super.key,
     required this.viewBody,
     this.appBar,
-    this.showFloatingActionButton = false,
-    this.floatingButtonOnPressed,
   });
   final Widget viewBody;
   final PreferredSizeWidget? appBar;
-  final bool showFloatingActionButton;
-  final void Function()? floatingButtonOnPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +23,6 @@ class ViewBackGroundContainer extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: appBar,
-
-        // floatingActionButton: showFloatingActionButton
-        //     ? FloatingActionButton(
-
-        //       )
-        // : null,
         body: SafeArea(bottom: false, child: viewBody),
       ),
     );

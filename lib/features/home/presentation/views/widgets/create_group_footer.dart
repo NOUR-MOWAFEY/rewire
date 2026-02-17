@@ -5,8 +5,8 @@ import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
 import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
 
-class GroupBottomSheetFooter extends StatelessWidget {
-  const GroupBottomSheetFooter({
+class CreateGroupFooter extends StatelessWidget {
+  const CreateGroupFooter({
     super.key,
     required this.groupNameKey,
     required this.groupNameController,

@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -28,16 +27,7 @@ class CustomAppBar extends StatelessWidget {
           },
         ),
         const SizedBox(width: 6),
-        CustomButton(
-          width: 65,
-          height: 40,
-          title: 'join',
-          onPressed: () async {
-            await context.read<AuthCubit>().logout();
-            if (!context.mounted) return;
-            context.go(AppRouter.loginView);
-          },
-        ),
+        CustomButton(width: 65, height: 40, title: 'join', onPressed: () {}),
       ],
     );
   }

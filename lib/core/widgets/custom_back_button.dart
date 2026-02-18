@@ -18,7 +18,7 @@ class CustomBackButton extends StatelessWidget {
         onPressed: () {
           context.pop();
         },
-        icon: const Icon(FontAwesomeIcons.chevronLeft),
+        icon: const Icon(FontAwesomeIcons.chevronLeft, color: AppColors.white),
       ),
     );
   }

@@ -59,7 +59,9 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: groupDetailsView,
-        builder: (context, state) => const GroupDetailsView(),
+
+        builder: (context, state) =>
+            GroupDetailsView(groupName: state.extra as String),
       ),
       GoRoute(
         path: createGroupView,

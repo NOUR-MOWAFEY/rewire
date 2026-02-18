@@ -17,12 +17,12 @@ class CheckGroupItem extends StatelessWidget {
           child: Text('2 / 11 / 2025', style: AppStyles.textStyle14),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           height: 85,
           width: 80,
           decoration: BoxDecoration(
             color: AppColors.transparentPrimary,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(28),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

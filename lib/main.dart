@@ -46,3 +46,16 @@ class Rewire extends StatelessWidget {
     );
   }
 }
+
+
+/* 
+
+
+
+  Todo: add image to the group
+  Todo: fix cubits problems 'put habit cubit on material app 
+  Todo: & move user data into auth cubit or create one for just user'
+
+
+
+*/

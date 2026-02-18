@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:popover/popover.dart';
+
 import '../../../../../core/utils/app_colors.dart';
 import 'popup_menu.dart';
 
@@ -23,6 +24,8 @@ class CheckIconButton extends StatelessWidget {
           direction: PopoverDirection.bottom,
           height: 265,
           width: 280,
+          radius: 28,
+          arrowDyOffset: 10,
           backgroundColor: AppColors.transparentPrimary,
         );
       },

@@ -69,7 +69,7 @@ class _MainNavigationViewState extends State<MainNavigationView> {
       hideNavigationBarWhenKeyboardAppears: true,
       backgroundColor: AppColors.transparentDarkBackground,
       margin: EdgeInsets.symmetric(horizontal: 38, vertical: 28),
-      padding: EdgeInsets.symmetric(horizontal: 6),
+      padding: EdgeInsets.symmetric(horizontal: 8),
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(60),
         border: Border.all(color: AppColors.transparentPrimary, width: 2),

@@ -28,21 +28,21 @@ class GroupItem extends StatelessWidget {
         isFirstItem ? const SizedBox(height: 30) : const SizedBox(),
         InkWell(
           onTap: () {
-            context.push(AppRouter.groupDetailsView);
+            context.push(AppRouter.groupDetailsView, extra: habitModel.title);
           },
           borderRadius: BorderRadius.circular(12),
 
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 6),
             width: double.infinity,
             decoration: BoxDecoration(
               color: AppColors.transparentPrimary,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(28),
             ),
             child: ListTile(
               // group image
               leading: CircleAvatar(
-                radius: 30,
+                radius: 28,
                 backgroundColor: AppColors.transparentPrimary,
                 child: SvgPicture.asset('assets/images/pic.svg'),
               ),
@@ -50,7 +50,9 @@ class GroupItem extends StatelessWidget {
               // group name
               title: Text(
                 habitModel.title,
-                style: AppStyles.textStyle24,
+                style: AppStyles.textStyle20.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -60,15 +62,20 @@ class GroupItem extends StatelessWidget {
                 habitModel.createdAt == null
                     ? 'Created at: '
                     : 'Created at: ${DateFormat.yMd().format(habitModel.createdAt!.toDate())}',
-                style: AppStyles.textStyle14,
+                style: AppStyles.textStyle12.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
 
               // arrow icon
-              trailing: Icon(
-                FontAwesomeIcons.angleRight,
-                color: AppColors.white,
+              trailing: Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: Icon(
+                  FontAwesomeIcons.angleRight,
+                  color: AppColors.white,
+                ),
               ),
             ),
           ),

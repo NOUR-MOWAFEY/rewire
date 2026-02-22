@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:rewire/core/utils/code_generator.dart';
+import 'package:rewire/core/utils/security_helper.dart';
 import 'package:rewire/features/home/data/models/day_model.dart';
 
 import '../../features/home/data/models/checkin_model.dart';
-import '../../features/home/data/models/habit_model.dart';
+import '../../features/home/data/models/group_model.dart';
 import '../../features/home/data/models/monthly_stats_model.dart';
 import '../../features/home/data/models/public_message_model.dart';
 import '../../features/home/data/models/user_model.dart';
@@ -64,25 +66,31 @@ class FirestoreService {
   // Habits
   // =====================
 
-  Future<void> createHabit(HabitModel habit) async {
+  Future<void> createHabit(GroupModel habit) async {
     final docRef = _habits.doc();
     habit = habit.copyWith(id: docRef.id);
 
     await docRef
-        .set(habit.toMap())
+        .set(
+          habit
+              .copyWith(
+                passwordHash: SecurityHelper.hashPassword(habit.passwordHash),
+              )
+              .toMap(),
+        )
         .timeout(
           Duration(seconds: 5),
           onTimeout: () => throw 'Bad internet connection',
         );
   }
 
-  Future<List<HabitModel>> getUserHabits(String uid) async {
+  Future<List<GroupModel>> getUserHabits(String uid) async {
     final query = await _habits
         .where('participants', arrayContains: uid)
         .where('isActive', isEqualTo: true)
         .get();
 
-    return query.docs.map((doc) => HabitModel.fromMap(doc.data())).toList();
+    return query.docs.map((doc) => GroupModel.fromMap(doc.data())).toList();
   }
 
   Future<void> addParticipant({
@@ -94,7 +102,7 @@ class FirestoreService {
     });
   }
 
-  Stream<List<HabitModel>> listenToHabits(String userId) {
+  Stream<List<GroupModel>> listenToHabits(String userId) {
     return _habits
         .where('participants', arrayContains: userId)
         .where('isActive', isEqualTo: true)
@@ -102,7 +110,7 @@ class FirestoreService {
         .snapshots()
         .map(
           (snapshot) =>
-              snapshot.docs.map((e) => HabitModel.fromMap(e.data())).toList(),
+              snapshot.docs.map((e) => GroupModel.fromMap(e.data())).toList(),
         );
   }
 
@@ -202,5 +210,58 @@ class FirestoreService {
   Future<DocumentSnapshot<Map<String, dynamic>>> getToday() async {
     var day = await _firestore.collection('core').doc('date').get();
     return day;
+  }
+
+  // =====================
+  // Join Group
+  // =====================
+
+  Future<void> joinGroup({
+    required String joinCode,
+    required String password,
+    required String userId,
+  }) async {
+    final query = await _firestore
+        .collection('habits')
+        .where('joinCode', isEqualTo: joinCode)
+        .limit(1)
+        .get();
+
+    if (query.docs.isEmpty) {
+      throw Exception("Group not found");
+    }
+
+    final doc = query.docs.first;
+    final data = doc.data();
+
+    if (data['participants'].contains(userId)) {
+      throw Exception("You already joined this group");
+    }
+
+    final enteredHash = SecurityHelper.hashPassword(password);
+
+    if (data['passwordHash'] != enteredHash) {
+      throw Exception("Wrong password");
+    }
+
+    await doc.reference.update({
+      'participants': FieldValue.arrayUnion([userId]),
+    });
+  }
+
+  Future<String> generateUniqueJoinCode() async {
+    while (true) {
+      final code = generateJoinCode();
+
+      final existing = await _firestore
+          .collection('habits')
+          .where('joinCode', isEqualTo: code)
+          .limit(1)
+          .get();
+
+      if (existing.docs.isEmpty) {
+        return code;
+      }
+    }
   }
 }

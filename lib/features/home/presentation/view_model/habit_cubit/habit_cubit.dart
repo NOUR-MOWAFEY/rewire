@@ -9,7 +9,7 @@ import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 
 import '../../../../../core/services/firestore_service.dart';
-import '../../../data/models/habit_model.dart';
+import '../../../data/models/group_model.dart';
 
 part 'habit_state.dart';
 
@@ -59,7 +59,7 @@ class HabitCubit extends Cubit<HabitState> {
   void listenToHabits(String userId) async {
     await getUserData()?.then((value) => userModel = value);
     _subscription = _firestoreService.listenToHabits(userId).listen((habits) {
-      emit(HabitSuccess(habits: habits));
+      emit(HabitSuccess(groups: habits));
     });
   }
 
@@ -67,16 +67,18 @@ class HabitCubit extends Cubit<HabitState> {
   // Create habits
   // =====================
 
-  Future<void> createHabit(String title) async {
+  Future<void> createHabit(String title, String password) async {
     try {
       isLoading = true;
       emit(HabitLoading());
-      HabitModel habitModel = HabitModel(
+      GroupModel habitModel = GroupModel(
+        id: '',
+        joinCode: await _firestoreService.generateUniqueJoinCode(),
+        passwordHash: password,
         title: title,
         createdBy: user!.uid,
         participants: [user!.uid],
         isActive: true,
-        id: '',
       );
       await _firestoreService.createHabit(habitModel);
       emit(HabitCreated());

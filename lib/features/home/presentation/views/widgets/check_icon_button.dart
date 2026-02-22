@@ -26,7 +26,7 @@ class CheckIconButton extends StatelessWidget {
           width: 280,
           radius: 28,
           arrowDyOffset: 10,
-          backgroundColor: AppColors.transparentPrimary,
+          backgroundColor: AppColors.alertDialogColor,
         );
       },
       icon: Icon(icon, size: 38, color: color),

@@ -44,7 +44,7 @@ List<Widget> getCheckGroupItems() {
     }
     widgets.add(
       const VerticalDivider(
-        color: AppColors.secondary,
+        color: AppColors.primary,
         indent: 10,
         endIndent: 10,
       ),

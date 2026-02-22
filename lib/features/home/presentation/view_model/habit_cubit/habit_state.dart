@@ -8,9 +8,9 @@ sealed class HabitState {
 final class HabitInitial extends HabitState {}
 
 final class HabitSuccess extends HabitState {
-  final List<HabitModel>? habits;
+  final List<GroupModel>? groups;
 
-  const HabitSuccess({this.habits});
+  const HabitSuccess({this.groups});
 }
 
 final class HabitFailure extends HabitState {

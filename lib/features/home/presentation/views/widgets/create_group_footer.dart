@@ -26,7 +26,7 @@ class CreateGroupFooter extends StatelessWidget {
               if (!groupNameKey.currentState!.validate()) return;
               await BlocProvider.of<HabitCubit>(
                 context,
-              ).createHabit(groupNameController.text.trim());
+              ).createHabit(groupNameController.text.trim(), 'test passowrd');
             },
           ),
         ),

@@ -18,10 +18,12 @@ class CreateGroupViewBody extends StatelessWidget {
     super.key,
     required this.groupNameController,
     required this.groupNameKey,
+    required this.groupPasswordController,
   });
 
   final TextEditingController groupNameController;
   final GlobalKey<FormState> groupNameKey;
+  final TextEditingController groupPasswordController;
 
   @override
   Widget build(BuildContext context) {
@@ -70,15 +72,30 @@ class CreateGroupViewBody extends StatelessWidget {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 24),
+
                   CustomTextFormField(
                     title: 'Group name',
                     icon: FontAwesomeIcons.peopleGroup,
                     inputType: InputType.name,
-                    isLastOne: true,
+                    isLastOne: false,
                     controller: groupNameController,
                   ),
+
+                  const SizedBox(height: 8),
+
+                  CustomTextFormField(
+                    title: 'Password',
+                    icon: FontAwesomeIcons.lock,
+                    inputType: InputType.password,
+                    isLastOne: true,
+                    controller: groupPasswordController,
+                    isPassword: true,
+                  ),
+
                   const AddPeopleContainer(),
+
                   CreateGroupFooter(
                     groupNameKey: groupNameKey,
                     groupNameController: groupNameController,

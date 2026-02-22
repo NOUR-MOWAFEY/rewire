@@ -26,14 +26,14 @@ class HomeViewBody extends StatelessWidget {
                 padding: EdgeInsetsGeometry.symmetric(horizontal: 18),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    childCount: state.habits?.length ?? 0,
+                    childCount: state.groups?.length ?? 0,
                     (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: GroupItem(
-                          habitModel: state.habits![index],
+                          habitModel: state.groups![index],
                           isFirstItem: index == 0,
-                          isLastItem: index == state.habits!.length - 1,
+                          isLastItem: index == state.groups!.length - 1,
                         ),
                       );
                     },

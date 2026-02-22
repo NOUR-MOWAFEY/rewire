@@ -7,7 +7,7 @@ import 'package:rewire/core/utils/app_colors.dart';
 
 import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/app_styles.dart';
-import '../../../data/models/habit_model.dart';
+import '../../../data/models/group_model.dart';
 
 class GroupItem extends StatelessWidget {
   const GroupItem({
@@ -16,7 +16,7 @@ class GroupItem extends StatelessWidget {
     required this.isLastItem,
     required this.isFirstItem,
   });
-  final HabitModel habitModel;
+  final GroupModel habitModel;
   final bool isLastItem;
   final bool isFirstItem;
 

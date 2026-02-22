@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:rewire/features/home/data/models/day_model.dart';
 
 import '../../features/home/data/models/checkin_model.dart';
 import '../../features/home/data/models/habit_model.dart';
@@ -63,8 +65,10 @@ class FirestoreService {
   // =====================
 
   Future<void> createHabit(HabitModel habit) async {
-    await _habits
-        .doc()
+    final docRef = _habits.doc();
+    habit = habit.copyWith(id: docRef.id);
+
+    await docRef
         .set(habit.toMap())
         .timeout(
           Duration(seconds: 5),
@@ -105,23 +109,35 @@ class FirestoreService {
   // =====================
   // Check-ins
   // =====================
-
   Future<void> addCheckIn({
     required String habitId,
     required CheckInModel checkIn,
   }) async {
-    final dayRef = _habits.doc(habitId).collection('day').doc(checkIn.date);
+    final dayId = DateFormat('yyyy-MM-dd').format(checkIn.createdAt);
 
-    // optional: store day metadata
-    await dayRef.set({
-      'date': checkIn.date,
-      'updatedAt': FieldValue.serverTimestamp(),
-    }, SetOptions(merge: true));
+    final dayRef = _habits.doc(habitId).collection('days').doc(dayId);
 
-    await dayRef
-        .collection('checkins')
-        .doc(checkIn.userId)
-        .set(checkIn.toMap());
+    // Create day if it doesn't exist
+    final daySnapshot = await dayRef.get();
+
+    if (!daySnapshot.exists) {
+      await dayRef.set({
+        'day': dayId,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    }
+
+    // Now handle user check-in separately
+    final checkInRef = dayRef.collection('checkins').doc(checkIn.userId);
+
+    final checkInSnapshot = await checkInRef.get();
+
+    if (checkInSnapshot.exists) {
+      // user already checked in today
+      return;
+    }
+
+    await checkInRef.set(checkIn.toMap());
   }
 
   Future<List<CheckInModel>> getTodayCheckIns({
@@ -130,12 +146,24 @@ class FirestoreService {
   }) async {
     final query = await _habits
         .doc(habitId)
-        .collection('day')
+        .collection('days')
         .doc(date)
         .collection('checkins')
         .get();
 
     return query.docs.map((doc) => CheckInModel.fromMap(doc.data())).toList();
+  }
+
+  Stream<List<DayModel>> getAllDaysStream(String habitId) {
+    return _habits
+        .doc(habitId)
+        .collection('days')
+        .orderBy('day', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs.map((doc) => DayModel.fromMap(doc.data())).toList(),
+        );
   }
 
   // =====================

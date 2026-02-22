@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_styles.dart';
+import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/core/widgets/custom_back_button.dart';
 
 class CustomDetailsViewAppBar extends StatelessWidget
@@ -33,7 +35,12 @@ class CustomDetailsViewAppBar extends StatelessWidget
         Padding(
           padding: const EdgeInsets.only(right: 6),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              var days = getIt.get<FirestoreService>().getAllDaysStream(
+                'NnKOmJzryB6WfxRmIvE5',
+              );
+              days.length;
+            },
             icon: const Icon(
               FontAwesomeIcons.pen,
               color: AppColors.white,

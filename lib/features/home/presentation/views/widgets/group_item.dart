@@ -27,10 +27,10 @@ class GroupItem extends StatelessWidget {
       children: [
         isFirstItem ? const SizedBox(height: 30) : const SizedBox(),
         InkWell(
-          onTap: () {
-            context.push(AppRouter.groupDetailsView, extra: habitModel.title);
-          },
-          borderRadius: BorderRadius.circular(12),
+          onTap: () =>
+              context.push(AppRouter.groupDetailsView, extra: habitModel),
+
+          borderRadius: BorderRadius.circular(28),
 
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 6),
@@ -39,6 +39,7 @@ class GroupItem extends StatelessWidget {
               color: AppColors.transparentPrimary,
               borderRadius: BorderRadius.circular(28),
             ),
+
             child: ListTile(
               // group image
               leading: CircleAvatar(

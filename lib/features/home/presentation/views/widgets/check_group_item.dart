@@ -5,16 +5,17 @@ import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_styles.dart';
 
 class CheckGroupItem extends StatelessWidget {
-  const CheckGroupItem({super.key});
+  const CheckGroupItem({super.key, required this.date});
+  final String date;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(left: 10, bottom: 4),
-          child: Text('2 / 11 / 2025', style: AppStyles.textStyle14),
+          child: Text(date, style: AppStyles.textStyle14),
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),

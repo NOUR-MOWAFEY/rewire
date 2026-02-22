@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HabitModel {
-  // final String id;
+  final String id;
   final String title;
   final String createdBy;
   final List<String> participants;
@@ -9,7 +9,7 @@ class HabitModel {
   final bool isActive;
 
   HabitModel({
-    // required this.id,
+    required this.id,
     required this.title,
     required this.createdBy,
     required this.participants,
@@ -19,7 +19,7 @@ class HabitModel {
 
   factory HabitModel.fromMap(Map<String, dynamic> map) {
     return HabitModel(
-      // id: id,
+      id: map['id'] ?? '',
       title: map['title'] ?? '',
       createdBy: map['createdBy'],
       participants: List<String>.from(map['participants'] ?? []),
@@ -30,11 +30,28 @@ class HabitModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'title': title,
       'createdBy': createdBy,
       'participants': participants,
       'createdAt': FieldValue.serverTimestamp(),
       'isActive': isActive,
     };
+  }
+
+  HabitModel copyWith({
+    String? id,
+    String? title,
+    String? createdBy,
+    List<String>? participants,
+    bool? isActive,
+  }) {
+    return HabitModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      createdBy: createdBy ?? this.createdBy,
+      participants: participants ?? this.participants,
+      isActive: isActive ?? this.isActive,
+    );
   }
 }

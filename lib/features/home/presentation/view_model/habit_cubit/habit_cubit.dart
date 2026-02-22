@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/services/shared_preferences_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
-import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 
 import '../../../../../core/services/firestore_service.dart';
@@ -77,6 +76,7 @@ class HabitCubit extends Cubit<HabitState> {
         createdBy: user!.uid,
         participants: [user!.uid],
         isActive: true,
+        id: '',
       );
       await _firestoreService.createHabit(habitModel);
       emit(HabitCreated());
@@ -87,19 +87,26 @@ class HabitCubit extends Cubit<HabitState> {
     }
   }
 
+  // =====================
   //  Checkin methods
+  // =====================
 
-  Future<void> createChceckIn() async {
-    await _firestoreService.addCheckIn(
-      habitId: '26IFJDndba5yYr8IcMyA',
-      checkIn: CheckInModel(
-        userId: user!.uid,
-        date: DateTime.now().toIso8601String(),
-        status: CheckInStatus.success,
-        createdAt: DateTime.now(),
-      ),
-    );
-  }
+  // Future<void> addChceckIn(String habitID) async {
+  //   try {
+  //     await _firestoreService.addCheckIn(
+  //       habitId: habitID,
+  //       checkIn: CheckInModel(
+  //         userId: user!.uid,
+  //         date: DateTime.now().toIso8601String(),
+  //         status: CheckInStatus.success,
+  //         createdAt: DateTime.now(),
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     emit(HabitFailure(errMessage: e.toString()));
+  //     log(e.toString());
+  //   }
+  // }
 
   // get user data
   Future<UserModel?>? getUserData() async {

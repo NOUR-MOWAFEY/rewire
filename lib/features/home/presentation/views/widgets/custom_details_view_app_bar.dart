@@ -14,6 +14,8 @@ class CustomDetailsViewAppBar extends StatelessWidget
     return AppBar(
       backgroundColor: Colors.transparent,
       automaticallyImplyLeading: false,
+      scrolledUnderElevation: 0,
+
       title: Row(
         children: [
           const CustomBackButton(),

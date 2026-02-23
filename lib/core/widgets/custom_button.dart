@@ -11,12 +11,14 @@ class CustomButton extends StatelessWidget {
     this.width = double.infinity,
     this.child,
     this.height = 50,
+    this.color = AppColors.transparentPrimary,
   });
   final String? title;
   final void Function()? onPressed;
   final double? width;
   final double? height;
   final Widget? child;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class CustomButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: AppColors.transparentPrimary,
+          backgroundColor: color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadiusGeometry.circular(32),
           ),

@@ -5,15 +5,21 @@ class ProfileCustomTextField extends StatelessWidget {
   const ProfileCustomTextField({
     super.key,
     required this.hintText,
-    this.isEmail = false,
+    this.textInputAction = TextInputAction.done,
+    this.textInputType = TextInputType.text,
+     this.isObscure = false,
   });
   final String hintText;
-  final bool isEmail;
+  final TextInputAction? textInputAction;
+  final TextInputType? textInputType;
+  final bool isObscure;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      textInputAction: isEmail ? TextInputAction.done : TextInputAction.next,
-      keyboardType: isEmail ? TextInputType.emailAddress : null,
+      obscureText: isObscure,
+      textInputAction: textInputAction,
+      keyboardType: textInputType,
       cursorColor: AppColors.white,
       cursorWidth: 1,
       decoration: InputDecoration(

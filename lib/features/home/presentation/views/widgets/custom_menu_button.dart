@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/app_colors.dart';
+import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 
 class CustomMenuButton extends StatelessWidget {
@@ -8,7 +10,7 @@ class CustomMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<String>(
+    return PopupMenuButton<MenubuttonItems>(
       menuPadding: const EdgeInsets.symmetric(vertical: 8),
 
       offset: const Offset(0, 50),
@@ -21,17 +23,26 @@ class CustomMenuButton extends StatelessWidget {
         borderRadius: BorderRadiusGeometry.circular(18),
       ),
 
+      onSelected: (value) {
+        switch (value) {
+          case MenubuttonItems.settings:
+            context.push(AppRouter.groupSettingsView);
+          case MenubuttonItems.leaveGroup:
+          case MenubuttonItems.deleteGroup:
+        }
+      },
+
       itemBuilder: (context) => const [
         PopupMenuItem(
-          value: '',
+          value: .settings,
           child: PopupMenuItemText(title: 'Settings'),
         ),
         PopupMenuItem(
-          value: '',
+          value: .deleteGroup,
           child: PopupMenuItemText(title: 'Delete Group'),
         ),
         PopupMenuItem(
-          value: '',
+          value: .leaveGroup,
           child: PopupMenuItemText(title: 'Leave Group'),
         ),
       ],
@@ -51,3 +62,5 @@ class PopupMenuItemText extends StatelessWidget {
     );
   }
 }
+
+enum MenubuttonItems { settings, deleteGroup, leaveGroup }

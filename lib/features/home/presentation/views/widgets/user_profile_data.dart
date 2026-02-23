@@ -16,7 +16,8 @@ class UserProfileViewData extends StatelessWidget {
         Text('Email address: ', style: AppStyles.textStyle14),
         ProfileCustomTextField(
           hintText: 'nourmowafey82@gmail.com',
-          isEmail: true,
+          textInputAction: TextInputAction.next,
+          textInputType: TextInputType.emailAddress,
         ),
       ],
     );

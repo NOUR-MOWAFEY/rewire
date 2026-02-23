@@ -83,17 +83,6 @@ class CreateGroupViewBody extends StatelessWidget {
                     controller: groupNameController,
                   ),
 
-                  const SizedBox(height: 8),
-
-                  CustomTextFormField(
-                    title: 'Password',
-                    icon: FontAwesomeIcons.lock,
-                    inputType: InputType.password,
-                    isLastOne: true,
-                    controller: groupPasswordController,
-                    isPassword: true,
-                  ),
-
                   const AddPeopleContainer(),
 
                   CreateGroupFooter(

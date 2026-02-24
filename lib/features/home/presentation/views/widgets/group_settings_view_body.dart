@@ -8,6 +8,7 @@ import 'package:rewire/features/home/presentation/views/widgets/group_data_field
 
 class GroupSettingsViewBody extends StatelessWidget {
   const GroupSettingsViewBody({super.key, required this.viewModel});
+
   final ProfileViewModel viewModel;
 
   @override

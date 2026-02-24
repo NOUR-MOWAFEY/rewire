@@ -15,6 +15,7 @@ class GroupDataFields extends StatelessWidget {
           Text('Group name: ', style: AppStyles.textStyle14),
           ProfileCustomTextField(
             hintText: 'Group name',
+            textInputType: .name,
             textInputAction: TextInputAction.next,
           ),
 
@@ -23,7 +24,6 @@ class GroupDataFields extends StatelessWidget {
           Text('Password: ', style: AppStyles.textStyle14),
           ProfileCustomTextField(
             hintText: 'Password',
-            isObscure: true,
             textInputType: TextInputType.visiblePassword,
           ),
         ],

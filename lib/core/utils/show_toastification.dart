@@ -15,6 +15,7 @@ class ShowToastification {
       context: context,
       title: Text(text, style: TextStyle(color: AppColors.white)),
       autoCloseDuration: const Duration(seconds: 5),
+      pauseOnHover: true,
     );
   }
 
@@ -28,6 +29,7 @@ class ShowToastification {
       context: context,
       title: Text(text, style: TextStyle(color: AppColors.white)),
       autoCloseDuration: const Duration(seconds: 5),
+      pauseOnHover: true,
     );
   }
 
@@ -41,6 +43,29 @@ class ShowToastification {
       context: context,
       title: Text(text, style: TextStyle(color: AppColors.white)),
       autoCloseDuration: const Duration(seconds: 5),
+      pauseOnHover: true,
+    );
+  }
+
+  static ToastificationItem popUp(BuildContext context, String text) {
+    return toastification.show(
+      closeOnClick: true,
+      closeButton: ToastCloseButton(showType: CloseButtonShowType.none),
+      padding: EdgeInsets.only(left: 14, right: 10, top: 8, bottom: 8),
+      style: ToastificationStyle.simple,
+      alignment: Alignment.bottomCenter,
+      foregroundColor: AppColors.white,
+      backgroundColor: AppColors.primary,
+      borderSide: BorderSide(color: Colors.transparent),
+      borderRadius: BorderRadius.circular(32),
+      context: context,
+      title: Text(
+        text,
+        style: TextStyle(color: AppColors.white, fontWeight: FontWeight.bold),
+      ),
+      autoCloseDuration: const Duration(seconds: 2),
+      pauseOnHover: true,
+      applyBlurEffect: true,
     );
   }
 }

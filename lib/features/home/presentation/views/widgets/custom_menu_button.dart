@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/app_colors.dart';
@@ -28,6 +29,7 @@ class CustomMenuButton extends StatelessWidget {
           case MenubuttonItems.settings:
             context.push(AppRouter.groupSettingsView);
           case MenubuttonItems.leaveGroup:
+            Clipboard.setData(ClipboardData(text: 'Hello'));
           case MenubuttonItems.deleteGroup:
         }
       },

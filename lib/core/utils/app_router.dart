@@ -4,6 +4,7 @@ import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/app_animations.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view.dart';
 import 'package:rewire/features/home/presentation/views/main_navigation_view.dart';
@@ -76,7 +77,11 @@ abstract class AppRouter {
 
       GoRoute(
         path: groupSettingsView,
-        builder: (context, state) => const GroupSettingsView(),
+        builder: (context, state) => BlocProvider(
+          create: (context) =>
+              JoinGroupCubit(_fireStoreService, _firebaseAuthService),
+          child: const GroupSettingsView(),
+        ),
       ),
 
       GoRoute(

@@ -264,4 +264,16 @@ class FirestoreService {
       }
     }
   }
+
+  // =====================
+  //  Get Join Code
+  // =====================
+
+  Future<String?> getJoinCode(String habitId) async {
+    final doc = await _habits.doc(habitId).get();
+
+    if (!doc.exists) return null;
+
+    return doc.data()?['joinCode'];
+  }
 }

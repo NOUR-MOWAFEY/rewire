@@ -28,10 +28,16 @@ class GroupSettingsAppBar extends StatelessWidget
                 borderRadius: BorderRadius.circular(32),
                 onTap: () {
                   state is JoinCodeLoaded
-                      ? Clipboard.setData(ClipboardData(text: state.joinCode))
+                      ? Clipboard.setData(
+                          ClipboardData(text: state.joinCode),
+                        ).then((value) {
+                          if (!context.mounted) return;
+                          ShowToastification.popUp(
+                            context,
+                            'Copied to clipboard',
+                          );
+                        })
                       : null;
-
-                  ShowToastification.popUp(context, 'Copied to clipboard');
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

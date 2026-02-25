@@ -5,9 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
+import 'package:rewire/features/home/data/models/group_model.dart';
 
 class CustomMenuButton extends StatelessWidget {
-  const CustomMenuButton({super.key});
+  const CustomMenuButton({super.key, required this.groupModel});
+  final GroupModel groupModel;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class CustomMenuButton extends StatelessWidget {
       onSelected: (value) {
         switch (value) {
           case MenubuttonItems.settings:
-            context.push(AppRouter.groupSettingsView);
+            context.push(AppRouter.groupSettingsView, extra: groupModel);
           case MenubuttonItems.leaveGroup:
             Clipboard.setData(ClipboardData(text: 'Hello'));
           case MenubuttonItems.deleteGroup:

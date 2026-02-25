@@ -15,6 +15,7 @@ part 'habit_state.dart';
 
 class HabitCubit extends Cubit<HabitState> {
   HabitCubit(this._firestoreService, this.user) : super(HabitInitial()) {
+    log('Habit Cubit Created');
     listenToHabits(user!.uid);
     isNewDay();
   }
@@ -89,26 +90,6 @@ class HabitCubit extends Cubit<HabitState> {
     }
   }
 
-  // =====================
-  //  Checkin methods
-  // =====================
-
-  // Future<void> addChceckIn(String habitID) async {
-  //   try {
-  //     await _firestoreService.addCheckIn(
-  //       habitId: habitID,
-  //       checkIn: CheckInModel(
-  //         userId: user!.uid,
-  //         date: DateTime.now().toIso8601String(),
-  //         status: CheckInStatus.success,
-  //         createdAt: DateTime.now(),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     emit(HabitFailure(errMessage: e.toString()));
-  //     log(e.toString());
-  //   }
-  // }
 
   // get user data
   Future<UserModel?>? getUserData() async {
@@ -118,7 +99,7 @@ class HabitCubit extends Cubit<HabitState> {
 
   @override
   Future<void> close() {
-    log('closed');
+    log('Habit Cubit Closed');
     _subscription?.cancel();
     return super.close();
   }

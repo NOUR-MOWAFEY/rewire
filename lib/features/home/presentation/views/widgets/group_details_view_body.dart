@@ -13,6 +13,7 @@ class GroupDetailsViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 6),
+      
       child: BlocConsumer<DaysCubit, DaysState>(
         listener: (context, state) {
           if (state is DaysFailure) {

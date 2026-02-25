@@ -114,6 +114,31 @@ class FirestoreService {
         );
   }
 
+  Future<void> deleteGroup(String habitId) async {
+    final habitRef = _habits.doc(habitId);
+
+    //  Delete messages
+    final messages = await habitRef.collection('messages').get();
+    for (var doc in messages.docs) {
+      await doc.reference.delete();
+    }
+
+    //  Delete days + checkins
+    final days = await habitRef.collection('days').get();
+    for (var day in days.docs) {
+      final checkins = await day.reference.collection('checkins').get();
+
+      for (var checkin in checkins.docs) {
+        await checkin.reference.delete();
+      }
+
+      await day.reference.delete();
+    }
+
+    // Delete habit document
+    await habitRef.delete();
+  }
+
   // =====================
   // Check-ins
   // =====================

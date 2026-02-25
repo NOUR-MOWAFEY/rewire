@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/widgets/custom_back_button.dart';
+import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/views/widgets/custom_menu_button.dart';
 
 class CustomDetailsViewAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const CustomDetailsViewAppBar({super.key, required this.groupName});
+  const CustomDetailsViewAppBar({super.key, required this.groupModel});
 
-  final String groupName;
+  final GroupModel groupModel;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class CustomDetailsViewAppBar extends StatelessWidget
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              groupName,
+              groupModel.title,
               style: AppStyles.textStyle24.copyWith(
                 overflow: TextOverflow.ellipsis,
               ),
@@ -30,7 +31,10 @@ class CustomDetailsViewAppBar extends StatelessWidget
           ),
         ],
       ),
-      actions: const [CustomMenuButton(), SizedBox(width: 6)],
+      actions: [
+        CustomMenuButton(groupModel: groupModel),
+        SizedBox(width: 6),
+      ],
     );
   }
 

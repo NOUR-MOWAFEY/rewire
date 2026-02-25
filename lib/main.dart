@@ -50,7 +50,9 @@ class Rewire extends StatelessWidget {
 
 /* 
 
-  Todo: click on group id to copy it
+* Todo: click on group id to copy it ✅
+! Todo: fix delete cubit on alert dialog & remove delete states from habit cubit
+  Todo: separate create group cubit
   Todo: finish group settings view
   Todo: change input type for login password
   Todo: change validation on login view

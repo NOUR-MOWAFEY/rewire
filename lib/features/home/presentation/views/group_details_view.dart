@@ -10,16 +10,16 @@ import '../../../../core/widgets/view_background_container.dart';
 import 'widgets/group_details_view_body.dart';
 
 class GroupDetailsView extends StatelessWidget {
-  const GroupDetailsView({super.key, required this.habitModel});
-  final GroupModel habitModel;
+  const GroupDetailsView({super.key, required this.groupModel});
+  final GroupModel groupModel;
 
   @override
   Widget build(BuildContext context) {
     return ViewBackGroundContainer(
-      appBar: CustomDetailsViewAppBar(groupName: habitModel.title),
+      appBar: CustomDetailsViewAppBar(groupModel: groupModel),
       viewBody: BlocProvider(
         create: (context) =>
-            DaysCubit(getIt.get<FirestoreService>(), habitId: habitModel.id)
+            DaysCubit(getIt.get<FirestoreService>(), habitId: groupModel.id)
               ..listenToDays(),
         child: const GroupDetailsViewBody(),
       ),

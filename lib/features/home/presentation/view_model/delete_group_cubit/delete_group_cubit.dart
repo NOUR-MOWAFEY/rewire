@@ -8,13 +8,17 @@ part 'delete_group_state.dart';
 
 class DeleteGroupCubit extends Cubit<DeleteGroupState> {
   DeleteGroupCubit(this._firestoreService) : super(DeleteGroupInitial());
+
   final FirestoreService _firestoreService;
+
+  bool isLoading = false;
 
   // =====================
   // Delete Group
   // =====================
 
   Future<void> deleteGroup(String habitId) async {
+    isLoading = true;
     emit(DeleteGroupLoading());
 
     try {
@@ -24,10 +28,13 @@ class DeleteGroupCubit extends Cubit<DeleteGroupState> {
             Duration(seconds: 10),
             onTimeout: () => throw 'Bad internet connection',
           );
-      emit(DeleteGroupSuccess());
+
+      if (!isClosed) emit(DeleteGroupSuccess());
+      isLoading = false;
     } catch (e) {
       log(e.toString());
-      emit(DeleteGroupFailure(errMessage: e.toString()));
+      isLoading = false;
+      if (!isClosed) emit(DeleteGroupFailure(errMessage: e.toString()));
     }
   }
 }

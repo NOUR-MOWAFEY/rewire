@@ -60,7 +60,7 @@ class HabitCubit extends Cubit<HabitState> {
   void listenToHabits(String userId) async {
     await getUserData()?.then((value) => userModel = value);
     _subscription = _firestoreService.listenToHabits(userId).listen((habits) {
-      emit(HabitSuccess(groups: habits));
+      if (!isClosed) emit(HabitSuccess(groups: habits));
     });
   }
 
@@ -82,14 +82,13 @@ class HabitCubit extends Cubit<HabitState> {
         isActive: true,
       );
       await _firestoreService.createHabit(habitModel);
-      emit(HabitCreated());
+      if (!isClosed) emit(HabitCreated());
     } catch (e) {
       isLoading = false;
-      emit(HabitFailure(errMessage: e.toString()));
+      if (!isClosed) emit(HabitFailure(errMessage: e.toString()));
       log(e.toString());
     }
   }
-
 
   // get user data
   Future<UserModel?>? getUserData() async {

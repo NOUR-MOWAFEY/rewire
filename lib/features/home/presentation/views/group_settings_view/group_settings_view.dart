@@ -9,7 +9,7 @@ import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/delete_group_cubit/delete_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
-import 'package:rewire/features/home/presentation/views/widgets/group_settings_view_body.dart';
+import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_settings_view_body.dart';
 
 class GroupSettingsView extends StatefulWidget {
   const GroupSettingsView({super.key, required this.groupModel});

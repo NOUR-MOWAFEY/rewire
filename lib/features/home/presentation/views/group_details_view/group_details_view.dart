@@ -4,9 +4,9 @@ import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/days_cubit/days_cubit.dart';
-import 'package:rewire/features/home/presentation/views/widgets/custom_details_view_app_bar.dart';
+import 'package:rewire/features/home/presentation/views/group_details_view/widgets/group_details_view_app_bar.dart';
 
-import '../../../../core/widgets/view_background_container.dart';
+import '../../../../../core/widgets/view_background_container.dart';
 import 'widgets/group_details_view_body.dart';
 
 class GroupDetailsView extends StatelessWidget {
@@ -16,7 +16,7 @@ class GroupDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewBackGroundContainer(
-      appBar: CustomDetailsViewAppBar(groupModel: groupModel),
+      appBar: GroupDetailsViewAppBar(groupModel: groupModel),
       viewBody: BlocProvider(
         create: (context) =>
             DaysCubit(getIt.get<FirestoreService>(), habitId: groupModel.id)

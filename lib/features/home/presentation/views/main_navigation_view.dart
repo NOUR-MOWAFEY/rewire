@@ -3,8 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_styles.dart';
-import 'package:rewire/features/home/presentation/views/home_view.dart';
-import 'package:rewire/features/home/presentation/views/profile_view.dart';
+import 'package:rewire/features/home/presentation/views/home_view/home_view.dart';
+import 'package:rewire/features/home/presentation/views/profile_view/profile_view.dart';
 import 'package:rewire/features/home/presentation/views/settings_view.dart';
 
 class MainNavigationView extends StatefulWidget {

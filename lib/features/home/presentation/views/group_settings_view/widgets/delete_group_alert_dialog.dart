@@ -30,8 +30,8 @@ class DeleteGroupAlertDialog extends StatelessWidget {
             colors: AppColors.gradientColors,
           ),
         ),
-        height: 300,
-        width: 330,
+        height: 310,
+        width: 350,
 
         child: Column(
           children: [

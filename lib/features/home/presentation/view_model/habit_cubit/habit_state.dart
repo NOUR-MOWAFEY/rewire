@@ -22,13 +22,3 @@ final class HabitFailure extends HabitState {
 final class HabitLoading extends HabitState {}
 
 final class HabitCreated extends HabitState {}
-
-final class HabitDeleteLoading extends HabitState {}
-
-final class HabitDeleteSuccess extends HabitState {} 
-
-final class HabitDeleteFailure extends HabitState {
-  final String errMessage;
-
-  const HabitDeleteFailure({required this.errMessage});
-}

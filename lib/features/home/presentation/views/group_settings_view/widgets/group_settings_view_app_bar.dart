@@ -6,8 +6,8 @@ import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_back_button.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 
-class GroupSettingsAppBar extends StatelessWidget {
-  const GroupSettingsAppBar({super.key});
+class GroupSettingsViewAppBar extends StatelessWidget {
+  const GroupSettingsViewAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

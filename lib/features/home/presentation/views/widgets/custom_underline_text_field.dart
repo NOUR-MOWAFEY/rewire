@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 
-class ProfileCustomTextField extends StatefulWidget {
-  const ProfileCustomTextField({
+class CustomUnderlineTextField extends StatefulWidget {
+  const CustomUnderlineTextField({
     super.key,
     required this.hintText,
     this.textInputAction = TextInputAction.done,
@@ -15,10 +15,11 @@ class ProfileCustomTextField extends StatefulWidget {
   final TextInputType? textInputType;
 
   @override
-  State<ProfileCustomTextField> createState() => _ProfileCustomTextFieldState();
+  State<CustomUnderlineTextField> createState() =>
+      _CustomUnderlineTextFieldState();
 }
 
-class _ProfileCustomTextFieldState extends State<ProfileCustomTextField> {
+class _CustomUnderlineTextFieldState extends State<CustomUnderlineTextField> {
   late bool _isObscure;
   late IconData _icon;
 
@@ -57,13 +58,15 @@ class _ProfileCustomTextFieldState extends State<ProfileCustomTextField> {
             : null,
 
         hintText: widget.hintText,
-        border: const UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primary),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primary),
-        ),
+        border: customUnderlineInputBorder(),
+        focusedBorder: customUnderlineInputBorder(),
       ),
+    );
+  }
+
+  UnderlineInputBorder customUnderlineInputBorder() {
+    return const UnderlineInputBorder(
+      borderSide: BorderSide(color: AppColors.primary),
     );
   }
 }

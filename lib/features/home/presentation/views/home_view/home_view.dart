@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/widgets/view_background_container.dart';
+import '../../../../../core/widgets/view_background_container.dart';
 import 'widgets/home_view_body.dart';
 
 class HomeView extends StatelessWidget {

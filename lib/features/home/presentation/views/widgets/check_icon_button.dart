@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:popover/popover.dart';
 
 import '../../../../../core/utils/app_colors.dart';
-import 'popup_menu.dart';
+import '../group_details_view/widgets/popup_menu.dart';
 
 class CheckIconButton extends StatelessWidget {
   const CheckIconButton({

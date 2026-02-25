@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
-import 'package:rewire/core/widgets/custom_back_button.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
-import 'package:rewire/features/home/presentation/views/widgets/create_group_footer.dart';
+import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_footer.dart';
+import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_view_app_bar.dart';
 
-import '../../../../../core/utils/validator.dart';
-import '../../../../auth/presentation/views/widgets/custom_text_form_field.dart';
-import '../../view_model/habit_cubit/habit_cubit.dart';
-import 'add_people_container.dart';
+import '../../../../../../core/utils/validator.dart';
+import '../../../../../auth/presentation/views/widgets/custom_text_form_field.dart';
+import '../../../view_model/habit_cubit/habit_cubit.dart';
+import '../../widgets/add_people_container.dart';
 
 class CreateGroupViewBody extends StatelessWidget {
   const CreateGroupViewBody({
@@ -60,18 +59,7 @@ class CreateGroupViewBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
-                  Row(
-                    children: [
-                      const CustomBackButton(),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Create Group',
-                        style: AppStyles.textStyle18.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                  const CreateGroupViewAppBar(),
 
                   const SizedBox(height: 24),
 

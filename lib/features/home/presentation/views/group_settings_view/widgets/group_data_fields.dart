@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rewire/core/utils/app_styles.dart';
-import 'package:rewire/features/home/presentation/views/widgets/profile_custom_text_field.dart';
+import 'package:rewire/features/home/presentation/views/widgets/custom_underline_text_field.dart';
 
 class GroupDataFields extends StatelessWidget {
   const GroupDataFields({super.key});
@@ -13,7 +13,7 @@ class GroupDataFields extends StatelessWidget {
         crossAxisAlignment: .start,
         children: [
           Text('Group name: ', style: AppStyles.textStyle14),
-          ProfileCustomTextField(
+          CustomUnderlineTextField(
             hintText: 'Group name',
             textInputType: .name,
             textInputAction: TextInputAction.next,
@@ -22,7 +22,7 @@ class GroupDataFields extends StatelessWidget {
           SizedBox(height: 16),
 
           Text('Password: ', style: AppStyles.textStyle14),
-          ProfileCustomTextField(
+          CustomUnderlineTextField(
             hintText: 'Password',
             textInputType: TextInputType.visiblePassword,
           ),

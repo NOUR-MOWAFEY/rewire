@@ -4,7 +4,7 @@ import 'package:rewire/core/services/supabase_storage_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/core/widgets/view_background_container.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
-import 'package:rewire/features/home/presentation/views/widgets/profile_view_body.dart';
+import 'package:rewire/features/home/presentation/views/profile_view/widgets/profile_view_body.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rewire/core/utils/app_styles.dart';
-import 'package:rewire/features/home/presentation/views/widgets/custom_logout_button.dart';
+import 'package:rewire/features/home/presentation/views/profile_view/widgets/custom_logout_button.dart';
 
 class ProfileViewAppBar extends StatelessWidget {
   const ProfileViewAppBar({super.key});

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewire/features/home/presentation/views/widgets/custom_app_bar.dart';
+import 'package:rewire/features/home/presentation/views/home_view/widgets/home_view_app_bar.dart';
 
-import '../../../../../core/widgets/custom_loading.dart';
-import '../../view_model/habit_cubit/habit_cubit.dart';
+import '../../../../../../core/widgets/custom_loading.dart';
+import '../../../view_model/habit_cubit/habit_cubit.dart';
 import 'group_item.dart';
 
 class HomeViewBody extends StatelessWidget {
@@ -19,7 +19,7 @@ class HomeViewBody extends StatelessWidget {
               const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.only(top: 16, right: 24, left: 24),
-                  child: CustomAppBar(),
+                  child: HomeViewAppBar(),
                 ),
               ),
               SliverPadding(

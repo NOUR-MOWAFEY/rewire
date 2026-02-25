@@ -5,15 +5,15 @@ import 'package:rewire/core/utils/app_animations.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
-import 'package:rewire/features/home/presentation/views/create_group_view.dart';
-import 'package:rewire/features/home/presentation/views/group_settings_view.dart';
+import 'package:rewire/features/home/presentation/views/create_group_view/create_group_view.dart';
+import 'package:rewire/features/home/presentation/views/group_settings_view/group_settings_view.dart';
 import 'package:rewire/features/home/presentation/views/main_navigation_view.dart';
 
 import '../../features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/register_view.dart';
-import '../../features/home/presentation/views/group_details_view.dart';
-import '../../features/home/presentation/views/home_view.dart';
+import '../../features/home/presentation/views/group_details_view/group_details_view.dart';
+import '../../features/home/presentation/views/home_view/home_view.dart';
 import '../services/firebase_service.dart';
 import 'service_locator.dart';
 

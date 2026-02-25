@@ -8,11 +8,11 @@ import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/delete_group_cubit/delete_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/delete_group_button.dart';
+import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_data_fields.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_settings_view_app_bar.dart';
 import 'package:rewire/features/home/presentation/views/widgets/add_people_container.dart';
 import 'package:rewire/features/home/presentation/views/widgets/custom_avatar.dart';
 import 'package:rewire/features/home/presentation/views/widgets/custom_save_button.dart';
-import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_data_fields.dart';
 
 class GroupSettingsViewBody extends StatelessWidget {
   const GroupSettingsViewBody({
@@ -34,6 +34,14 @@ class GroupSettingsViewBody extends StatelessWidget {
         child: BlocConsumer<DeleteGroupCubit, DeleteGroupState>(
           listener: (context, state) {
             if (state is DeleteGroupFailure) {
+              if (state.errMessage == 'Connection timeout') {
+                context.go(AppRouter.mainNavigationView);
+                ShowToastification.warning(
+                  context,
+                  'Connection timeout. Groups will sync when you\'re back online',
+                );
+                return;
+              }
               ShowToastification.failure(context, 'Couldn\'t delete group');
             } else if (state is DeleteGroupSuccess) {
               context.go(AppRouter.mainNavigationView);

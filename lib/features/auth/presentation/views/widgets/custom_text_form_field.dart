@@ -40,7 +40,7 @@ class CustomTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 16, right: 4),
-          child: Icon(icon, color: Colors.grey),
+          child: Icon(icon, color: Colors.grey, size: 20),
         ),
         fillColor: AppColors.transparentPrimary,
         filled: true,

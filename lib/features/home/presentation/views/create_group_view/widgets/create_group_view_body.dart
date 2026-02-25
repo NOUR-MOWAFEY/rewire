@@ -4,12 +4,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_footer.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_view_app_bar.dart';
 
 import '../../../../../../core/utils/validator.dart';
 import '../../../../../auth/presentation/views/widgets/custom_text_form_field.dart';
-import '../../../view_model/habit_cubit/habit_cubit.dart';
 import '../../widgets/add_people_container.dart';
 
 class CreateGroupViewBody extends StatelessWidget {
@@ -26,62 +26,62 @@ class CreateGroupViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: groupNameKey,
-      child: BlocConsumer<HabitCubit, HabitState>(
-        listener: (BuildContext context, HabitState state) {
-          if (state is HabitFailure) {
-            if (state.errMessage == 'Bad internet connection') {
-              ShowToastification.warning(
-                context,
-                'No internet connection. Groups will sync when you\'re back online',
-              );
-              return;
+    return PopScope(
+      canPop: context.read<CreateGroupCubit>().isLoading,
+      child: Form(
+        key: groupNameKey,
+        child: BlocConsumer<CreateGroupCubit, CreateGroupState>(
+          listener: (BuildContext context, CreateGroupState state) {
+            if (state is CreateGroupFaliure) {
+              if (state.errMessage == 'Connection timeout') {
+                context.pop();
+                ShowToastification.warning(
+                  context,
+                  'Connection timeout. Groups will sync when you\'re back online',
+                );
+                return;
+              }
+              ShowToastification.failure(context, 'Cannot creat group');
             }
-            ShowToastification.failure(
-              context,
-              'Cannot creat group, error: ${state.errMessage}',
-            );
-          }
-          if (state is HabitCreated) {
-            ShowToastification.success(context, 'Group created successfully');
-            context.pop();
-          }
-        },
-        builder: (context, state) {
-          if (state is HabitLoading ||
-              BlocProvider.of<HabitCubit>(context).isLoading == true) {
-            return const CustomLoading();
-          }
-          return Padding(
-            padding: EdgeInsetsGeometry.all(16),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: .start,
-                children: [
-                  const CreateGroupViewAppBar(),
+            if (state is CreateGroupSuccess) {
+              ShowToastification.success(context, 'Group created successfully');
+              context.pop();
+            }
+          },
+          builder: (context, state) {
+            if (state is CreateGroupLoading || state is CreateGroupSuccess) {
+              return const CustomLoading();
+            }
+            return Padding(
+              padding: EdgeInsetsGeometry.all(16),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: .start,
+                  children: [
+                    const CreateGroupViewAppBar(),
 
-                  const SizedBox(height: 24),
+                    const SizedBox(height: 24),
 
-                  CustomTextFormField(
-                    title: 'Group name',
-                    icon: FontAwesomeIcons.peopleGroup,
-                    inputType: InputType.name,
-                    isLastOne: false,
-                    controller: groupNameController,
-                  ),
+                    CustomTextFormField(
+                      title: 'Group name',
+                      icon: FontAwesomeIcons.userGroup,
+                      inputType: InputType.name,
+                      isLastOne: false,
+                      controller: groupNameController,
+                    ),
 
-                  const AddPeopleContainer(),
+                    const AddPeopleContainer(),
 
-                  CreateGroupFooter(
-                    groupNameKey: groupNameKey,
-                    groupNameController: groupNameController,
-                  ),
-                ],
+                    CreateGroupFooter(
+                      groupNameKey: groupNameKey,
+                      groupNameController: groupNameController,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

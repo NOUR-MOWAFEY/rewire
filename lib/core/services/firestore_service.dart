@@ -80,7 +80,7 @@ class FirestoreService {
         )
         .timeout(
           Duration(seconds: 5),
-          onTimeout: () => throw 'Bad internet connection',
+          onTimeout: () => throw 'Connection timeout',
         );
   }
 

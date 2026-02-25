@@ -26,7 +26,7 @@ class DeleteGroupCubit extends Cubit<DeleteGroupState> {
           .deleteGroup(habitId)
           .timeout(
             Duration(seconds: 10),
-            onTimeout: () => throw 'Bad internet connection',
+            onTimeout: () => throw 'Connection timeout',
           );
 
       if (!isClosed) emit(DeleteGroupSuccess());

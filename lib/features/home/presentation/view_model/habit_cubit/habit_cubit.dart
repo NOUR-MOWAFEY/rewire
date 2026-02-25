@@ -64,31 +64,6 @@ class HabitCubit extends Cubit<HabitState> {
     });
   }
 
-  // =====================
-  // Create habits
-  // =====================
-
-  Future<void> createHabit(String title, String password) async {
-    try {
-      isLoading = true;
-      emit(HabitLoading());
-      GroupModel habitModel = GroupModel(
-        id: '',
-        joinCode: await _firestoreService.generateUniqueJoinCode(),
-        passwordHash: password,
-        title: title,
-        createdBy: user!.uid,
-        participants: [user!.uid],
-        isActive: true,
-      );
-      await _firestoreService.createHabit(habitModel);
-      if (!isClosed) emit(HabitCreated());
-    } catch (e) {
-      isLoading = false;
-      if (!isClosed) emit(HabitFailure(errMessage: e.toString()));
-      log(e.toString());
-    }
-  }
 
   // get user data
   Future<UserModel?>? getUserData() async {

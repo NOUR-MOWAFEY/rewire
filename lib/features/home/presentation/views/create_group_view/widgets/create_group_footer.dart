@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
 
 class CreateGroupFooter extends StatelessWidget {
   const CreateGroupFooter({
@@ -24,13 +24,16 @@ class CreateGroupFooter extends StatelessWidget {
             title: 'Create Group',
             onPressed: () async {
               if (!groupNameKey.currentState!.validate()) return;
-              await BlocProvider.of<HabitCubit>(
-                context,
-              ).createHabit(groupNameController.text.trim(), 'test passowrd');
+              context.read<CreateGroupCubit>().createGroup(
+                groupNameController.text.trim(),
+                '',
+              );
             },
           ),
         ),
+
         const SizedBox(width: 8),
+
         CustomButton(
           onPressed: () {},
           width: 50,

@@ -7,9 +7,16 @@ import 'package:rewire/core/widgets/custom_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
 
 class CustomAvatar extends StatelessWidget {
-  const CustomAvatar({super.key, required this.viewModel});
+  const CustomAvatar({
+    super.key,
+    required this.viewModel,
+    required this.imageType,
+    this.groupId,
+  });
 
   final ProfileViewModel viewModel;
+  final ImageType imageType;
+  final String? groupId;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +33,12 @@ class CustomAvatar extends StatelessWidget {
           child: InkWell(
             onTap: () async {
               await viewModel.pickImage();
-              final success = await viewModel.uploadImage();
+              final success = await viewModel.uploadImage(
+                groupId: imageType == ImageType.group ? groupId : null,
+              );
 
               if (!context.mounted) return;
-              if (success == null) return;
+              if (success == false) return;
 
               if (success) {
                 ShowToastification.success(

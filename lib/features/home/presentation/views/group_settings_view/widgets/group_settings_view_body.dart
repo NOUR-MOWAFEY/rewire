@@ -6,6 +6,7 @@ import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/delete_group_cubit/delete_group_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/delete_group_button.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_data_fields.dart';
@@ -19,10 +20,17 @@ class GroupSettingsViewBody extends StatelessWidget {
     super.key,
     required this.viewModel,
     required this.groupModel,
+    required this.groupNameController,
+    required this.groupPasswordController,
+    required this.updateGroupDataKey,
   });
 
   final GroupModel groupModel;
   final ProfileViewModel viewModel;
+
+  final TextEditingController groupNameController;
+  final TextEditingController groupPasswordController;
+  final GlobalKey<FormState> updateGroupDataKey;
 
   @override
   Widget build(BuildContext context) {
@@ -53,24 +61,58 @@ class GroupSettingsViewBody extends StatelessWidget {
             if (state is DeleteGroupLoading || state is DeleteGroupSuccess) {
               return const CustomLoading();
             }
-            return ListView(
-              children: [
-                const GroupSettingsViewAppBar(),
+            return Form(
+              key: updateGroupDataKey,
 
-                const SizedBox(height: 24),
+              child: ListView(
+                children: [
+                  const GroupSettingsViewAppBar(),
 
-                CustomAvatar(viewModel: viewModel),
+                  const SizedBox(height: 24),
 
-                const SizedBox(height: 24),
+                  AnimatedBuilder(
+                    animation: viewModel,
+                    builder: (BuildContext context, Widget? child) {
+                      return CustomAvatar(
+                        viewModel: viewModel,
+                        imageType: ImageType.group,
+                        groupId: groupModel.id,
+                      );
+                    },
+                  ),
 
-                const GroupDataFields(),
+                  const SizedBox(height: 24),
 
-                const CustomSaveButton(),
+                  GroupDataFields(
+                    groupNameController: groupNameController,
+                    groupPasswordController: groupPasswordController,
+                  ),
 
-                const AddPeopleContainer(),
+                  CustomSaveButton(
+                    onPressed: () async {
+                      if (!updateGroupDataKey.currentState!.validate()) {
+                        return;
+                      }
 
-                DeleteGroupButton(groupModel: groupModel),
-              ],
+                      await context
+                          .read<GroupCubit>()
+                          .updateGroupData(
+                            groupModel.id,
+                            groupNameController.text,
+                            groupPasswordController.text,
+                          )
+                          .then((value) {
+                            groupNameController.clear();
+                            groupPasswordController.clear();
+                          });
+                    },
+                  ),
+
+                  const AddPeopleContainer(),
+
+                  DeleteGroupButton(groupModel: groupModel),
+                ],
+              ),
             );
           },
         ),

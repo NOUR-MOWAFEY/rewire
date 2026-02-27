@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/home_view/widgets/join_group_alert_dialog.dart';
 
 class HomeViewAppBar extends StatelessWidget {
@@ -15,7 +15,7 @@ class HomeViewAppBar extends StatelessWidget {
     return Row(
       children: [
         Text(
-          'Hi, ${BlocProvider.of<HabitCubit>(context).userModel?.name.split(RegExp(r'\s+'))[0] ?? ''}',
+          'Hi, ${BlocProvider.of<GroupCubit>(context).userModel?.name.split(RegExp(r'\s+'))[0] ?? ''}',
           style: AppStyles.textStyle28,
         ),
 

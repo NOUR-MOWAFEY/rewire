@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rewire/core/utils/app_colors.dart';
+import 'package:rewire/core/utils/validator.dart';
 
 class CustomUnderlineTextField extends StatefulWidget {
   const CustomUnderlineTextField({
@@ -8,11 +9,15 @@ class CustomUnderlineTextField extends StatefulWidget {
     required this.hintText,
     this.textInputAction = TextInputAction.done,
     this.textInputType = TextInputType.text,
+    this.controller,
+    this.inputType = InputType.name,
   });
 
   final String hintText;
   final TextInputAction? textInputAction;
   final TextInputType? textInputType;
+  final TextEditingController? controller;
+  final InputType inputType;
 
   @override
   State<CustomUnderlineTextField> createState() =>
@@ -33,13 +38,22 @@ class _CustomUnderlineTextFieldState extends State<CustomUnderlineTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
+
+      validator: (value) => validator(widget.inputType, value, null),
+
+      autovalidateMode: .onUserInteractionIfError,
+
       obscureText: widget.textInputType == TextInputType.visiblePassword
           ? _isObscure
           : false,
 
       textInputAction: widget.textInputAction,
+
       keyboardType: widget.textInputType,
+
       cursorColor: AppColors.white,
+
       cursorWidth: 1,
 
       decoration: InputDecoration(

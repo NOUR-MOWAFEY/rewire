@@ -7,6 +7,7 @@ import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/core/widgets/view_background_container.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/delete_group_cubit/delete_group_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_settings_view_body.dart';
@@ -21,31 +22,67 @@ class GroupSettingsView extends StatefulWidget {
 }
 
 class _GroupSettingsViewState extends State<GroupSettingsView> {
-  late ProfileViewModel viewModel;
-  late FirestoreService _firestoreService;
+  late final ProfileViewModel viewModel;
+  late final FirestoreService _firestoreService;
+  late final TextEditingController groupNameController;
+  late final TextEditingController groupPasswordController;
+  late final GlobalKey<FormState> updateGroupDataKey;
 
   @override
   void initState() {
     super.initState();
-    _firestoreService = getIt.get<FirestoreService>();
-    viewModel = ProfileViewModel(
-      storageService: getIt.get<SupabaseStorageService>(),
-      authService: getIt.get<FirebaseAuthService>(),
-    );
+
+    initializeSettingsViewBodyData();
 
     BlocProvider.of<JoinGroupCubit>(context).getJoinCode(widget.groupModel.id);
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    groupNameController.dispose();
+    groupPasswordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ViewBackGroundContainer(
-      viewBody: BlocProvider(
-        create: (context) => DeleteGroupCubit(_firestoreService),
+      viewBody: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => DeleteGroupCubit(_firestoreService),
+          ),
+          BlocProvider(
+            create: (context) => GroupCubit(
+              _firestoreService,
+              getIt.get<FirebaseAuthService>().getCurrentUser(),
+            ),
+          ),
+        ],
         child: GroupSettingsViewBody(
           viewModel: viewModel,
           groupModel: widget.groupModel,
+          groupNameController: groupNameController,
+          groupPasswordController: groupPasswordController,
+          updateGroupDataKey: updateGroupDataKey,
         ),
       ),
     );
+  }
+
+  void initializeSettingsViewBodyData() {
+    _firestoreService = getIt.get<FirestoreService>();
+
+    viewModel = ProfileViewModel(
+      imageType: ImageType.group,
+      storageService: getIt.get<SupabaseStorageService>(),
+      authService: getIt.get<FirebaseAuthService>(),
+    );
+
+    groupNameController = TextEditingController();
+    groupPasswordController = TextEditingController();
+    updateGroupDataKey = GlobalKey<FormState>();
+
+    viewModel.loadGroupImage(widget.groupModel.id);
   }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
 
 class CustomSaveButton extends StatelessWidget {
-  const CustomSaveButton({super.key});
+  const CustomSaveButton({super.key, this.onPressed});
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class CustomSaveButton extends StatelessWidget {
           title: 'Save',
           width: 90,
           height: 40,
-          onPressed: () {},
+          onPressed: onPressed,
         ),
       ),
     );

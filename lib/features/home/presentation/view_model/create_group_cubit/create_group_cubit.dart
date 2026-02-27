@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/services/firestore_service.dart';
+import 'package:rewire/core/utils/security_helper.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 
 part 'create_group_state.dart';
@@ -28,8 +29,10 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
       GroupModel habitModel = GroupModel(
         id: '',
         joinCode: await _firestoreService.generateUniqueJoinCode(),
-        passwordHash: password,
-        title: title,
+        passwordHash: password.isNotEmpty
+            ? SecurityHelper.hashPassword(password)
+            : '',
+        name: title,
         createdBy: _user!.uid,
         participants: [_user.uid],
         isActive: true,

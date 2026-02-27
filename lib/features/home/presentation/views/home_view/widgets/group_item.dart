@@ -50,7 +50,7 @@ class GroupItem extends StatelessWidget {
 
               // group name
               title: Text(
-                habitModel.title,
+                habitModel.name,
                 style: AppStyles.textStyle20.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

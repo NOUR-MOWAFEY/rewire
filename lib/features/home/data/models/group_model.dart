@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroupModel {
   final String id;
-  final String title;
+  final String name;
   final String createdBy;
   final List<String> participants;
   final Timestamp? createdAt;
@@ -13,7 +13,7 @@ class GroupModel {
 
   GroupModel({
     required this.id,
-    required this.title,
+    required this.name,
     required this.createdBy,
     required this.participants,
     this.createdAt,
@@ -25,7 +25,7 @@ class GroupModel {
   factory GroupModel.fromMap(Map<String, dynamic> map) {
     return GroupModel(
       id: map['id'] ?? '',
-      title: map['title'] ?? '',
+      name: map['name'] ?? '',
       createdBy: map['createdBy'],
       participants: List<String>.from(map['participants'] ?? []),
       createdAt: map['createdAt'],
@@ -38,7 +38,7 @@ class GroupModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'title': title,
+      'name': name,
       'createdBy': createdBy,
       'participants': participants,
       'createdAt': FieldValue.serverTimestamp(),
@@ -59,7 +59,7 @@ class GroupModel {
   }) {
     return GroupModel(
       id: id ?? this.id,
-      title: title ?? this.title,
+      name: title ?? name,
       createdBy: createdBy ?? this.createdBy,
       participants: participants ?? this.participants,
       createdAt: createdAt,

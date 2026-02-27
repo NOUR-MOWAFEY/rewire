@@ -71,13 +71,7 @@ class FirestoreService {
     habit = habit.copyWith(id: docRef.id);
 
     await docRef
-        .set(
-          habit
-              .copyWith(
-                passwordHash: SecurityHelper.hashPassword(habit.passwordHash),
-              )
-              .toMap(),
-        )
+        .set(habit.toMap())
         .timeout(
           Duration(seconds: 5),
           onTimeout: () => throw 'Connection timeout',
@@ -102,7 +96,7 @@ class FirestoreService {
     });
   }
 
-  Stream<List<GroupModel>> listenToHabits(String userId) {
+  Stream<List<GroupModel>> listenToGroups(String userId) {
     return _habits
         .where('participants', arrayContains: userId)
         .where('isActive', isEqualTo: true)
@@ -137,6 +131,32 @@ class FirestoreService {
 
     // Delete habit document
     await habitRef.delete();
+  }
+
+  Future<void> updateGroup({
+    required String groupId,
+    required String? newName,
+    required String? newPassword,
+  }) async {
+    final Map<String, dynamic> data = {};
+
+    if (newName != null && newName.trim().isNotEmpty) {
+      data['name'] = newName.trim();
+    }
+
+    if (newPassword != null && newPassword.isNotEmpty) {
+      data['passwordHash'] = SecurityHelper.hashPassword(newPassword);
+    }
+
+    if (data.isEmpty) return;
+
+    await _habits
+        .doc(groupId)
+        .update(data)
+        .timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => throw 'Connection timeout',
+        );
   }
 
   // =====================

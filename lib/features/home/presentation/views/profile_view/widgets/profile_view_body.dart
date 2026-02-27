@@ -15,7 +15,7 @@ class ProfileViewBody extends StatelessWidget {
     return RefreshIndicator.adaptive(
       color: AppColors.white,
       backgroundColor: AppColors.transparentPrimary,
-      onRefresh: () async => await viewModel.loadImage(),
+      onRefresh: () async => await viewModel.loadProfileImage(),
 
       child: AnimatedBuilder(
         animation: viewModel,
@@ -24,7 +24,7 @@ class ProfileViewBody extends StatelessWidget {
             const ProfileViewAppBar(),
             const SizedBox(height: 42),
 
-            CustomAvatar(viewModel: viewModel),
+            CustomAvatar(viewModel: viewModel, imageType: ImageType.user),
             const SizedBox(height: 28),
 
             const Padding(

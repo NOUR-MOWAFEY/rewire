@@ -6,11 +6,18 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rewire/core/services/firebase_service.dart';
 import 'package:rewire/core/services/supabase_storage_service.dart';
 
+enum ImageType { user, group }
+
 class ProfileViewModel extends ChangeNotifier {
   final SupabaseStorageService storageService;
   final FirebaseAuthService authService;
+  final ImageType imageType;
 
-  ProfileViewModel({required this.storageService, required this.authService});
+  ProfileViewModel({
+    required this.storageService,
+    required this.authService,
+    required this.imageType,
+  });
 
   File? imageFile;
   String? imageUrl;
@@ -40,8 +47,9 @@ class ProfileViewModel extends ChangeNotifier {
   // =============================
   // Upload Image
   // =============================
-  Future<bool?> uploadImage() async {
-    if (imageFile == null) return null;
+
+  Future<bool> uploadImage({String? groupId}) async {
+    if (imageFile == null) return false;
 
     isLoading = true;
     notifyListeners();
@@ -49,10 +57,17 @@ class ProfileViewModel extends ChangeNotifier {
     try {
       final userId = authService.getCurrentUser()!.uid;
 
-      final url = await storageService.uploadUserImage(
-        file: imageFile!,
-        userId: userId,
-      );
+      if (imageType == ImageType.group && groupId == null) throw 'no group id';
+
+      final url = imageType == ImageType.user
+          ? await storageService.uploadUserImage(
+              file: imageFile!,
+              userId: userId,
+            )
+          : await storageService.uploadGroupImage(
+              file: imageFile!,
+              groupId: groupId!,
+            );
 
       if (url != null && url.isNotEmpty) {
         imageUrl = url;
@@ -64,7 +79,6 @@ class ProfileViewModel extends ChangeNotifier {
     } catch (e) {
       log('Upload error: $e');
       imageFile = null;
-      notifyListeners();
       return false;
     } finally {
       isLoading = false;
@@ -73,12 +87,27 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   // =============================
-  // Load Image
+  // Load Profile Image
   // =============================
-  Future<void> loadImage() async {
+
+  Future<void> loadProfileImage() async {
     try {
       final userId = authService.getCurrentUser()!.uid;
       final url = storageService.getUserImageUrl(userId);
+      imageUrl = url.isNotEmpty ? url : null;
+      notifyListeners();
+    } catch (e) {
+      log('Error loading image: $e');
+    }
+  }
+
+  // =============================
+  // Load Group Image
+  // =============================
+
+  Future<void> loadGroupImage(String groupId) async {
+    try {
+      final url = storageService.getGroupImageUrl(groupId);
       imageUrl = url.isNotEmpty ? url : null;
       notifyListeners();
     } catch (e) {

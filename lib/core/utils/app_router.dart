@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/app_animations.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
-import 'package:rewire/features/home/presentation/view_model/habit_cubit/habit_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/create_group_view.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/group_settings_view.dart';
@@ -92,7 +92,7 @@ abstract class AppRouter {
             key: state.pageKey,
             transitionDuration: const Duration(milliseconds: 300),
             child: BlocProvider(
-              create: (context) => HabitCubit(
+              create: (context) => GroupCubit(
                 _fireStoreService,
                 _firebaseAuthService.getCurrentUser(),
               ),

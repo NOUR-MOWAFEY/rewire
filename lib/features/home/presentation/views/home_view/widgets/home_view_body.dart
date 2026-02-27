@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/features/home/presentation/views/home_view/widgets/home_view_app_bar.dart';
 
 import '../../../../../../core/widgets/custom_loading.dart';
-import '../../../view_model/habit_cubit/habit_cubit.dart';
+import '../../../view_model/group_cubit/group_cubit.dart';
 import 'group_item.dart';
 
 class HomeViewBody extends StatelessWidget {
@@ -11,9 +11,9 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HabitCubit, HabitState>(
+    return BlocBuilder<GroupCubit, GroupState>(
       builder: (context, state) {
-        if (state is HabitSuccess) {
+        if (state is GroupSuccess) {
           return CustomScrollView(
             slivers: [
               const SliverToBoxAdapter(
@@ -42,7 +42,7 @@ class HomeViewBody extends StatelessWidget {
               ),
             ],
           );
-        } else if (state is HabitFailure) {
+        } else if (state is GroupFailure) {
           return Center(child: Text(state.errMessage));
         } else {
           return const CustomLoading();

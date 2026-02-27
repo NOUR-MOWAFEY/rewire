@@ -20,10 +20,11 @@ class _ProfileViewState extends State<ProfileView> {
   void initState() {
     super.initState();
     viewModel = ProfileViewModel(
+      imageType: ImageType.user,
       storageService: getIt.get<SupabaseStorageService>(),
       authService: getIt.get<FirebaseAuthService>(),
     );
-    viewModel.loadImage();
+    viewModel.loadProfileImage();
   }
 
   @override

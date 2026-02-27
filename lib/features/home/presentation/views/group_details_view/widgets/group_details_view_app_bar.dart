@@ -23,7 +23,7 @@ class GroupDetailsViewAppBar extends StatelessWidget
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              groupModel.title,
+              groupModel.name,
               style: AppStyles.textStyle24.copyWith(
                 overflow: TextOverflow.ellipsis,
               ),

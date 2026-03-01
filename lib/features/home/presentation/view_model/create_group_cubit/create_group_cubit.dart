@@ -24,7 +24,7 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
   Future<void> createGroup(String title, String password) async {
     try {
       isLoading = true;
-      emit(CreateGroupLoading());
+      if (!isClosed) emit(CreateGroupLoading());
 
       GroupModel habitModel = GroupModel(
         id: '',

@@ -26,34 +26,36 @@ class CreateGroupViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: context.read<CreateGroupCubit>().isLoading,
-      child: Form(
-        key: groupNameKey,
-        child: BlocConsumer<CreateGroupCubit, CreateGroupState>(
-          listener: (BuildContext context, CreateGroupState state) {
-            if (state is CreateGroupFaliure) {
-              if (state.errMessage == 'Connection timeout') {
-                context.pop();
-                ShowToastification.warning(
-                  context,
-                  'Connection timeout. Groups will sync when you\'re back online',
-                );
-                return;
-              }
-              ShowToastification.failure(context, 'Cannot creat group');
-            }
-            if (state is CreateGroupSuccess) {
-              ShowToastification.success(context, 'Group created successfully');
+    return Form(
+      key: groupNameKey,
+      child: BlocConsumer<CreateGroupCubit, CreateGroupState>(
+        listener: (BuildContext context, CreateGroupState state) {
+          if (state is CreateGroupFaliure) {
+            if (state.errMessage == 'Connection timeout') {
               context.pop();
+              ShowToastification.warning(
+                context,
+                'Connection timeout. Groups will sync when you\'re back online',
+              );
+              return;
             }
-          },
-          builder: (context, state) {
-            if (state is CreateGroupLoading || state is CreateGroupSuccess) {
-              return const CustomLoading();
-            }
-            return Padding(
-              padding: EdgeInsetsGeometry.all(16),
+            ShowToastification.failure(context, 'Cannot creat group');
+          }
+          if (state is CreateGroupSuccess) {
+            ShowToastification.success(context, 'Group created successfully');
+            context.pop();
+          }
+        },
+        builder: (context, state) {
+          final isLoading = state is CreateGroupLoading;
+          if (state is CreateGroupLoading || state is CreateGroupSuccess) {
+            return const CustomLoading();
+          }
+          return Padding(
+            padding: EdgeInsetsGeometry.all(16),
+            child: PopScope(
+              canPop: !isLoading,
+
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: .start,
@@ -79,9 +81,9 @@ class CreateGroupViewBody extends StatelessWidget {
                   ],
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -37,7 +37,6 @@ class ProfileViewModel extends ChangeNotifier {
 
       if (pickedFile != null) {
         imageFile = File(pickedFile.path);
-        notifyListeners();
       }
     } catch (e) {
       log('Error picking image: $e');
@@ -52,7 +51,6 @@ class ProfileViewModel extends ChangeNotifier {
     if (imageFile == null) return false;
 
     isLoading = true;
-    notifyListeners();
 
     try {
       final userId = authService.getCurrentUser()!.uid;
@@ -72,6 +70,7 @@ class ProfileViewModel extends ChangeNotifier {
       if (url != null && url.isNotEmpty) {
         imageUrl = url;
         imageFile = null;
+        notifyListeners();
         return true;
       } else {
         throw Exception("Upload failed");
@@ -79,10 +78,10 @@ class ProfileViewModel extends ChangeNotifier {
     } catch (e) {
       log('Upload error: $e');
       imageFile = null;
+      notifyListeners();
       return false;
     } finally {
       isLoading = false;
-      notifyListeners();
     }
   }
 

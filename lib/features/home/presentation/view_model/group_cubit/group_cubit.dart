@@ -21,7 +21,7 @@ class GroupCubit extends Cubit<GroupState> {
     isNewDay();
   }
 
-  bool? isLoading = false;
+  bool isLoading = false;
   UserModel? userModel;
   final FirestoreService _firestoreService;
   User? user;
@@ -65,6 +65,18 @@ class GroupCubit extends Cubit<GroupState> {
     });
   }
 
+  // get group data
+
+  Future<GroupModel?>? getGroupData(String groupId) async {
+    try {
+      final data = await _firestoreService.getGroupById(groupId);
+      return data;
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+
   // get user data
   Future<UserModel?>? getUserData() async {
     var data = await _firestoreService.getUser(user!.uid);
@@ -78,26 +90,31 @@ class GroupCubit extends Cubit<GroupState> {
     return super.close();
   }
 
-  // Edit Group Data
+  // Update Group Data
 
   Future<void> updateGroupData(
     String groupId,
-    String newName,
-    String newPassword,
+    String? newName,
+    String? newPassword,
   ) async {
+    isLoading = true;
     emit(GroupUpdateLoading());
 
     try {
       await _firestoreService.updateGroup(
         groupId: groupId,
         newName: newName,
-        newPassword: SecurityHelper.hashPassword(newPassword),
+        newPassword: newPassword == null
+            ? null
+            : SecurityHelper.hashPassword(newPassword),
       );
 
       emit(GroupUpdateSuccess());
     } catch (e) {
       log(e.toString());
       emit(GroupUpdateFailure(errMessage: e.toString()));
+    } finally {
+      isLoading = false;
     }
   }
 }

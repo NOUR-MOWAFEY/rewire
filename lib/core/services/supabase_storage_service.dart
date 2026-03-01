@@ -97,7 +97,7 @@ class SupabaseStorageService {
 
   Future<bool> deleteGroupImage(String groupId) async {
     try {
-      final filePath = 'users/$groupId.jpg';
+      final filePath = 'groups/$groupId.jpg';
 
       await _client.storage.from(_bucketName).remove([filePath]);
 

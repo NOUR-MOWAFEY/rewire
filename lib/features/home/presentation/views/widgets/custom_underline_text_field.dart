@@ -40,7 +40,27 @@ class _CustomUnderlineTextFieldState extends State<CustomUnderlineTextField> {
     return TextFormField(
       controller: widget.controller,
 
-      validator: (value) => validator(widget.inputType, value, null),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return null;
+        }
+        if (widget.inputType == InputType.password && value.trim().isEmpty) {
+          return 'Password cannot be all spaces';
+        } else if (widget.inputType == InputType.password && value.isNotEmpty) {
+          return value.length < 8
+              ? 'Password must be at least 8 characters'
+              : null;
+        }
+
+        if (widget.inputType == InputType.name && value.trim().isEmpty) {
+          return 'Name cannot be all spaces';
+        } else if (widget.inputType == InputType.name &&
+            value.trim().isNotEmpty) {
+          return value.length < 3 ? 'Name is too short' : null;
+        }
+
+        return validator(widget.inputType, value, null);
+      },
 
       autovalidateMode: .onUserInteractionIfError,
 

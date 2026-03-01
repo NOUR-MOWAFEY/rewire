@@ -159,6 +159,19 @@ class FirestoreService {
         );
   }
 
+  Future<GroupModel?> getGroupById(String groupId) async {
+    final doc = await FirebaseFirestore.instance
+        .collection('groups')
+        .doc(groupId)
+        .get();
+
+    if (doc.exists) {
+      return GroupModel.fromMap(doc.data()!);
+    } else {
+      return null;
+    }
+  }
+
   // =====================
   // Check-ins
   // =====================

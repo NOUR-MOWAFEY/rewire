@@ -7,7 +7,6 @@ import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/core/widgets/view_background_container.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/delete_group_cubit/delete_group_cubit.dart';
-import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_settings_view_body.dart';
@@ -22,8 +21,9 @@ class GroupSettingsView extends StatefulWidget {
 }
 
 class _GroupSettingsViewState extends State<GroupSettingsView> {
-  late final ProfileViewModel viewModel;
+  late final SupabaseStorageService _supabaseStorageService;
   late final FirestoreService _firestoreService;
+  late final ProfileViewModel viewModel;
   late final TextEditingController groupNameController;
   late final TextEditingController groupPasswordController;
   late final GlobalKey<FormState> updateGroupDataKey;
@@ -31,7 +31,6 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
   @override
   void initState() {
     super.initState();
-
     initializeSettingsViewBodyData();
 
     BlocProvider.of<JoinGroupCubit>(context).getJoinCode(widget.groupModel.id);
@@ -47,18 +46,12 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
   @override
   Widget build(BuildContext context) {
     return ViewBackGroundContainer(
-      viewBody: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => DeleteGroupCubit(_firestoreService),
-          ),
-          BlocProvider(
-            create: (context) => GroupCubit(
-              _firestoreService,
-              getIt.get<FirebaseAuthService>().getCurrentUser(),
-            ),
-          ),
-        ],
+      viewBody: BlocProvider(
+        create: (context) => DeleteGroupCubit(
+          _firestoreService,
+          supabaseStorageService: _supabaseStorageService,
+        ),
+
         child: GroupSettingsViewBody(
           viewModel: viewModel,
           groupModel: widget.groupModel,
@@ -72,6 +65,7 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
 
   void initializeSettingsViewBodyData() {
     _firestoreService = getIt.get<FirestoreService>();
+    _supabaseStorageService = getIt.get<SupabaseStorageService>();
 
     viewModel = ProfileViewModel(
       imageType: ImageType.group,

@@ -78,9 +78,19 @@ abstract class AppRouter {
       GoRoute(
         path: groupSettingsView,
 
-        builder: (context, state) => BlocProvider(
-          create: (context) =>
-              JoinGroupCubit(_fireStoreService, _firebaseAuthService),
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) =>
+                  JoinGroupCubit(_fireStoreService, _firebaseAuthService),
+            ),
+            BlocProvider(
+              create: (context) => GroupCubit(
+                _fireStoreService,
+                _firebaseAuthService.getCurrentUser(),
+              ),
+            ),
+          ],
           child: GroupSettingsView(groupModel: state.extra as GroupModel),
         ),
       ),

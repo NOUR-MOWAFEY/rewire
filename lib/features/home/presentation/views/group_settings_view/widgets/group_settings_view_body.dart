@@ -13,7 +13,7 @@ import 'package:rewire/features/home/presentation/views/group_settings_view/widg
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_settings_view_app_bar.dart';
 import 'package:rewire/features/home/presentation/views/widgets/add_people_container.dart';
 import 'package:rewire/features/home/presentation/views/widgets/custom_avatar.dart';
-import 'package:rewire/features/home/presentation/views/widgets/custom_save_button.dart';
+import 'package:rewire/features/home/presentation/views/widgets/custom_update_button.dart';
 
 class GroupSettingsViewBody extends StatelessWidget {
   const GroupSettingsViewBody({
@@ -34,34 +34,35 @@ class GroupSettingsViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: context.read<DeleteGroupCubit>().isLoading,
-
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: BlocConsumer<DeleteGroupCubit, DeleteGroupState>(
-          listener: (context, state) {
-            if (state is DeleteGroupFailure) {
-              if (state.errMessage == 'Connection timeout') {
-                context.go(AppRouter.mainNavigationView);
-                ShowToastification.warning(
-                  context,
-                  'Connection timeout. Groups will sync when you\'re back online',
-                );
-                return;
-              }
-              ShowToastification.failure(context, 'Couldn\'t delete group');
-            } else if (state is DeleteGroupSuccess) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: BlocConsumer<DeleteGroupCubit, DeleteGroupState>(
+        listener: (context, state) {
+          if (state is DeleteGroupFailure) {
+            if (state.errMessage == 'Connection timeout') {
               context.go(AppRouter.mainNavigationView);
+              ShowToastification.warning(
+                context,
+                'Connection timeout. Groups will sync when you\'re back online',
+              );
+              return;
+            }
+            ShowToastification.failure(context, 'Couldn\'t delete group');
+          } else if (state is DeleteGroupSuccess) {
+            context.go(AppRouter.mainNavigationView);
 
-              ShowToastification.success(context, 'Group deleted successfully');
-            }
-          },
-          builder: (context, state) {
-            if (state is DeleteGroupLoading || state is DeleteGroupSuccess) {
-              return const CustomLoading();
-            }
-            return Form(
+            ShowToastification.success(context, 'Group deleted successfully');
+          }
+        },
+        builder: (context, state) {
+          final isLoading = state is DeleteGroupLoading;
+
+          if (state is DeleteGroupLoading || state is DeleteGroupSuccess) {
+            return const CustomLoading();
+          }
+          return PopScope(
+            canPop: !isLoading,
+            child: Form(
               key: updateGroupDataKey,
 
               child: ListView(
@@ -88,24 +89,17 @@ class GroupSettingsViewBody extends StatelessWidget {
                     groupPasswordController: groupPasswordController,
                   ),
 
-                  CustomSaveButton(
-                    onPressed: () async {
-                      if (!updateGroupDataKey.currentState!.validate()) {
-                        return;
-                      }
-
-                      await context
-                          .read<GroupCubit>()
-                          .updateGroupData(
-                            groupModel.id,
-                            groupNameController.text,
-                            groupPasswordController.text,
+                  BlocBuilder<GroupCubit, GroupState>(
+                    builder: (context, state) =>
+                        context.read<GroupCubit>().isLoading
+                        ? CustomUpdateButton(
+                            title: 'Loading ..',
+                            isEnabled: false,
                           )
-                          .then((value) {
-                            groupNameController.clear();
-                            groupPasswordController.clear();
-                          });
-                    },
+                        : CustomUpdateButton(
+                            onPressed: () async =>
+                                updateButtonOnPressed(context),
+                          ),
                   ),
 
                   const AddPeopleContainer(),
@@ -113,10 +107,32 @@ class GroupSettingsViewBody extends StatelessWidget {
                   DeleteGroupButton(groupModel: groupModel),
                 ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
+  }
+
+  Future<void> updateButtonOnPressed(BuildContext context) async {
+    if (!updateGroupDataKey.currentState!.validate()) {
+      return;
+    }
+
+    await context
+        .read<GroupCubit>()
+        .updateGroupData(
+          groupModel.id,
+
+          groupNameController.text.isEmpty ? null : groupNameController.text,
+
+          groupPasswordController.text.isEmpty
+              ? null
+              : groupPasswordController.text,
+        )
+        .then((value) {
+          groupNameController.clear();
+          groupPasswordController.clear();
+        });
   }
 }

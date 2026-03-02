@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewire/core/services/firebase_service.dart';
+import 'package:rewire/core/services/firebase_auth_service.dart';
 import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/features/home/data/models/checkin_model.dart';

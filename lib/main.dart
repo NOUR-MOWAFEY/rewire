@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'core/services/firebase_service.dart';
+import 'core/services/firebase_auth_service.dart';
 import 'core/services/firestore_service.dart';
 import 'core/utils/app_router.dart';
 import 'core/utils/service_locator.dart';

@@ -34,10 +34,10 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
             : '',
         name: title,
         createdBy: _user!.uid,
-        participants: [_user.uid],
+        members: [_user.uid],
         isActive: true,
       );
-      await _firestoreService.createHabit(habitModel);
+      await _firestoreService.createGroup(habitModel);
       if (!isClosed) emit(CreateGroupSuccess());
       isLoading = false;
     } catch (e) {

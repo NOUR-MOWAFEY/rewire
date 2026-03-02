@@ -11,7 +11,7 @@ class AddPeopleContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 16),
-      height: 350,
+      height: 380,
       decoration: BoxDecoration(
         color: AppColors.transparentPrimary,
         border: Border.all(color: AppColors.primary, width: 2),
@@ -39,22 +39,10 @@ class AddPeopleContainer extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              child: ListView(
-                children: const [
-                  AddPeopleContainerItem(),
-                  SizedBox(height: 8),
-                  AddPeopleContainerItem(),
-                  SizedBox(height: 8),
-                  AddPeopleContainerItem(),
-                  SizedBox(height: 8),
-                  AddPeopleContainerItem(),
-                  SizedBox(height: 8),
-                  AddPeopleContainerItem(),
-                  SizedBox(height: 8),
-                  AddPeopleContainerItem(),
-                  SizedBox(height: 8),
-                  AddPeopleContainerItem(),
-                ],
+              child: ListView.separated(
+                itemCount: 5,
+                itemBuilder: (context, index) => const AddPeopleContainerItem(),
+                separatorBuilder: (context, index) => const SizedBox(height: 8),
               ),
             ),
           ),

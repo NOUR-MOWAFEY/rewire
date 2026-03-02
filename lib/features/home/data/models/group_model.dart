@@ -4,7 +4,7 @@ class GroupModel {
   final String id;
   final String name;
   final String createdBy;
-  final List<String> participants;
+  final List<String> members;
   final Timestamp? createdAt;
   final bool isActive;
 
@@ -15,7 +15,7 @@ class GroupModel {
     required this.id,
     required this.name,
     required this.createdBy,
-    required this.participants,
+    required this.members,
     this.createdAt,
     required this.isActive,
     required this.joinCode,
@@ -27,7 +27,7 @@ class GroupModel {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       createdBy: map['createdBy'],
-      participants: List<String>.from(map['participants'] ?? []),
+      members: List<String>.from(map['members'] ?? []),
       createdAt: map['createdAt'],
       isActive: map['isActive'] ?? true,
       joinCode: map['joinCode'] ?? '',
@@ -40,7 +40,7 @@ class GroupModel {
       'id': id,
       'name': name,
       'createdBy': createdBy,
-      'participants': participants,
+      'members': members,
       'createdAt': FieldValue.serverTimestamp(),
       'isActive': isActive,
       'joinCode': joinCode,
@@ -50,18 +50,18 @@ class GroupModel {
 
   GroupModel copyWith({
     String? id,
-    String? title,
+    String? name,
     String? createdBy,
-    List<String>? participants,
+    List<String>? members,
     bool? isActive,
     String? joinCode,
     String? passwordHash,
   }) {
     return GroupModel(
       id: id ?? this.id,
-      name: title ?? name,
+      name: name ?? this.name,
       createdBy: createdBy ?? this.createdBy,
-      participants: participants ?? this.participants,
+      members: members ?? this.members,
       createdAt: createdAt,
       isActive: isActive ?? this.isActive,
       joinCode: joinCode ?? this.joinCode,

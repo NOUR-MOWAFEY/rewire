@@ -32,3 +32,15 @@ final class GroupUpdateFailure extends GroupState {
 
   const GroupUpdateFailure({required this.errMessage});
 }
+
+// Add Member States
+
+final class GroupAddMemberSuccess extends GroupState {}
+
+final class GroupAddMemberLoading extends GroupState {}
+
+final class GroupAddMemberFailure extends GroupState {
+  final String errMessage;
+
+  const GroupAddMemberFailure({required this.errMessage});
+}

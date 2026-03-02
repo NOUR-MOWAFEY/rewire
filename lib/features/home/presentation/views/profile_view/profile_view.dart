@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/core/services/firebase_service.dart';
+import 'package:rewire/core/services/firebase_auth_service.dart';
 import 'package:rewire/core/services/supabase_storage_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/core/widgets/view_background_container.dart';

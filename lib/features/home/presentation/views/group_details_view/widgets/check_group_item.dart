@@ -18,7 +18,7 @@ class CheckGroupItem extends StatelessWidget {
           child: Text(date, style: AppStyles.textStyle14),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 2),
           height: 85,
           width: 80,
           decoration: BoxDecoration(
@@ -27,7 +27,26 @@ class CheckGroupItem extends StatelessWidget {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: getCheckGroupItems(),
+            children: [
+              ListView.separated(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                scrollDirection: .horizontal,
+
+                itemBuilder: (context, index) => CheckIconButton(index: index),
+
+                separatorBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: const VerticalDivider(
+                    color: AppColors.primary,
+                    indent: 10,
+                    endIndent: 10,
+                  ),
+                ),
+
+                itemCount: members.length,
+              ),
+            ],
           ),
         ),
       ],
@@ -35,22 +54,22 @@ class CheckGroupItem extends StatelessWidget {
   }
 }
 
-List<Widget> getCheckGroupItems() {
-  final List<Widget> widgets = [];
-  for (int i = 0; i < members.length; i++) {
-    widgets.add(const CheckIconButton());
-    if (i == members.length - 1) {
-      continue;
-    }
-    widgets.add(
-      const VerticalDivider(
-        color: AppColors.primary,
-        indent: 10,
-        endIndent: 10,
-      ),
-    );
-  }
-  return widgets;
-}
+// List<Widget> getCheckGroupItems() {
+//   final List<Widget> widgets = [];
+//   for (int i = 0; i < members.length; i++) {
+//     widgets.add(const CheckIconButton());
+//     if (i == members.length - 1) {
+//       continue;
+//     }
+//     widgets.add(
+//       const VerticalDivider(
+//         color: AppColors.primary,
+//         indent: 10,
+//         endIndent: 10,
+//       ),
+//     );
+//   }
+//   return widgets;
+// }
 
 const List<String> members = ['1', '2', '3', '4', '5'];

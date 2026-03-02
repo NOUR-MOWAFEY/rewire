@@ -10,9 +10,11 @@ class CheckIconButton extends StatelessWidget {
     super.key,
     this.color = AppColors.white,
     this.icon = FontAwesomeIcons.circleDot,
+    required this.index,
   });
   final Color? color;
   final IconData? icon;
+  final int index;
 
   @override
   Widget build(BuildContext context) {

@@ -19,7 +19,7 @@ class FirestoreService {
   CollectionReference<Map<String, dynamic>> get _users =>
       _firestore.collection('users');
 
-  CollectionReference<Map<String, dynamic>> get _habits =>
+  CollectionReference<Map<String, dynamic>> get _groups =>
       _firestore.collection('habits');
 
   // =====================
@@ -63,42 +63,42 @@ class FirestoreService {
   }
 
   // =====================
-  // Habits
+  // Groups
   // =====================
 
-  Future<void> createHabit(GroupModel habit) async {
-    final docRef = _habits.doc();
-    habit = habit.copyWith(id: docRef.id);
+  Future<void> createGroup(GroupModel group) async {
+    final docRef = _groups.doc();
+    group = group.copyWith(id: docRef.id);
 
     await docRef
-        .set(habit.toMap())
+        .set(group.toMap())
         .timeout(
           Duration(seconds: 5),
           onTimeout: () => throw 'Connection timeout',
         );
   }
 
-  Future<List<GroupModel>> getUserHabits(String uid) async {
-    final query = await _habits
-        .where('participants', arrayContains: uid)
+  Future<List<GroupModel>> getUserGroups(String uid) async {
+    final query = await _groups
+        .where('members', arrayContains: uid)
         .where('isActive', isEqualTo: true)
         .get();
 
     return query.docs.map((doc) => GroupModel.fromMap(doc.data())).toList();
   }
 
-  Future<void> addParticipant({
-    required String habitId,
+  Future<void> addMembers({
+    required String groupId,
     required String userId,
   }) async {
-    await _habits.doc(habitId).update({
-      'participants': FieldValue.arrayUnion([userId]),
+    await _groups.doc(groupId).update({
+      'members': FieldValue.arrayUnion([userId]),
     });
   }
 
   Stream<List<GroupModel>> listenToGroups(String userId) {
-    return _habits
-        .where('participants', arrayContains: userId)
+    return _groups
+        .where('members', arrayContains: userId)
         .where('isActive', isEqualTo: true)
         .orderBy('createdAt', descending: true)
         .snapshots()
@@ -109,7 +109,7 @@ class FirestoreService {
   }
 
   Future<void> deleteGroup(String habitId) async {
-    final habitRef = _habits.doc(habitId);
+    final habitRef = _groups.doc(habitId);
 
     //  Delete messages
     final messages = await habitRef.collection('messages').get();
@@ -150,7 +150,7 @@ class FirestoreService {
 
     if (data.isEmpty) return;
 
-    await _habits
+    await _groups
         .doc(groupId)
         .update(data)
         .timeout(
@@ -175,13 +175,14 @@ class FirestoreService {
   // =====================
   // Check-ins
   // =====================
+
   Future<void> addCheckIn({
     required String habitId,
     required CheckInModel checkIn,
   }) async {
     final dayId = DateFormat('yyyy-MM-dd').format(checkIn.createdAt);
 
-    final dayRef = _habits.doc(habitId).collection('days').doc(dayId);
+    final dayRef = _groups.doc(habitId).collection('days').doc(dayId);
 
     // Create day if it doesn't exist
     final daySnapshot = await dayRef.get();
@@ -210,7 +211,7 @@ class FirestoreService {
     required String habitId,
     required String date, // YYYY-MM-DD
   }) async {
-    final query = await _habits
+    final query = await _groups
         .doc(habitId)
         .collection('days')
         .doc(date)
@@ -221,7 +222,7 @@ class FirestoreService {
   }
 
   Stream<List<DayModel>> getAllDaysStream(String habitId) {
-    return _habits
+    return _groups
         .doc(habitId)
         .collection('days')
         .orderBy('day', descending: true)
@@ -240,11 +241,11 @@ class FirestoreService {
     required String habitId,
     required PublicMessageModel message,
   }) async {
-    await _habits.doc(habitId).collection('messages').add(message.toMap());
+    await _groups.doc(habitId).collection('messages').add(message.toMap());
   }
 
   Future<List<PublicMessageModel>> getMessages(String habitId) async {
-    final query = await _habits
+    final query = await _groups
         .doc(habitId)
         .collection('messages')
         .orderBy('createdAt', descending: true)
@@ -292,7 +293,7 @@ class FirestoreService {
     final doc = query.docs.first;
     final data = doc.data();
 
-    if (data['participants'].contains(userId)) {
+    if (data['members'].contains(userId)) {
       throw Exception("You already joined this group");
     }
 
@@ -303,7 +304,7 @@ class FirestoreService {
     }
 
     await doc.reference.update({
-      'participants': FieldValue.arrayUnion([userId]),
+      'members': FieldValue.arrayUnion([userId]),
     });
   }
 
@@ -328,7 +329,7 @@ class FirestoreService {
   // =====================
 
   Future<String?> getJoinCode(String habitId) async {
-    final doc = await _habits.doc(habitId).get();
+    final doc = await _groups.doc(habitId).get();
 
     if (!doc.exists) return null;
 

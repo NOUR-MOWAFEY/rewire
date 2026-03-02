@@ -3,7 +3,7 @@ import 'package:rewire/core/services/shared_preferences_service.dart';
 import 'package:rewire/core/services/supabase_storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../services/firebase_service.dart';
+import '../services/firebase_auth_service.dart';
 import '../services/firestore_service.dart';
 
 final getIt = GetIt.instance;

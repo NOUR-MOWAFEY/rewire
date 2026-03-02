@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
+import 'package:rewire/core/widgets/custom_button.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
-import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_footer.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_view_app_bar.dart';
 
 import '../../../../../../core/utils/validator.dart';
@@ -74,9 +75,27 @@ class CreateGroupViewBody extends StatelessWidget {
 
                     const AddPeopleContainer(),
 
-                    CreateGroupFooter(
-                      groupNameKey: groupNameKey,
-                      groupNameController: groupNameController,
+                    Row(
+                      crossAxisAlignment: .start,
+                      children: [
+                        const Expanded(
+                          child: CustomTextFormField(
+                            title: 'Member email',
+                            icon: FontAwesomeIcons.envelope,
+                            inputType: InputType.email,
+                            isLastOne: true,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        CustomButton(
+                          onPressed: () {},
+                          width: 50,
+                          child: const Icon(
+                            FontAwesomeIcons.plus,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

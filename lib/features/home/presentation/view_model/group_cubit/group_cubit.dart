@@ -98,7 +98,7 @@ class GroupCubit extends Cubit<GroupState> {
     String? newPassword,
   ) async {
     isLoading = true;
-    emit(GroupUpdateLoading());
+    if (!isClosed) emit(GroupUpdateLoading());
 
     try {
       await _firestoreService.updateGroup(
@@ -109,12 +109,26 @@ class GroupCubit extends Cubit<GroupState> {
             : SecurityHelper.hashPassword(newPassword),
       );
 
-      emit(GroupUpdateSuccess());
+      if (!isClosed) emit(GroupUpdateSuccess());
     } catch (e) {
       log(e.toString());
-      emit(GroupUpdateFailure(errMessage: e.toString()));
+      if (!isClosed) emit(GroupUpdateFailure(errMessage: e.toString()));
     } finally {
       isLoading = false;
+    }
+  }
+
+  // add members
+
+  Future<void> addMember(String groupId, String userId) async {
+    if (!isClosed) emit(GroupAddMemberLoading());
+
+    try {
+      await _firestoreService.addMembers(groupId: groupId, userId: userId);
+      if (!isClosed) emit(GroupAddMemberSuccess());
+    } catch (e) {
+      log(e.toString());
+      if (!isClosed) emit(GroupAddMemberFailure(errMessage: e.toString()));
     }
   }
 }

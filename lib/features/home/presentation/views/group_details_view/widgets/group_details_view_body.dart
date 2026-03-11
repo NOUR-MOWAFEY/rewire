@@ -26,7 +26,7 @@ class GroupDetailsViewBody extends StatelessWidget {
               itemCount: state.days.length,
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.only(bottom: 14),
                   child: CheckGroupItem(date: state.days[index].day),
                 );
               },

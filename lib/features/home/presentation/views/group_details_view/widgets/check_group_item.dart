@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/presentation/views/widgets/check_icon_button.dart';
 
 import '../../../../../../core/utils/app_colors.dart';
@@ -33,7 +34,12 @@ class CheckGroupItem extends StatelessWidget {
                 shrinkWrap: true,
                 scrollDirection: .horizontal,
 
-                itemBuilder: (context, index) => CheckIconButton(index: index),
+                itemBuilder: (context, index) {
+                  return CheckIconButton(
+                    index: index,
+                    checkInStatus: CheckInStatus.pending,
+                  );
+                },
 
                 separatorBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 2),
@@ -54,22 +60,5 @@ class CheckGroupItem extends StatelessWidget {
   }
 }
 
-// List<Widget> getCheckGroupItems() {
-//   final List<Widget> widgets = [];
-//   for (int i = 0; i < members.length; i++) {
-//     widgets.add(const CheckIconButton());
-//     if (i == members.length - 1) {
-//       continue;
-//     }
-//     widgets.add(
-//       const VerticalDivider(
-//         color: AppColors.primary,
-//         indent: 10,
-//         endIndent: 10,
-//       ),
-//     );
-//   }
-//   return widgets;
-// }
-
 const List<String> members = ['1', '2', '3', '4', '5'];
+

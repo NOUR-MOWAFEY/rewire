@@ -13,8 +13,7 @@ import 'package:rewire/features/home/data/models/day_model.dart';
 part 'days_state.dart';
 
 class DaysCubit extends Cubit<DaysState> {
-  DaysCubit(this._firestoreService, {required this.habitId})
-    : super(DaysInitial()) {
+  DaysCubit(this._firestoreService, this._habitId) : super(DaysInitial()) {
     addDays();
     log('days cubit created');
   }
@@ -22,7 +21,7 @@ class DaysCubit extends Cubit<DaysState> {
   final FirestoreService _firestoreService;
   StreamSubscription? _daysSubscription;
   final User? _user = getIt.get<FirebaseAuthService>().getCurrentUser();
-  final String habitId;
+  final String _habitId;
 
   // add days
 
@@ -30,7 +29,7 @@ class DaysCubit extends Cubit<DaysState> {
     try {
       emit(DaysLoading());
       await _firestoreService.addCheckIn(
-        habitId: habitId,
+        habitId: _habitId,
         checkIn: CheckInModel(
           userId: _user!.uid,
           date: DateTime.now().toIso8601String(),
@@ -52,7 +51,7 @@ class DaysCubit extends Cubit<DaysState> {
     _daysSubscription?.cancel();
 
     _daysSubscription = _firestoreService
-        .getAllDaysStream(habitId)
+        .getAllDaysStream(_habitId)
         .listen(
           (days) {
             emit(DaysLoaded(days: days));
@@ -61,6 +60,44 @@ class DaysCubit extends Cubit<DaysState> {
             emit(DaysFailure(errMessage: error.toString()));
           },
         );
+  }
+
+  // update checkin status
+
+  void updateCheckInStatus(String userId, CheckInStatus checkInStatus) async {
+    emit(DaysCheckinUpdateLoading());
+
+    try {
+      _firestoreService.updateCheckInStatus(
+        habitId: _habitId,
+        date: DateTime.now().toIso8601String(),
+        userId: userId,
+        status: checkInStatus,
+      );
+      emit(DaysCheckinUpdateSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(DaysCheckinUpdateFailure(errMessage: e.toString()));
+    }
+  }
+
+  // update chickin message
+
+  void updateCheckInMessage(String userId, String message) async {
+    emit(DaysCheckinUpdateLoading());
+
+    try {
+      _firestoreService.updateCheckInMessage(
+        habitId: _habitId,
+        date: DateTime.now().toIso8601String(),
+        userId: userId,
+        message: message,
+      );
+      emit(DaysCheckinUpdateSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(DaysCheckinUpdateFailure(errMessage: e.toString()));
+    }
   }
 
   @override

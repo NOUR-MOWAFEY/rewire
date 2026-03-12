@@ -221,6 +221,44 @@ class FirestoreService {
     return query.docs.map((doc) => CheckInModel.fromMap(doc.data())).toList();
   }
 
+  // update status
+
+  Future<void> updateCheckInStatus({
+    required String habitId,
+    required String date,
+    required String userId,
+    required CheckInStatus status,
+  }) async {
+    final checkInRef = _groups
+        .doc(habitId)
+        .collection('days')
+        .doc(date)
+        .collection('checkins')
+        .doc(userId);
+
+    await checkInRef.update({'status': status.name});
+  }
+
+  // update message
+
+  Future<void> updateCheckInMessage({
+    required String habitId,
+    required String date,
+    required String userId,
+    required String message,
+  }) async {
+    final checkInRef = _groups
+        .doc(habitId)
+        .collection('days')
+        .doc(date)
+        .collection('checkins')
+        .doc(userId);
+
+    await checkInRef.update({'messagePublic': message});
+  }
+
+  // get all days (Stream)
+
   Stream<List<DayModel>> getAllDaysStream(String habitId) {
     return _groups
         .doc(habitId)

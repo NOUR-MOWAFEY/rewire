@@ -18,3 +18,15 @@ final class DaysFailure extends DaysState {
 
   DaysFailure({required this.errMessage});
 }
+
+// CheckIn States
+
+final class DaysCheckinUpdateLoading extends DaysState {}
+
+final class DaysCheckinUpdateSuccess extends DaysState {}
+
+final class DaysCheckinUpdateFailure extends DaysState {
+  final String errMessage;
+
+  DaysCheckinUpdateFailure({required this.errMessage});
+}

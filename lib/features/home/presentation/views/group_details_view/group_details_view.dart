@@ -19,7 +19,7 @@ class GroupDetailsView extends StatelessWidget {
       appBar: GroupDetailsViewAppBar(groupModel: groupModel),
       viewBody: BlocProvider(
         create: (context) =>
-            DaysCubit(getIt.get<FirestoreService>(), habitId: groupModel.id)
+            DaysCubit(getIt.get<FirestoreService>(), groupModel.id)
               ..listenToDays(),
         child: const GroupDetailsViewBody(),
       ),

@@ -6,8 +6,13 @@ import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_styles.dart';
 
 class CheckGroupItem extends StatelessWidget {
-  const CheckGroupItem({super.key, required this.date});
+  const CheckGroupItem({
+    super.key,
+    required this.date,
+    required this.dayCheckins,
+  });
   final String date;
+  final List<CheckInModel> dayCheckins;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,7 @@ class CheckGroupItem extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return CheckIconButton(
                     index: index,
-                    checkInStatus: CheckInStatus.pending,
+                    checkInStatus: dayCheckins[index].status,
                   );
                 },
 
@@ -50,7 +55,7 @@ class CheckGroupItem extends StatelessWidget {
                   ),
                 ),
 
-                itemCount: members.length,
+                itemCount: dayCheckins.length,
               ),
             ],
           ),
@@ -61,4 +66,3 @@ class CheckGroupItem extends StatelessWidget {
 }
 
 const List<String> members = ['1', '2', '3', '4', '5'];
-

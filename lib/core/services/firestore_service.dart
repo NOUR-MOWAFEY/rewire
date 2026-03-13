@@ -207,20 +207,24 @@ class FirestoreService {
     await checkInRef.set(checkIn.toMap());
   }
 
-  Future<List<CheckInModel>> getTodayCheckIns({
+  // get day checkins
+
+  Stream<List<CheckInModel>> getTodayCheckInsStream({
     required String habitId,
     required String date, // YYYY-MM-DD
-  }) async {
-    final query = await _groups
+  }) {
+    return _groups
         .doc(habitId)
         .collection('days')
         .doc(date)
         .collection('checkins')
-        .get();
-
-    return query.docs.map((doc) => CheckInModel.fromMap(doc.data())).toList();
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs
+              .map((doc) => CheckInModel.fromMap(doc.data()))
+              .toList();
+        });
   }
-
   // update status
 
   Future<void> updateCheckInStatus({
@@ -259,6 +263,8 @@ class FirestoreService {
 
   // get all days (Stream)
 
+  // get all days (Stream)
+
   Stream<List<DayModel>> getAllDaysStream(String habitId) {
     return _groups
         .doc(habitId)
@@ -269,6 +275,36 @@ class FirestoreService {
           (snapshot) =>
               snapshot.docs.map((doc) => DayModel.fromMap(doc.data())).toList(),
         );
+  }
+
+  // get all days (Future)
+
+  Future<List<DayModel>> getAllDaysFuture(String habitId) async {
+    final query = await _groups
+        .doc(habitId)
+        .collection('days')
+        .orderBy('day', descending: true)
+        .get();
+
+    return query.docs.map((doc) => DayModel.fromMap(doc.data())).toList();
+  }
+
+  // get day checkins (Future)
+
+  Future<List<CheckInModel>> getDayCheckInsFuture({
+    required String habitId,
+    required String date, // YYYY-MM-DD
+  }) async {
+    final query = await _groups
+        .doc(habitId)
+        .collection('days')
+        .doc(date)
+        .collection('checkins')
+        .get();
+
+    return query.docs
+        .map((doc) => CheckInModel.fromMap(doc.data()))
+        .toList();
   }
 
   // =====================

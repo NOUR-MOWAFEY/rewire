@@ -2,7 +2,7 @@ enum CheckInStatus { success, fail, pending }
 
 class CheckInModel {
   final String userId;
-  final String date; 
+  final String date;
   final CheckInStatus status;
   final String? messagePublic;
   final DateTime createdAt;
@@ -19,9 +19,7 @@ class CheckInModel {
     return CheckInModel(
       userId: map['userId'],
       date: map['date'],
-      status: CheckInStatus.values.firstWhere(
-        (e) => e.name == map['status'],
-      ),
+      status: CheckInStatus.values.firstWhere((e) => e.name == map['status']),
       messagePublic: map['messagePublic'],
       createdAt: DateTime.parse(map['createdAt']),
     );

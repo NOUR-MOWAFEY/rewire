@@ -15,16 +15,20 @@ part 'days_state.dart';
 
 class DaysCubit extends Cubit<DaysState> {
   DaysCubit(this._firestoreService, this._habitId) : super(DaysInitial()) {
+    _date = DateFormat('yyyy-MM-dd').format(DateTime.now());
     addDays();
+    listenToTodayCheckins();
     log('days cubit created');
-    getCheckin();
   }
 
   final FirestoreService _firestoreService;
   StreamSubscription? _daysSubscription;
   final User? _user = getIt.get<FirebaseAuthService>().getCurrentUser();
   final String _habitId;
-  final _date = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  late String _date;
+
+  final Map<String, List<CheckInModel>> daysCheckins = {};
+  List<DayModel> daysList = [];
 
   // add days
 
@@ -46,30 +50,41 @@ class DaysCubit extends Cubit<DaysState> {
     }
   }
 
-  // listen to days
+  // fetch days and checkins
 
-  void listenToDays() {
+  void listenToDays() async {
     emit(DaysLoading());
 
     _daysSubscription?.cancel();
+    _checkinSub?.cancel();
 
-    _daysSubscription = _firestoreService
-        .getAllDaysStream(_habitId)
-        .listen(
-          (days) {
-            emit(DaysLoaded(days: days));
-          },
-          onError: (error) {
-            emit(DaysFailure(errMessage: error.toString()));
-          },
+    try {
+      // 1. Fetch all days once
+      daysList = await _firestoreService.getAllDaysFuture(_habitId);
+
+      // 2. Fetch checkins for all days
+      for (final day in daysList) {
+        final checkins = await _firestoreService.getDayCheckInsFuture(
+          habitId: _habitId,
+          date: day.day,
         );
+        daysCheckins[day.day] = checkins;
+      }
+
+      // 3. Emit loaded state with all fetched data
+      emit(DaysLoaded(days: daysList));
+
+      // 4. Start listening to today's checkins only
+      listenToTodayCheckins();
+    } catch (e) {
+      log('Error fetching days and checkins: $e');
+      emit(DaysFailure(errMessage: e.toString()));
+    }
   }
 
   // update checkin status
 
   void updateCheckInStatus(String userId, CheckInStatus checkInStatus) async {
-    emit(DaysCheckinUpdateLoading());
-
     try {
       _firestoreService.updateCheckInStatus(
         habitId: _habitId,
@@ -77,8 +92,6 @@ class DaysCubit extends Cubit<DaysState> {
         userId: userId,
         status: checkInStatus,
       );
-      listenToDays();
-      // emit(DaysCheckinUpdateSuccess());
     } catch (e) {
       log(e.toString());
       emit(DaysCheckinUpdateFailure(errMessage: e.toString()));
@@ -97,35 +110,34 @@ class DaysCubit extends Cubit<DaysState> {
         userId: userId,
         message: message,
       );
-      emit(DaysCheckinUpdateSuccess());
     } catch (e) {
       log(e.toString());
       emit(DaysCheckinUpdateFailure(errMessage: e.toString()));
     }
   }
 
-  Future<List<CheckInModel>> getCheckin() async {
-    List<CheckInModel> data = [];
+  // listen to day checkins
+  StreamSubscription? _checkinSub;
 
-    try {
-      data.addAll(
-        await _firestoreService.getTodayCheckIns(
-          habitId: _habitId,
-          date: _date,
-        ),
-      );
-    } catch (e) {
-      log(e.toString());
-    }
-    return data;
+  void listenToTodayCheckins({String? date}) {
+    _checkinSub?.cancel();
+
+    final targetDate = date ?? _date;
+
+    _checkinSub = _firestoreService
+        .getTodayCheckInsStream(habitId: _habitId, date: targetDate)
+        .listen((checkins) {
+          // Update the specific day's checkins in our map
+          daysCheckins[targetDate] = checkins;
+          
+          // Emit loaded to rebuild UI with updated data from the stream
+          emit(DaysLoaded(days: daysList));
+        });
   }
-
-  // get checkin status
-
-  // get checkin message
 
   @override
   Future<void> close() {
+    _checkinSub?.cancel();
     _daysSubscription?.cancel();
     log('days cubit closed');
     return super.close();

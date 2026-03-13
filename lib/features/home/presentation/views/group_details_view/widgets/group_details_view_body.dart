@@ -22,12 +22,20 @@ class GroupDetailsViewBody extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is DaysLoaded) {
+            final days = state.days;
+
             return ListView.builder(
-              itemCount: state.days.length,
+              itemCount: days.length,
               itemBuilder: (BuildContext context, int index) {
+                final dayString = days[index].day;
+                final dayCheckins = context.read<DaysCubit>().daysCheckins[dayString] ?? [];
+
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 14),
-                  child: CheckGroupItem(date: state.days[index].day),
+                  child: CheckGroupItem(
+                    date: dayString,
+                    dayCheckins: dayCheckins,
+                  ),
                 );
               },
             );

@@ -23,7 +23,7 @@ final class DaysFailure extends DaysState {
 
 final class DaysCheckinUpdateLoading extends DaysState {}
 
-final class DaysCheckinUpdateSuccess extends DaysState {}
+final class DaysCheckinUpdateLoaded extends DaysState {}
 
 final class DaysCheckinUpdateFailure extends DaysState {
   final String errMessage;

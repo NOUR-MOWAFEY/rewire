@@ -58,5 +58,6 @@ class Rewire extends StatelessWidget {
   Todo: change input type for login password
   Todo: change validation on login view
   Todo: fix user can pop while loading
+  Todo: update group name on details view after update it in group settings
 
 */

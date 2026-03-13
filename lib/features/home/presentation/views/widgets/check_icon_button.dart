@@ -15,11 +15,13 @@ class CheckIconButton extends StatelessWidget {
     this.icon = FontAwesomeIcons.circleDot,
     required this.index,
     required this.checkInStatus,
+    required this.isTodayItem,
   });
   final Color? color;
   final IconData? icon;
   final int index;
   final CheckInStatus checkInStatus;
+  final bool isTodayItem;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class CheckIconButton extends StatelessWidget {
           context: context,
           bodyBuilder: (_) => BlocProvider.value(
             value: daysCubit,
-            child: PopUpMenu(isFirstOne: index == 0),
+            child: PopUpMenu(isFirstOne: index == 0, isTodayItem: isTodayItem),
           ),
           direction: PopoverDirection.bottom,
           height: index == 0 ? 210 : 160,

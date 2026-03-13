@@ -15,9 +15,7 @@ part 'days_state.dart';
 
 class DaysCubit extends Cubit<DaysState> {
   DaysCubit(this._firestoreService, this._habitId) : super(DaysInitial()) {
-    _date = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    addDays();
-    listenToTodayCheckins();
+    today = DateFormat('yyyy-MM-dd').format(DateTime.now());
     log('days cubit created');
   }
 
@@ -25,7 +23,7 @@ class DaysCubit extends Cubit<DaysState> {
   StreamSubscription? _daysSubscription;
   final User? _user = getIt.get<FirebaseAuthService>().getCurrentUser();
   final String _habitId;
-  late String _date;
+  late String today;
 
   final Map<String, List<CheckInModel>> daysCheckins = {};
   List<DayModel> daysList = [];
@@ -33,21 +31,15 @@ class DaysCubit extends Cubit<DaysState> {
   // add days
 
   Future<void> addDays() async {
-    try {
-      emit(DaysLoading());
-      await _firestoreService.addCheckIn(
-        habitId: _habitId,
-        checkIn: CheckInModel(
-          userId: _user!.uid,
-          date: DateTime.now().toIso8601String(),
-          status: CheckInStatus.success,
-          createdAt: DateTime.now(),
-        ),
-      );
-    } catch (e) {
-      emit(DaysFailure(errMessage: e.toString()));
-      log(e.toString());
-    }
+    await _firestoreService.addCheckIn(
+      habitId: _habitId,
+      checkIn: CheckInModel(
+        userId: _user!.uid,
+        date: DateTime.now().toIso8601String(),
+        status: CheckInStatus.success,
+        createdAt: DateTime.now(),
+      ),
+    );
   }
 
   // fetch days and checkins
@@ -59,6 +51,9 @@ class DaysCubit extends Cubit<DaysState> {
     _checkinSub?.cancel();
 
     try {
+      // 0. Ensure today's day & checkin exist before fetching
+      await addDays();
+
       // 1. Fetch all days once
       daysList = await _firestoreService.getAllDaysFuture(_habitId);
 
@@ -88,7 +83,7 @@ class DaysCubit extends Cubit<DaysState> {
     try {
       _firestoreService.updateCheckInStatus(
         habitId: _habitId,
-        date: _date,
+        date: today,
         userId: userId,
         status: checkInStatus,
       );
@@ -106,7 +101,7 @@ class DaysCubit extends Cubit<DaysState> {
     try {
       _firestoreService.updateCheckInMessage(
         habitId: _habitId,
-        date: _date,
+        date: today,
         userId: userId,
         message: message,
       );
@@ -122,14 +117,14 @@ class DaysCubit extends Cubit<DaysState> {
   void listenToTodayCheckins({String? date}) {
     _checkinSub?.cancel();
 
-    final targetDate = date ?? _date;
+    final targetDate = date ?? today;
 
     _checkinSub = _firestoreService
         .getTodayCheckInsStream(habitId: _habitId, date: targetDate)
         .listen((checkins) {
           // Update the specific day's checkins in our map
           daysCheckins[targetDate] = checkins;
-          
+
           // Emit loaded to rebuild UI with updated data from the stream
           emit(DaysLoaded(days: daysList));
         });

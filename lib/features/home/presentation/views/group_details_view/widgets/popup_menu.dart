@@ -4,8 +4,13 @@ import 'package:rewire/features/home/presentation/views/group_details_view/widge
 import 'package:rewire/features/home/presentation/views/group_details_view/widgets/popup_menu_header.dart';
 
 class PopUpMenu extends StatelessWidget {
-  const PopUpMenu({super.key, this.isFirstOne = false});
+  const PopUpMenu({
+    super.key,
+    this.isFirstOne = false,
+    this.isTodayItem = false,
+  });
   final bool isFirstOne;
+  final bool isTodayItem;
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +22,15 @@ class PopUpMenu extends StatelessWidget {
         children: [
           const PopUpMenuHeader(),
 
-          isFirstOne ? const Spacer() : const SizedBox(height: 12),
+          isFirstOne && isTodayItem
+              ? const Spacer()
+              : const SizedBox(height: 12),
 
-          PopUpMenuBody(isFirtOne: isFirstOne),
+          PopUpMenuBody(isFirtOne: isFirstOne, isTodayItem: isTodayItem),
 
           const SizedBox(height: 4),
 
-          !isFirstOne
+          !isFirstOne || !isTodayItem
               ? const SizedBox()
               : Padding(
                   padding: const EdgeInsets.only(top: 12),

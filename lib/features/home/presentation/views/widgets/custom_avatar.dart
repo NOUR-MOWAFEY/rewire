@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rewire/core/utils/app_colors.dart';
@@ -41,6 +42,24 @@ class CustomAvatar extends StatelessWidget {
               if (success == false) return;
 
               if (success) {
+                try {
+                  if (imageType == ImageType.group && groupId != null) {
+                    await FirebaseFirestore.instance
+                        .collection('habits')
+                        .doc(groupId)
+                        .update({'imageUpdatedAt': DateTime.now().millisecondsSinceEpoch});
+                  } else if (imageType == ImageType.user) {
+                    final userId = viewModel.authService.getCurrentUser()!.uid;
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userId)
+                        .update({'imageUpdatedAt': DateTime.now().millisecondsSinceEpoch});
+                  }
+                } catch (e) {
+                  // Ignore errors
+                }
+
+                if (!context.mounted) return;
                 ShowToastification.success(
                   context,
                   'Image uploaded successfully',
@@ -66,9 +85,9 @@ class CustomAvatar extends StatelessWidget {
                           placeholder: (context, url) =>
                               const CustomLoading(size: 28),
                           errorWidget: (context, url, error) =>
-                              const ProfileDefaultAvatar(),
+                              const UserProfileDefaultAvatar(),
                         )
-                      : const ProfileDefaultAvatar(),
+                      : const UserProfileDefaultAvatar(),
                 ),
                 Positioned(
                   bottom: 5,
@@ -97,12 +116,12 @@ class CustomAvatar extends StatelessWidget {
   }
 }
 
-class ProfileDefaultAvatar extends StatelessWidget {
-  const ProfileDefaultAvatar({super.key});
+class UserProfileDefaultAvatar extends StatelessWidget {
+  const UserProfileDefaultAvatar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Icon(
+    return Icon(
       FontAwesomeIcons.user,
       size: 48,
       color: Color.fromARGB(218, 224, 224, 224),

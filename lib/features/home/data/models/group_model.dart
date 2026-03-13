@@ -11,6 +11,8 @@ class GroupModel {
   final String joinCode;
   final String passwordHash;
 
+  final int? imageUpdatedAt;
+
   GroupModel({
     required this.id,
     required this.name,
@@ -20,6 +22,7 @@ class GroupModel {
     required this.isActive,
     required this.joinCode,
     required this.passwordHash,
+    this.imageUpdatedAt,
   });
 
   factory GroupModel.fromMap(Map<String, dynamic> map) {
@@ -32,6 +35,7 @@ class GroupModel {
       isActive: map['isActive'] ?? true,
       joinCode: map['joinCode'] ?? '',
       passwordHash: map['passwordHash'] ?? '',
+      imageUpdatedAt: map['imageUpdatedAt'],
     );
   }
 
@@ -45,6 +49,7 @@ class GroupModel {
       'isActive': isActive,
       'joinCode': joinCode,
       'passwordHash': passwordHash,
+      if (imageUpdatedAt != null) 'imageUpdatedAt': imageUpdatedAt,
     };
   }
 
@@ -56,6 +61,7 @@ class GroupModel {
     bool? isActive,
     String? joinCode,
     String? passwordHash,
+    int? imageUpdatedAt,
   }) {
     return GroupModel(
       id: id ?? this.id,
@@ -66,6 +72,7 @@ class GroupModel {
       isActive: isActive ?? this.isActive,
       joinCode: joinCode ?? this.joinCode,
       passwordHash: passwordHash ?? this.passwordHash,
+      imageUpdatedAt: imageUpdatedAt ?? this.imageUpdatedAt,
     );
   }
 }

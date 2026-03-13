@@ -45,7 +45,7 @@ class DaysCubit extends Cubit<DaysState> {
   // fetch days and checkins
 
   void listenToDays() async {
-    emit(DaysLoading());
+    if (!isClosed) emit(DaysLoading());
 
     _daysSubscription?.cancel();
     _checkinSub?.cancel();
@@ -67,13 +67,14 @@ class DaysCubit extends Cubit<DaysState> {
       }
 
       // 3. Emit loaded state with all fetched data
-      emit(DaysLoaded(days: daysList));
+      if (!isClosed) emit(DaysLoaded(days: daysList));
 
       // 4. Start listening to today's checkins only
       listenToTodayCheckins();
     } catch (e) {
       log('Error fetching days and checkins: $e');
-      emit(DaysFailure(errMessage: e.toString()));
+
+      if (!isClosed) emit(DaysFailure(errMessage: e.toString()));
     }
   }
 
@@ -89,14 +90,14 @@ class DaysCubit extends Cubit<DaysState> {
       );
     } catch (e) {
       log(e.toString());
-      emit(DaysCheckinUpdateFailure(errMessage: e.toString()));
+      if (!isClosed) emit(DaysCheckinUpdateFailure(errMessage: e.toString()));
     }
   }
 
   // update chickin message
 
   void updateCheckInMessage(String userId, String message) async {
-    emit(DaysCheckinUpdateLoading());
+    if (!isClosed) emit(DaysCheckinUpdateLoading());
 
     try {
       _firestoreService.updateCheckInMessage(
@@ -107,7 +108,7 @@ class DaysCubit extends Cubit<DaysState> {
       );
     } catch (e) {
       log(e.toString());
-      emit(DaysCheckinUpdateFailure(errMessage: e.toString()));
+      if (!isClosed) emit(DaysCheckinUpdateFailure(errMessage: e.toString()));
     }
   }
 
@@ -126,7 +127,7 @@ class DaysCubit extends Cubit<DaysState> {
           daysCheckins[targetDate] = checkins;
 
           // Emit loaded to rebuild UI with updated data from the stream
-          emit(DaysLoaded(days: daysList));
+          if (!isClosed) emit(DaysLoaded(days: daysList));
         });
   }
 

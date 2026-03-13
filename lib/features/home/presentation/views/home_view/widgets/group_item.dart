@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:rewire/core/utils/app_colors.dart';
+import 'package:rewire/features/home/presentation/views/home_view/widgets/group_item_image.dart';
 
 import '../../../../../../core/utils/app_router.dart';
 import '../../../../../../core/utils/app_styles.dart';
@@ -12,11 +12,11 @@ import '../../../../data/models/group_model.dart';
 class GroupItem extends StatelessWidget {
   const GroupItem({
     super.key,
-    required this.habitModel,
+    required this.groupModel,
     required this.isLastItem,
     required this.isFirstItem,
   });
-  final GroupModel habitModel;
+  final GroupModel groupModel;
   final bool isLastItem;
   final bool isFirstItem;
 
@@ -28,13 +28,14 @@ class GroupItem extends StatelessWidget {
         isFirstItem ? const SizedBox(height: 30) : const SizedBox(),
         InkWell(
           onTap: () =>
-              context.push(AppRouter.groupDetailsView, extra: habitModel),
+              context.push(AppRouter.groupDetailsView, extra: groupModel),
 
           borderRadius: BorderRadius.circular(28),
 
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 6),
             width: double.infinity,
+            
             decoration: BoxDecoration(
               color: AppColors.transparentPrimary,
               borderRadius: BorderRadius.circular(28),
@@ -42,15 +43,11 @@ class GroupItem extends StatelessWidget {
 
             child: ListTile(
               // group image
-              leading: CircleAvatar(
-                radius: 28,
-                backgroundColor: AppColors.transparentPrimary,
-                child: SvgPicture.asset('assets/images/pic.svg'),
-              ),
+              leading: GroupItemImage(groupModel: groupModel),
 
               // group name
               title: Text(
-                habitModel.name,
+                groupModel.name,
                 style: AppStyles.textStyle20.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -60,9 +57,9 @@ class GroupItem extends StatelessWidget {
 
               //  created at
               subtitle: Text(
-                habitModel.createdAt == null
+                groupModel.createdAt == null
                     ? 'Created at: '
-                    : 'Created at: ${DateFormat.yMd().format(habitModel.createdAt!.toDate())}',
+                    : 'Created at: ${DateFormat.yMd().format(groupModel.createdAt!.toDate())}',
                 style: AppStyles.textStyle12.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

@@ -4,6 +4,7 @@ class UserModel {
   final String email;
   final DateTime joinedAt;
   final int overallScore;
+  final int? imageUpdatedAt;
 
   UserModel({
     required this.uid,
@@ -11,6 +12,7 @@ class UserModel {
     required this.email,
     required this.joinedAt,
     required this.overallScore,
+    this.imageUpdatedAt,
   });
 
   factory UserModel.fromMap(String uid, Map<String, dynamic> map) {
@@ -20,6 +22,7 @@ class UserModel {
       email: map['email'] ?? '',
       joinedAt: DateTime.parse(map['joinedAt']),
       overallScore: map['overallScore'] ?? 0,
+      imageUpdatedAt: map['imageUpdatedAt'],
     );
   }
 
@@ -29,6 +32,7 @@ class UserModel {
       'email': email,
       'joinedAt': joinedAt.toIso8601String(),
       'overallScore': overallScore,
+      if (imageUpdatedAt != null) 'imageUpdatedAt': imageUpdatedAt,
     };
   }
 }

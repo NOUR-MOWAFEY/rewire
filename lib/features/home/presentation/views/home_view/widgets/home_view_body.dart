@@ -31,7 +31,7 @@ class HomeViewBody extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: GroupItem(
-                          habitModel: state.groups![index],
+                          groupModel: state.groups![index],
                           isFirstItem: index == 0,
                           isLastItem: index == state.groups!.length - 1,
                         ),

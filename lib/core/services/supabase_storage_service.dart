@@ -123,23 +123,23 @@ class SupabaseStorageService {
   // Get User Image URL
   // ============================
 
-  String getUserImageUrl(String userId) {
+  String getUserImageUrl(String userId, {int? imageUpdatedAt}) {
     final filePath = 'users/$userId.jpg';
 
     final publicUrl = _client.storage.from(_bucketName).getPublicUrl(filePath);
 
-    return '$publicUrl?t=${DateTime.now().millisecondsSinceEpoch}';
+    return '$publicUrl?t=${imageUpdatedAt ?? DateTime.now().millisecondsSinceEpoch}';
   }
 
   // ============================
   // Get Group Image URL
   // ============================
 
-  String getGroupImageUrl(String groupId) {
+  String getGroupImageUrl(String groupId, {int? imageUpdatedAt}) {
     final filePath = 'groups/$groupId.jpg';
 
     final publicUrl = _client.storage.from(_bucketName).getPublicUrl(filePath);
 
-    return '$publicUrl?t=${DateTime.now().millisecondsSinceEpoch}';
+    return '$publicUrl?t=${imageUpdatedAt ?? DateTime.now().millisecondsSinceEpoch}';
   }
 }

@@ -76,7 +76,6 @@ class CreateGroupViewBody extends StatelessWidget {
                     const AddPeopleContainer(),
 
                     Row(
-                      crossAxisAlignment: .start,
                       children: [
                         const Expanded(
                           child: CustomTextFormField(
@@ -89,7 +88,8 @@ class CreateGroupViewBody extends StatelessWidget {
                         const SizedBox(width: 6),
                         CustomButton(
                           onPressed: () {},
-                          width: 50,
+                          width: 52,
+                          height: 52,
                           child: const Icon(
                             FontAwesomeIcons.plus,
                             color: AppColors.white,

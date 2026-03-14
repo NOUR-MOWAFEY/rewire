@@ -4,7 +4,6 @@ import 'package:rewire/core/services/firebase_auth_service.dart';
 import 'package:rewire/core/services/supabase_storage_service.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/service_locator.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
 
 import '../../../../data/models/group_model.dart';
@@ -75,7 +74,7 @@ class _GroupItemImageState extends State<GroupItemImage> {
                     fit: BoxFit.cover,
                     imageUrl: viewModel.imageUrl!,
                     placeholder: (context, url) =>
-                        const CustomLoading(size: 28),
+                        const GroupProfileDefaultAvatar(),
                     errorWidget: (context, url, error) =>
                         const GroupProfileDefaultAvatar(),
                   )

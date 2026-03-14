@@ -54,7 +54,8 @@ class Rewire extends StatelessWidget {
 * Todo: fix delete cubit on alert dialog & remove delete states from habit cubit ✅
 * Todo: separate create group cubit ✅
 * Todo: finish group settings view{group image logic & change group data} ✅
-! Todo: show checkin status
+* Todo: show checkin status ✅
+* Todo: fix create group button while creating new group ✅
   Todo: change input type for login password
   Todo: change validation on login view
   Todo: fix user can pop while loading

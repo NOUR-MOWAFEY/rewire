@@ -46,6 +46,7 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
   @override
   Widget build(BuildContext context) {
     return ViewBackGroundContainer(
+      
       viewBody: BlocProvider(
         create: (context) => DeleteGroupCubit(
           _firestoreService,

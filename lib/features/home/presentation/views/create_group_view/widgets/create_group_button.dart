@@ -17,13 +17,21 @@ class CreategroupButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
-      child: CustomButton(
-        title: 'Create Group',
-        onPressed: () async {
-          if (!groupNameKey.currentState!.validate()) return;
-          context.read<CreateGroupCubit>().createGroup(
-            groupNameController.text.trim(),
-            '',
+      child: BlocBuilder<CreateGroupCubit, CreateGroupState>(
+        builder: (context, state) {
+          if (state is CreateGroupLoading || state is CreateGroupSuccess) {
+            return const SizedBox();
+          }
+
+          return CustomButton(
+            title: 'Create Group',
+            onPressed: () async {
+              if (!groupNameKey.currentState!.validate()) return;
+              context.read<CreateGroupCubit>().createGroup(
+                groupNameController.text.trim(),
+                '',
+              );
+            },
           );
         },
       ),

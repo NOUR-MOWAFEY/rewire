@@ -40,6 +40,18 @@ class FirestoreService {
     await _users.doc(user.uid).update(user.toMap());
   }
 
+  // get user by email
+
+  Future<UserModel?> getUserByEmail(String email) async {
+  final query = await _users
+      .where('email', isEqualTo: email.trim().toLowerCase())
+      .limit(1)
+      .get();
+
+  if (query.docs.isEmpty) return null;
+  return UserModel.fromMap(query.docs.first.id, query.docs.first.data());
+}
+
   // =====================
   // Monthly Stats
   // =====================

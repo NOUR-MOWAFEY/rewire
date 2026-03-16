@@ -8,6 +8,7 @@ import 'package:rewire/core/widgets/view_background_container.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/delete_group_cubit/delete_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_settings_view_body.dart';
 
@@ -32,7 +33,6 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
   void initState() {
     super.initState();
     initializeSettingsViewBodyData();
-
     BlocProvider.of<JoinGroupCubit>(context).getJoinCode(widget.groupModel.id);
   }
 
@@ -46,19 +46,21 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
   @override
   Widget build(BuildContext context) {
     return ViewBackGroundContainer(
-      
       viewBody: BlocProvider(
         create: (context) => DeleteGroupCubit(
           _firestoreService,
           supabaseStorageService: _supabaseStorageService,
         ),
 
-        child: GroupSettingsViewBody(
-          viewModel: viewModel,
-          groupModel: widget.groupModel,
-          groupNameController: groupNameController,
-          groupPasswordController: groupPasswordController,
-          updateGroupDataKey: updateGroupDataKey,
+        child: BlocProvider(
+          create: (context) => MembersCubit(widget.groupModel.id),
+          child: GroupSettingsViewBody(
+            viewModel: viewModel,
+            groupModel: widget.groupModel,
+            groupNameController: groupNameController,
+            groupPasswordController: groupPasswordController,
+            updateGroupDataKey: updateGroupDataKey,
+          ),
         ),
       ),
     );

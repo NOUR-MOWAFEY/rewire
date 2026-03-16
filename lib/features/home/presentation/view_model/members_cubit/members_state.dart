@@ -11,6 +11,12 @@ final class MembersRemoved extends MembersState {}
 
 final class MembersLoading extends MembersState {}
 
+final class MembersLoaded extends MembersState {
+  final List<UserModel> members;
+
+  MembersLoaded({required this.members});
+}
+
 final class MembersFound extends MembersState {
   final UserModel user;
 

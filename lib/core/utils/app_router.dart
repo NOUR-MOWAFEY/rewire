@@ -103,6 +103,8 @@ abstract class AppRouter {
                 _firebaseAuthService.getCurrentUser(),
               ),
             ),
+
+            BlocProvider(create: (context) => MembersCubit()),
           ],
           child: GroupSettingsView(groupModel: state.extra as GroupModel),
         ),

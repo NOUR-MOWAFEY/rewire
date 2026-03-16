@@ -103,7 +103,7 @@ class GroupSettingsViewBody extends StatelessWidget {
                   ),
 
                   // const AddPeopleContainer(),
-                  CustomAccordion(),
+                  CustomAccordion(groupModel: groupModel),
 
                   DeleteGroupButton(groupModel: groupModel),
                 ],

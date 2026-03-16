@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/utils/app_styles.dart';
@@ -23,7 +21,6 @@ class AddMembersSection extends StatelessWidget {
         BlocBuilder<MembersCubit, MembersState>(
           builder: (context, state) {
             if (state is MembersFound) {
-              
               context.read<MembersCubit>().members.add(state.user);
             }
 

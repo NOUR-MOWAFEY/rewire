@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rewire/core/utils/app_colors.dart';
+import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
+import 'package:rewire/features/home/presentation/views/widgets/remove_member_bottom_sheet.dart';
 
 import 'user_main_info.dart';
 
 class MembersListViewItem extends StatelessWidget {
-  const MembersListViewItem({super.key, required this.userModel});
-  final UserModel userModel;
+  const MembersListViewItem({super.key, required this.member, this.groupModel});
+  final UserModel member;
+  final GroupModel? groupModel;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +22,28 @@ class MembersListViewItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
         children: [
-          UserMainInfo(userModel: userModel),
-          context.read<MembersCubit>().isCurrentUser(userModel)
+          UserMainInfo(userModel: member),
+          context.read<MembersCubit>().isCurrentUser(member)
               ? const SizedBox()
               : IconButton(
                   onPressed: () {
-                    context.read<MembersCubit>().removeMemberFromList(
-                      userModel,
-                    );
+                    var membersCubit = context.read<MembersCubit>();
+
+                    groupModel != null
+                        ? showModalBottomSheet(
+                            context: context,
+                            backgroundColor: AppColors.alertDialogColor,
+                            builder: (context) => BlocProvider.value(
+                              value: membersCubit,
+                              child: RemoveMemberBottomSheet(
+                                member: member,
+                                groupId: groupModel!.id,
+                              ),
+                            ),
+                          )
+                        : context.read<MembersCubit>().removeMemberFromList(
+                            member,
+                          );
                   },
                   icon: const Icon(
                     FontAwesomeIcons.x,

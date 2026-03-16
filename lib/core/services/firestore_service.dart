@@ -43,14 +43,14 @@ class FirestoreService {
   // get user by email
 
   Future<UserModel?> getUserByEmail(String email) async {
-  final query = await _users
-      .where('email', isEqualTo: email.trim().toLowerCase())
-      .limit(1)
-      .get();
+    final query = await _users
+        .where('email', isEqualTo: email.trim().toLowerCase())
+        .limit(1)
+        .get();
 
-  if (query.docs.isEmpty) return null;
-  return UserModel.fromMap(query.docs.first.id, query.docs.first.data());
-}
+    if (query.docs.isEmpty) return null;
+    return UserModel.fromMap(query.docs.first.id, query.docs.first.data());
+  }
 
   // =====================
   // Monthly Stats
@@ -275,8 +275,6 @@ class FirestoreService {
 
   // get all days (Stream)
 
-  // get all days (Stream)
-
   Stream<List<DayModel>> getAllDaysStream(String habitId) {
     return _groups
         .doc(habitId)
@@ -314,9 +312,7 @@ class FirestoreService {
         .collection('checkins')
         .get();
 
-    return query.docs
-        .map((doc) => CheckInModel.fromMap(doc.data()))
-        .toList();
+    return query.docs.map((doc) => CheckInModel.fromMap(doc.data())).toList();
   }
 
   // =====================
@@ -420,5 +416,36 @@ class FirestoreService {
     if (!doc.exists) return null;
 
     return doc.data()?['joinCode'];
+  }
+
+  // remove member
+
+  Future<void> removeMember({
+    required String groupId,
+    required String userId,
+  }) async {
+    await _groups.doc(groupId).update({
+      'members': FieldValue.arrayRemove([userId]),
+    });
+  }
+
+  // get all group members
+
+  Future<List<UserModel>> getGroupMembers(String groupId) async {
+    final doc = await _groups.doc(groupId).get();
+    if (!doc.exists) return [];
+
+    final List<String> memberIds = List<String>.from(
+      doc.data()?['members'] ?? [],
+    );
+
+    final List<UserModel> members = [];
+
+    for (var id in memberIds) {
+      final user = await getUser(id);
+      if (user != null) members.add(user);
+    }
+
+    return members;
   }
 }

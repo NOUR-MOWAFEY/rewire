@@ -21,10 +21,20 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
   // Create group
   // =====================
 
-  Future<void> createGroup(String title, String password) async {
+  Future<void> createGroup({
+    required String title,
+    required String password,
+    List<String>? members,
+  }) async {
     try {
       isLoading = true;
       if (!isClosed) emit(CreateGroupLoading());
+
+      final List<String> groupMembers = [_user!.uid];
+
+      if (members != null && members.isNotEmpty) {
+        groupMembers.addAll(members);
+      }
 
       GroupModel habitModel = GroupModel(
         id: '',
@@ -33,8 +43,8 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
             ? SecurityHelper.hashPassword(password)
             : '',
         name: title,
-        createdBy: _user!.uid,
-        members: [_user.uid],
+        createdBy: _user.uid,
+        members: groupMembers,
         isActive: true,
       );
       await _firestoreService.createGroup(habitModel);

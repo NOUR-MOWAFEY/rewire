@@ -2,33 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
-import 'package:rewire/core/widgets/custom_button.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
+import 'package:rewire/features/home/presentation/views/create_group_view/widgets/add_members_section.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_view_app_bar.dart';
 
 import '../../../../../../core/utils/validator.dart';
 import '../../../../../auth/presentation/views/widgets/custom_text_form_field.dart';
-import '../../widgets/add_people_container.dart';
 
 class CreateGroupViewBody extends StatelessWidget {
   const CreateGroupViewBody({
     super.key,
     required this.groupNameController,
     required this.groupNameKey,
-    required this.groupPasswordController,
+    required this.memberEmailController,
   });
 
   final TextEditingController groupNameController;
   final GlobalKey<FormState> groupNameKey;
-  final TextEditingController groupPasswordController;
+  final TextEditingController memberEmailController;
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: groupNameKey,
+
       child: BlocConsumer<CreateGroupCubit, CreateGroupState>(
         listener: (BuildContext context, CreateGroupState state) {
           if (state is CreateGroupFaliure) {
@@ -48,57 +47,36 @@ class CreateGroupViewBody extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          final isLoading = state is CreateGroupLoading;
           if (state is CreateGroupLoading || state is CreateGroupSuccess) {
             return const CustomLoading();
           }
+
           return Padding(
             padding: EdgeInsetsGeometry.all(16),
-            child: PopScope(
-              canPop: !isLoading,
 
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    const CreateGroupViewAppBar(),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: .start,
+                children: [
+                  const CreateGroupViewAppBar(),
 
-                    const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-                    CustomTextFormField(
-                      title: 'Group name',
-                      icon: FontAwesomeIcons.userGroup,
-                      inputType: InputType.name,
-                      isLastOne: false,
-                      controller: groupNameController,
-                    ),
+                  CustomTextFormField(
+                    title: 'Group name',
+                    icon: FontAwesomeIcons.userGroup,
+                    inputType: InputType.name,
+                    isLastOne: false,
+                    controller: groupNameController,
+                    border: false,
+                  ),
 
-                    const AddPeopleContainer(),
+                  const SizedBox(height: 18),
 
-                    Row(
-                      children: [
-                        const Expanded(
-                          child: CustomTextFormField(
-                            title: 'Member email',
-                            icon: FontAwesomeIcons.envelope,
-                            inputType: InputType.email,
-                            isLastOne: true,
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        CustomButton(
-                          onPressed: () {},
-                          width: 52,
-                          height: 52,
-                          child: const Icon(
-                            FontAwesomeIcons.plus,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  AddMembersSection(
+                    memberEmailController: memberEmailController,
+                  ),
+                ],
               ),
             ),
           );

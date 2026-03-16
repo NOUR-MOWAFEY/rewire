@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'user_main_info.dart';
 
 class AddPeopleContainerItem extends StatelessWidget {
@@ -11,11 +12,16 @@ class AddPeopleContainerItem extends StatelessWidget {
       height: 45,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
         children: [
           const UserMainInfo(),
           IconButton(
             onPressed: () {},
-            icon: const Icon(FontAwesomeIcons.minus),
+            icon: const Icon(
+              FontAwesomeIcons.x,
+              size: 20,
+              color: Color.fromARGB(232, 189, 189, 189),
+            ),
           ),
         ],
       ),

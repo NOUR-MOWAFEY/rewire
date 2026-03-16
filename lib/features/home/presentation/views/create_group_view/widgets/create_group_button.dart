@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
 import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 
 class CreategroupButton extends StatelessWidget {
   const CreategroupButton({
@@ -27,9 +28,11 @@ class CreategroupButton extends StatelessWidget {
             title: 'Create Group',
             onPressed: () async {
               if (!groupNameKey.currentState!.validate()) return;
+
               context.read<CreateGroupCubit>().createGroup(
-                groupNameController.text.trim(),
-                '',
+                title: groupNameController.text.trim(),
+                password: '',
+                members: context.read<MembersCubit>().members.toList(),
               );
             },
           );

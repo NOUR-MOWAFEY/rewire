@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import '../../../../../core/utils/app_styles.dart';
 
 class UserMainInfo extends StatelessWidget {
@@ -25,7 +26,12 @@ class UserMainInfo extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Text('nourmowafey82@gmail.com', style: AppStyles.textStyle14),
+            Text(
+              'nourmowafey82@gmail.com',
+              style: AppStyles.textStyle14.copyWith(
+                color: const Color.fromARGB(232, 189, 189, 189),
+              ),
+            ),
           ],
         ),
       ],

@@ -12,7 +12,7 @@ class CreateGroupView extends StatefulWidget {
 
 class _CreateGroupViewState extends State<CreateGroupView> {
   late TextEditingController groupNameController;
-  late TextEditingController groupPasswordController;
+  late TextEditingController memberEmailController;
   late GlobalKey<FormState> groupNameKey;
 
   @override
@@ -25,7 +25,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   void dispose() {
     super.dispose();
     groupNameController.dispose();
-    groupPasswordController.dispose();
+    memberEmailController.dispose();
   }
 
   @override
@@ -39,14 +39,14 @@ class _CreateGroupViewState extends State<CreateGroupView> {
       viewBody: CreateGroupViewBody(
         groupNameController: groupNameController,
         groupNameKey: groupNameKey,
-        groupPasswordController: groupPasswordController,
+        memberEmailController: memberEmailController,
       ),
     );
   }
 
   void setInitialValues() {
     groupNameController = TextEditingController();
-    groupPasswordController = TextEditingController();
+    memberEmailController = TextEditingController();
     groupNameKey = GlobalKey<FormState>();
   }
 }

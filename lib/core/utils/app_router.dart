@@ -6,6 +6,7 @@ import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/create_group_view.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/group_settings_view.dart';
 import 'package:rewire/features/home/presentation/views/main_navigation_view.dart';
@@ -73,12 +74,16 @@ abstract class AppRouter {
 
       GoRoute(
         path: createGroupView,
-        builder: (context, state) => BlocProvider(
-          create: (context) => CreateGroupCubit(
-            _fireStoreService,
-            _firebaseAuthService.getCurrentUser(),
-          ),
-
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => CreateGroupCubit(
+                _fireStoreService,
+                _firebaseAuthService.getCurrentUser(),
+              ),
+            ),
+            BlocProvider(create: (context) => MembersCubit()),
+          ],
           child: const CreateGroupView(),
         ),
       ),

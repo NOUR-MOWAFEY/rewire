@@ -10,25 +10,29 @@ class CustomTextFormField extends StatelessWidget {
     this.isPassword = false,
     required this.icon,
     this.controller,
-    required this.inputType,
+    this.inputType,
     this.isLastOne = false,
     this.passwordController,
     this.isEnabled = true,
+    this.border = true,
   });
   final String title;
   final bool isPassword;
   final bool isLastOne;
   final IconData icon;
   final TextEditingController? controller;
-  final InputType inputType;
+  final InputType? inputType;
   final TextEditingController? passwordController;
   final bool isEnabled;
+  final bool border;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       enabled: isEnabled,
-      validator: (value) => validator(inputType, value, passwordController),
+      validator: inputType != null
+          ? (value) => validator(inputType!, value, passwordController)
+          : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: controller,
       cursorColor: AppColors.white,
@@ -39,8 +43,8 @@ class CustomTextFormField extends StatelessWidget {
       textInputAction: isLastOne ? TextInputAction.done : TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 4),
-          child: Icon(icon, color: Colors.grey, size: 20),
+          padding: const EdgeInsets.only(left: 16, right: 2),
+          child: Icon(icon, color: Colors.grey, size: 22),
         ),
         fillColor: AppColors.transparentPrimary,
         filled: true,
@@ -56,7 +60,9 @@ class CustomTextFormField extends StatelessWidget {
   OutlineInputBorder customOutlineInputBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(32),
-      borderSide: BorderSide(color: AppColors.primary, width: 2),
+      borderSide: border
+          ? BorderSide(color: AppColors.primary, width: 2)
+          : BorderSide(color: Colors.transparent),
     );
   }
 }

@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/utils/app_styles.dart';
+import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/add_members_field.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/members_list_view.dart';
 
@@ -12,21 +16,44 @@ class AddMembersSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: .start,
       children: [
-         AddMembersField(memberEmailController: memberEmailController,),
+        AddMembersField(memberEmailController: memberEmailController),
 
         const SizedBox(height: 16),
 
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
-          child: Text(
-            'Added Members (10)',
-            style: AppStyles.textStyle18.copyWith(fontWeight: FontWeight.bold),
-          ),
-        ),
+        BlocBuilder<MembersCubit, MembersState>(
+          builder: (context, state) {
+            if (state is MembersFound) {
+              
+              context.read<MembersCubit>().members.add(state.user);
+            }
 
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.48,
-          child: const MembersListView(),
+            if (state is MembersRemoved) {}
+
+            return Column(
+              crossAxisAlignment: .start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 22,
+                  ),
+                  child: Text(
+                    'Added Members (${context.read<MembersCubit>().members.length})',
+                    style: AppStyles.textStyle18.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.48,
+                  child: MembersListView(
+                    users: context.read<MembersCubit>().members.toList(),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ],
     );

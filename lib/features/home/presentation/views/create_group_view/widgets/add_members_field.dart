@@ -43,7 +43,7 @@ class AddMembersField extends StatelessWidget {
               }
 
               if (state is MembersFound) {
-                context.read<MembersCubit>().members.add(state.userId);
+                context.read<MembersCubit>().membersIds.add(state.user.uid);
                 memberEmailController.clear();
               }
             },
@@ -73,7 +73,7 @@ class AddMembersField extends StatelessWidget {
                   }
 
                   if (!context.mounted) return;
-                  log(context.read<MembersCubit>().members.toString());
+                  log(context.read<MembersCubit>().membersIds.toString());
                 },
 
                 child: const Icon(

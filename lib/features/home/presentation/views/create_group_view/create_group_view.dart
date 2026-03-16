@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/widgets/view_background_container.dart';
+import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_button.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_view_body.dart';
 
@@ -18,6 +20,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   @override
   void initState() {
     super.initState();
+
     setInitialValues();
   }
 
@@ -44,9 +47,12 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     );
   }
 
-  void setInitialValues() {
+  void setInitialValues() async {
     groupNameController = TextEditingController();
     memberEmailController = TextEditingController();
     groupNameKey = GlobalKey<FormState>();
+    await context.read<MembersCubit>().getCurrentUser().then(
+      (value) => context.read<MembersCubit>().members.add(value!),
+    );
   }
 }

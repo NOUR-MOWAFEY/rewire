@@ -12,9 +12,9 @@ final class MembersRemoved extends MembersState {}
 final class MembersLoading extends MembersState {}
 
 final class MembersFound extends MembersState {
-  final String userId;
+  final UserModel user;
 
-  MembersFound({required this.userId});
+  MembersFound({required this.user});
 }
 
 final class MembersNotFound extends MembersState {

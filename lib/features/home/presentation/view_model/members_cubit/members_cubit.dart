@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/services/firebase_auth_service.dart';
 import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
+import 'package:rewire/features/home/data/models/user_model.dart';
 
 part 'members_state.dart';
 
@@ -12,7 +16,43 @@ class MembersCubit extends Cubit<MembersState> {
 
   final _firestoreService = getIt.get<FirestoreService>();
 
-  final Set<String> members = {};
+  final _firebaseAuthService = getIt.get<FirebaseAuthService>();
+
+  final Set<String> membersIds = {};
+
+  final Set<UserModel> members = {};
+
+  // get current user
+
+  Future<UserModel?> getCurrentUser() async {
+    UserModel? userModel;
+
+    try {
+      final userId = _firebaseAuthService.getCurrentUser()!.uid;
+      userModel = await _firestoreService.getUser(userId);
+      emit(MembersFound(user: userModel!));
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return userModel;
+  }
+
+  // check if current user
+
+  bool isCurrentUser(UserModel user) {
+    try {
+      final userId = _firebaseAuthService.getCurrentUser()!.uid;
+
+      if (userId == user.uid) {
+        return true;
+      }
+    } catch (e) {
+      e.toString();
+    }
+
+    return false;
+  }
 
   // get member by email
 
@@ -33,16 +73,25 @@ class MembersCubit extends Cubit<MembersState> {
         return;
       }
 
-      if (members.contains(user.uid)) {
+      if (membersIds.contains(user.uid)) {
         emit(MembersError(errMassage: "User is already a member"));
+        return;
       }
 
-      emit(MembersFound(userId: user.uid));
+      emit(MembersFound(user: user));
     } on Exception catch (e) {
       emit(MembersError(errMassage: e.toString()));
     } finally {
       isLoading = false;
     }
+  }
+
+  // remove member from list
+
+  void removeMemberFromList(UserModel member) {
+    members.remove(member);
+    membersIds.remove(member.uid);
+    emit(MembersRemoved());
   }
 
   // add user by email

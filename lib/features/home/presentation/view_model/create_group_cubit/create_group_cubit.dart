@@ -30,7 +30,7 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
       isLoading = true;
       if (!isClosed) emit(CreateGroupLoading());
 
-      final List<String> groupMembers = [_user!.uid];
+      final List<String> groupMembers = [];
 
       if (members != null && members.isNotEmpty) {
         groupMembers.addAll(members);
@@ -43,7 +43,7 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
             ? SecurityHelper.hashPassword(password)
             : '',
         name: title,
-        createdBy: _user.uid,
+        createdBy: _user!.uid,
         members: groupMembers,
         isActive: true,
       );

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rewire/features/home/data/models/user_model.dart';
+import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 
 import '../../../../../core/utils/app_styles.dart';
 
 class UserMainInfo extends StatelessWidget {
-  const UserMainInfo({super.key});
+  const UserMainInfo({super.key, required this.userModel});
+  final UserModel userModel;
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +24,22 @@ class UserMainInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Nour Mowafey',
-              style: AppStyles.textStyle16.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              children: [
+                Text(
+                  userModel.name,
+                  style: AppStyles.textStyle16.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                context.read<MembersCubit>().isCurrentUser(userModel)
+                    ? Text(' (You)', style: AppStyles.textStyle16)
+                    : const SizedBox(),
+              ],
             ),
             Text(
-              'nourmowafey82@gmail.com',
+              userModel.email,
               style: AppStyles.textStyle14.copyWith(
                 color: const Color.fromARGB(232, 189, 189, 189),
               ),

@@ -42,6 +42,10 @@ class AddMembersField extends StatelessWidget {
                 ShowToastification.failure(context, state.errMassage);
               }
 
+              if (state is MembersNotFound) {
+                ShowToastification.failure(context, state.errMessage);
+              }
+
               if (state is MembersFound) {
                 context.read<MembersCubit>().membersIds.add(state.user.uid);
                 memberEmailController.clear();
@@ -60,14 +64,16 @@ class AddMembersField extends StatelessWidget {
                 width: 75,
 
                 onPressed: () async {
-                  if (memberEmailController.text.trim().isNotEmpty) {
-                    if (!emailRegex.hasMatch(memberEmailController.text)) {
+                  var email = memberEmailController.text.trim().toLowerCase();
+
+                  if (email.isNotEmpty) {
+                    if (!emailRegex.hasMatch(email)) {
                       ShowToastification.failure(context, 'Invalid Email');
                       return;
                     }
 
                     await context.read<MembersCubit>().getMemberByEmail(
-                      memberEmailController.text.trim().toLowerCase(),
+                      email,
                       getIt.get<FirebaseAuthService>().getCurrentUser()!.uid,
                     );
                   }

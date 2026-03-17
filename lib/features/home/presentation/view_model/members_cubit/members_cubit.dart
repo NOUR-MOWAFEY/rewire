@@ -102,7 +102,7 @@ class MembersCubit extends Cubit<MembersState> {
 
   // get member by email
 
-  Future<void> getMemberByEmail(String email, String currentUserId) async {
+  Future<bool> getMemberByEmail(String email, String currentUserId) async {
     emit(MembersLoading());
     isLoading = true;
 
@@ -110,23 +110,31 @@ class MembersCubit extends Cubit<MembersState> {
       final user = await _firestoreService.getUserByEmail(email);
 
       if (user == null) {
-        emit(MembersError(errMassage: "No user found with this email"));
-        return;
+        if (!isClosed) {
+          emit(MembersNotFound(errMessage: "No user found with this email"));
+        }
+        return false;
       }
 
       if (user.uid == currentUserId) {
-        emit(MembersError(errMassage: "You can't add yourself"));
-        return;
+        if (!isClosed) {
+          emit(MembersNotFound(errMessage: "You can't add yourself"));
+        }
+        return false;
       }
 
       if (membersIds.contains(user.uid)) {
-        emit(MembersError(errMassage: "User is already a member"));
-        return;
+        if (!isClosed) {
+          emit(MembersNotFound(errMessage: "User is already a member"));
+        }
+        return false;
       }
 
-      emit(MembersFound(user: user));
+      if (!isClosed) emit(MembersFound(user: user));
+      return true;
     } on Exception catch (e) {
-      emit(MembersError(errMassage: e.toString()));
+      if (!isClosed) emit(MembersNotFound(errMessage: e.toString()));
+      return false;
     } finally {
       isLoading = false;
     }
@@ -162,7 +170,6 @@ class MembersCubit extends Cubit<MembersState> {
 
   Future<void> addMemberByEmail({
     required String groupId,
-    required List<String> currentMembers, // from your loaded GroupModel
     required String email,
   }) async {
     emit(MembersLoading());
@@ -170,18 +177,25 @@ class MembersCubit extends Cubit<MembersState> {
     try {
       // Find user
       final user = await _firestoreService.getUserByEmail(email);
-      if (user == null) throw Exception("No user found with this email");
+
+      if (user == null) throw "No user found with this email";
+
+      // get current members
+
+      var currentMembers = await _firestoreService.getGroupMembers(groupId);
+
+      log(currentMembers.toString());
 
       // Check duplicate
-      if (currentMembers.contains(user.uid)) {
-        throw Exception("This user is already a member");
+      if (currentMembers.any((member) => user.uid == member.uid)) {
+        throw "This user is already a member";
       }
 
       // Add
       await _firestoreService.addMembers(groupId: groupId, userId: user.uid);
 
       emit(MembersAdded());
-    } on Exception catch (e) {
+    } catch (e) {
       emit(MembersError(errMassage: e.toString()));
     }
   }

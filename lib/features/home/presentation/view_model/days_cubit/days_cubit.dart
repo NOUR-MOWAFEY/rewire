@@ -31,14 +31,9 @@ class DaysCubit extends Cubit<DaysState> {
   // add days
 
   Future<void> addDays() async {
-    await _firestoreService.addCheckIn(
+    await _firestoreService.createDayIfNotExist(
       habitId: _habitId,
-      checkIn: CheckInModel(
-        userId: _user!.uid,
-        date: DateTime.now().toIso8601String(),
-        status: CheckInStatus.success,
-        createdAt: DateTime.now(),
-      ),
+      userId: _user!.uid,
     );
   }
 

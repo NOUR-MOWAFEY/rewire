@@ -47,7 +47,11 @@ class ShowToastification {
     );
   }
 
-  static ToastificationItem popUp(BuildContext context, String text) {
+  static ToastificationItem popUp(
+    BuildContext context,
+    String text, [
+    Color? bgColor,
+  ]) {
     return toastification.show(
       closeOnClick: true,
       closeButton: ToastCloseButton(showType: CloseButtonShowType.none),
@@ -55,7 +59,7 @@ class ShowToastification {
       style: ToastificationStyle.simple,
       alignment: Alignment.bottomCenter,
       foregroundColor: AppColors.white,
-      backgroundColor: AppColors.primary,
+      backgroundColor: bgColor ?? AppColors.primary,
       borderSide: BorderSide(color: Colors.transparent),
       borderRadius: BorderRadius.circular(32),
       context: context,

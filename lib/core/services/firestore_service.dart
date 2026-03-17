@@ -106,6 +106,8 @@ class FirestoreService {
     await _groups.doc(groupId).update({
       'members': FieldValue.arrayUnion([userId]),
     });
+
+    await createDayIfNotExist(habitId: groupId, userId: userId);
   }
 
   Stream<List<GroupModel>> listenToGroups(String userId) {
@@ -188,11 +190,12 @@ class FirestoreService {
   // Check-ins
   // =====================
 
-  Future<void> addCheckIn({
+  Future<void> createDayIfNotExist({
     required String habitId,
-    required CheckInModel checkIn,
+    required String userId,
   }) async {
-    final dayId = DateFormat('yyyy-MM-dd').format(checkIn.createdAt);
+    final now = DateTime.now();
+    final dayId = DateFormat('yyyy-MM-dd').format(now);
 
     final dayRef = _groups.doc(habitId).collection('days').doc(dayId);
 
@@ -204,19 +207,38 @@ class FirestoreService {
         'day': dayId,
         'updatedAt': FieldValue.serverTimestamp(),
       });
+      
+      final groupDoc = await _groups.doc(habitId).get();
+      if (groupDoc.exists) {
+        final members = List<String>.from(groupDoc.data()?['members'] ?? []);
+        final batch = _firestore.batch();
+        for (final memberId in members) {
+          final checkInRef = dayRef.collection('checkins').doc(memberId);
+          final checkIn = CheckInModel(
+            userId: memberId,
+            date: now.toIso8601String(),
+            status: CheckInStatus.pending,
+            createdAt: now,
+          );
+          batch.set(checkInRef, checkIn.toMap());
+        }
+        await batch.commit();
+      }
     }
 
-    // Now handle user check-in separately
-    final checkInRef = dayRef.collection('checkins').doc(checkIn.userId);
-
+    // Ensure the current user has a check-in in case they joined after day creation
+    final checkInRef = dayRef.collection('checkins').doc(userId);
     final checkInSnapshot = await checkInRef.get();
 
-    if (checkInSnapshot.exists) {
-      // user already checked in today
-      return;
+    if (!checkInSnapshot.exists) {
+      final checkIn = CheckInModel(
+        userId: userId,
+        date: now.toIso8601String(),
+        status: CheckInStatus.pending,
+        createdAt: now,
+      );
+      await checkInRef.set(checkIn.toMap());
     }
-
-    await checkInRef.set(checkIn.toMap());
   }
 
   // get day checkins
@@ -388,6 +410,8 @@ class FirestoreService {
     await doc.reference.update({
       'members': FieldValue.arrayUnion([userId]),
     });
+
+    await createDayIfNotExist(habitId: doc.id, userId: userId);
   }
 
   Future<String> generateUniqueJoinCode() async {

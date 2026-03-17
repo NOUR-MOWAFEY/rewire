@@ -60,5 +60,9 @@ class Rewire extends StatelessWidget {
   Todo: change validation on login view
   Todo: fix user can pop while loading
   Todo: update group name on details view after update it in group settings
+  Todo: fix group image bug if there is one
+
+! listen to members so when new member added to update the list
+! refactor add member bottom sheet & custom accordion
 
 */

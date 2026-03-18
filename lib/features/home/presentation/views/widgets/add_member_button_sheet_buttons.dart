@@ -55,10 +55,10 @@ class AddMemberBottomSheetButtons extends StatelessWidget {
 
             builder: (context, state) {
               if (state is MembersLoading) {
-                return CustomButton(
+                return const CustomButton(
                   color: Colors.grey,
                   height: 45,
-                  child: const CustomLoading(size: 20),
+                  child: CustomLoading(size: 20),
                 );
               }
               return AddMemberButton(

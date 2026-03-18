@@ -472,4 +472,25 @@ class FirestoreService {
 
     return members;
   }
+
+  // listen to group members
+
+  Stream<List<UserModel>> listenToGroupMembers(String groupId) {
+    return _groups.doc(groupId).snapshots().asyncMap((doc) async {
+      if (!doc.exists) return [];
+
+      final List<String> memberIds = List<String>.from(
+        doc.data()?['members'] ?? [],
+      );
+
+      final List<UserModel> members = [];
+
+      for (var id in memberIds) {
+        final user = await getUser(id);
+        if (user != null) members.add(user);
+      }
+
+      return members;
+    });
+  }
 }

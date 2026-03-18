@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class MembersCubit extends Cubit<MembersState> {
     getCurrentUser().then((value) => members.add(value!));
 
     if (groupId != null) {
-      getAllMembers(groupId);
+      listenToAllMembers(groupId);
     }
   }
 
@@ -54,18 +55,24 @@ class MembersCubit extends Cubit<MembersState> {
   //   }
   // }
 
+  StreamSubscription? _membersSubscription;
+
   // get group members
 
-  Future<void> getAllMembers(String groupId) async {
-    emit(MembersLoading());
+  void listenToAllMembers(String groupId) {
+    if (!isClosed) emit(MembersLoading());
 
-    try {
-      var members = await _firestoreService.getGroupMembers(groupId);
-
-      emit(MembersLoaded(members: members));
-    } catch (e) {
-      emit(MembersError(errMassage: e.toString()));
-    }
+    _membersSubscription?.cancel();
+    _membersSubscription = _firestoreService
+        .listenToGroupMembers(groupId)
+        .listen(
+          (members) {
+            if (!isClosed) emit(MembersLoaded(members: members));
+          },
+          onError: (e) {
+            if (!isClosed) emit(MembersError(errMassage: e.toString()));
+          },
+        );
   }
 
   // get current user
@@ -76,7 +83,7 @@ class MembersCubit extends Cubit<MembersState> {
     try {
       final userId = _firebaseAuthService.getCurrentUser()!.uid;
       userModel = await _firestoreService.getUser(userId);
-      emit(MembersFound(user: userModel!));
+      if (!isClosed) emit(MembersFound(user: userModel!));
     } catch (e) {
       log(e.toString());
     }
@@ -103,7 +110,7 @@ class MembersCubit extends Cubit<MembersState> {
   // get member by email
 
   Future<bool> getMemberByEmail(String email, String currentUserId) async {
-    emit(MembersLoading());
+    if (!isClosed) emit(MembersLoading());
     isLoading = true;
 
     try {
@@ -151,15 +158,13 @@ class MembersCubit extends Cubit<MembersState> {
   // remove member from group
 
   Future<void> removeMemberFromGroup(String groupId, UserModel member) async {
-    emit(MembersLoading());
+    if (!isClosed) emit(MembersLoading());
 
     try {
       await _firestoreService.removeMember(
         groupId: groupId,
         userId: member.uid,
       );
-
-      getAllMembers(groupId);
     } catch (e) {
       log(e.toString());
       emit(MembersError(errMassage: e.toString()));
@@ -172,7 +177,7 @@ class MembersCubit extends Cubit<MembersState> {
     required String groupId,
     required String email,
   }) async {
-    emit(MembersLoading());
+    if (!isClosed) emit(MembersLoading());
 
     try {
       // Find user
@@ -194,9 +199,15 @@ class MembersCubit extends Cubit<MembersState> {
       // Add
       await _firestoreService.addMembers(groupId: groupId, userId: user.uid);
 
-      emit(MembersAdded());
+      if (!isClosed) emit(MembersAdded());
     } catch (e) {
-      emit(MembersError(errMassage: e.toString()));
+      if (!isClosed) emit(MembersError(errMassage: e.toString()));
     }
+  }
+
+  @override
+  Future<void> close() {
+    _membersSubscription?.cancel();
+    return super.close();
   }
 }

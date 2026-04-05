@@ -10,6 +10,9 @@ class CustomBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 45,
+      width: 45,
+
       decoration: BoxDecoration(
         color: AppColors.transparentPrimary,
         borderRadius: BorderRadius.circular(32),

@@ -20,12 +20,6 @@ class AddMembersSection extends StatelessWidget {
 
         BlocBuilder<MembersCubit, MembersState>(
           builder: (context, state) {
-            if (state is MembersFound) {
-              context.read<MembersCubit>().members.add(state.user);
-            }
-
-            if (state is MembersRemoved) {}
-
             return Column(
               crossAxisAlignment: .start,
               children: [

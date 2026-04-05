@@ -190,6 +190,71 @@ class FirestoreService {
   // Check-ins
   // =====================
 
+  Future<void> fillMissingDays({required String habitId}) async {
+    final query = await _groups
+        .doc(habitId)
+        .collection('days')
+        .orderBy('day', descending: true)
+        .limit(1)
+        .get();
+
+    if (query.docs.isEmpty) return;
+
+    final lastDayStr = query.docs.first.id;
+    final lastDayDate = DateFormat('yyyy-MM-dd').parse(lastDayStr);
+    final now = DateTime.now();
+    final todayDate = DateTime(now.year, now.month, now.day);
+
+    if (!lastDayDate.isBefore(todayDate)) return;
+
+    final groupDoc = await _groups.doc(habitId).get();
+    if (!groupDoc.exists) return;
+    
+    final members = List<String>.from(groupDoc.data()?['members'] ?? []);
+    
+    var batch = _firestore.batch();
+    int batchCount = 0;
+
+    DateTime currentDate = lastDayDate.add(const Duration(days: 1));
+
+    while (currentDate.isBefore(todayDate)) {
+      final dateStr = DateFormat('yyyy-MM-dd').format(currentDate);
+      final dayRef = _groups.doc(habitId).collection('days').doc(dateStr);
+      
+      final daySnapshot = await dayRef.get();
+      if (!daySnapshot.exists) {
+        batch.set(dayRef, {
+          'day': dateStr,
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+        batchCount++;
+
+        for (final memberId in members) {
+          final checkInRef = dayRef.collection('checkins').doc(memberId);
+          final checkIn = CheckInModel(
+            userId: memberId,
+            date: currentDate.toIso8601String(),
+            status: CheckInStatus.pending,
+            createdAt: currentDate,
+          );
+          batch.set(checkInRef, checkIn.toMap());
+          batchCount++;
+
+          if (batchCount >= 400) {
+            await batch.commit();
+            batch = _firestore.batch();
+            batchCount = 0;
+          }
+        }
+      }
+      currentDate = currentDate.add(const Duration(days: 1));
+    }
+    
+    if (batchCount > 0) {
+      await batch.commit();
+    }
+  }
+
   Future<void> createDayIfNotExist({
     required String habitId,
     required String userId,
@@ -226,18 +291,33 @@ class FirestoreService {
       }
     }
 
-    // Ensure the current user has a check-in in case they joined after day creation
-    final checkInRef = dayRef.collection('checkins').doc(userId);
-    final checkInSnapshot = await checkInRef.get();
+    // Ensure ALL members have a check-in in case they joined after day creation
+    final checkInsSnapshot = await dayRef.collection('checkins').get();
+    final existingCheckInIds = checkInsSnapshot.docs.map((doc) => doc.id).toSet();
 
-    if (!checkInSnapshot.exists) {
-      final checkIn = CheckInModel(
-        userId: userId,
-        date: now.toIso8601String(),
-        status: CheckInStatus.pending,
-        createdAt: now,
-      );
-      await checkInRef.set(checkIn.toMap());
+    final groupDoc = await _groups.doc(habitId).get();
+    if (groupDoc.exists) {
+      final members = List<String>.from(groupDoc.data()?['members'] ?? []);
+      final batch = _firestore.batch();
+      bool hasChanges = false;
+
+      for (final memberId in members) {
+        if (!existingCheckInIds.contains(memberId)) {
+          final checkInRef = dayRef.collection('checkins').doc(memberId);
+          final checkIn = CheckInModel(
+            userId: memberId,
+            date: now.toIso8601String(),
+            status: CheckInStatus.pending,
+            createdAt: now,
+          );
+          batch.set(checkInRef, checkIn.toMap());
+          hasChanges = true;
+        }
+      }
+
+      if (hasChanges) {
+        await batch.commit();
+      }
     }
   }
 

@@ -36,6 +36,10 @@ class AddMemberBottomSheetButtons extends StatelessWidget {
         Expanded(
           child: BlocConsumer<MembersCubit, MembersState>(
             listener: (BuildContext context, MembersState state) {
+              if (state is MembersAdded) {
+                context.pop();
+              }
+
               if (state is MembersNotFound) {
                 ShowToastification.popUp(
                   context,

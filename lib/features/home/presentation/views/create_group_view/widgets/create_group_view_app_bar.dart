@@ -11,10 +11,7 @@ class CreateGroupViewAppBar extends StatelessWidget {
       children: [
         const CustomBackButton(),
         const SizedBox(width: 12),
-        Text(
-          'Create Group',
-          style: AppStyles.textStyle18.copyWith(fontWeight: FontWeight.bold),
-        ),
+        Text('Create Group', style: AppStyles.textStyle22),
       ],
     );
   }

@@ -31,6 +31,7 @@ class DaysCubit extends Cubit<DaysState> {
   // add days
 
   Future<void> addDays() async {
+    await _firestoreService.fillMissingDays(habitId: _habitId);
     await _firestoreService.createDayIfNotExist(
       habitId: _habitId,
       userId: _user!.uid,

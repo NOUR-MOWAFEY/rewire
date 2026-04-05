@@ -48,6 +48,7 @@ class AddMembersField extends StatelessWidget {
 
               if (state is MembersFound) {
                 context.read<MembersCubit>().membersIds.add(state.user.uid);
+                context.read<MembersCubit>().members.add(state.user);
                 memberEmailController.clear();
               }
             },
@@ -79,6 +80,7 @@ class AddMembersField extends StatelessWidget {
                   }
 
                   if (!context.mounted) return;
+
                   log(context.read<MembersCubit>().membersIds.toString());
                 },
 

@@ -18,8 +18,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   @override
   void initState() {
     super.initState();
-
-    setInitialValues();
+    _setInitialValues();
   }
 
   @override
@@ -45,7 +44,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     );
   }
 
-  void setInitialValues() async {
+  void _setInitialValues() async {
     groupNameController = TextEditingController();
     memberEmailController = TextEditingController();
     groupNameKey = GlobalKey<FormState>();

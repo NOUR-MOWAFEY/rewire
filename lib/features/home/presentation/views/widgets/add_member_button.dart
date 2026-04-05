@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:rewire/core/services/firebase_auth_service.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/service_locator.dart';
@@ -26,25 +25,25 @@ class AddMemberButton extends StatelessWidget {
       onPressed: () async {
         var email = memberEmailController.text.trim().toLowerCase();
 
-        _memberEmailValidator(context, email);
+        var isMemberEmailValid = _isMemberEmailValid(context, email);
 
-        var isMemberFound = await context.read<MembersCubit>().getMemberByEmail(
+        if (!isMemberEmailValid) {
+          return;
+        }
+
+        final membersCubit = context.read<MembersCubit>();
+
+        var isMemberFound = await membersCubit.getMemberByEmail(
           email,
           getIt.get<FirebaseAuthService>().getCurrentUser()!.uid,
         );
 
-        if (!context.mounted) return;
-
         if (isMemberFound) {
-          await context.read<MembersCubit>().addMemberByEmail(
+          await membersCubit.addMemberByEmail(
             groupId: groupModel.id,
             email: email,
           );
         }
-
-        if (!context.mounted) return;
-
-        context.pop();
       },
       height: 45,
       title: 'Add',
@@ -52,19 +51,21 @@ class AddMemberButton extends StatelessWidget {
     );
   }
 
-  void _memberEmailValidator(BuildContext context, String email) {
+  bool _isMemberEmailValid(BuildContext context, String email) {
     if (email.isEmpty) {
       ShowToastification.popUp(
         context,
         'Please enter the member\'s email address',
         AppColors.red,
       );
-      return;
+      return false;
     }
 
     if (!emailRegex.hasMatch(email)) {
       ShowToastification.popUp(context, 'Invalid Email', AppColors.red);
-      return;
+      return false;
     }
+
+    return true;
   }
 }

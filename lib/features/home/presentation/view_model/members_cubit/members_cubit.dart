@@ -69,10 +69,10 @@ class MembersCubit extends Cubit<MembersState> {
           (streamedMembers) {
             members.clear();
             membersIds.clear();
-            
+
             members.addAll(streamedMembers);
             membersIds.addAll(streamedMembers.map((e) => e.uid));
-            
+
             if (!isClosed) emit(MembersLoaded(members: streamedMembers));
           },
           onError: (e) {

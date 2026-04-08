@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
+import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 
 class CustomMenuButton extends StatelessWidget {
@@ -13,6 +15,9 @@ class CustomMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUserId = context.read<AuthCubit>().getUser()!.uid;
+    final isOwner = groupModel.createdBy == currentUserId;
+
     return PopupMenuButton<MenubuttonItems>(
       menuPadding: const EdgeInsets.symmetric(vertical: 8),
 
@@ -36,17 +41,19 @@ class CustomMenuButton extends StatelessWidget {
         }
       },
 
-      itemBuilder: (context) => const [
-        PopupMenuItem(
-          value: .settings,
-          child: PopupMenuItemText(title: 'Settings'),
-        ),
-        PopupMenuItem(
-          value: .deleteGroup,
-          child: PopupMenuItemText(title: 'Delete Group'),
-        ),
-        PopupMenuItem(
-          value: .leaveGroup,
+      itemBuilder: (context) => [
+        if (isOwner)
+          const PopupMenuItem(
+            value: MenubuttonItems.settings,
+            child: PopupMenuItemText(title: 'Settings'),
+          ),
+        if (isOwner)
+          const PopupMenuItem(
+            value: MenubuttonItems.deleteGroup,
+            child: PopupMenuItemText(title: 'Delete Group'),
+          ),
+        const PopupMenuItem(
+          value: MenubuttonItems.leaveGroup,
           child: PopupMenuItemText(title: 'Leave Group'),
         ),
       ],

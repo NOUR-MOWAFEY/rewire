@@ -47,19 +47,29 @@ class DaysCubit extends Cubit<DaysState> {
     _checkinSub?.cancel();
 
     try {
-      // 0. Ensure today's day & checkin exist before fetching
-      await addDays();
+      // 0. Ensure today's day & checkin exist before fetching (run in parallel)
+      await Future.wait([
+        _firestoreService.fillMissingDays(habitId: _habitId),
+        _firestoreService.createDayIfNotExist(
+          habitId: _habitId,
+          userId: _user!.uid,
+        ),
+      ]);
 
       // 1. Fetch all days once
       daysList = await _firestoreService.getAllDaysFuture(_habitId);
 
-      // 2. Fetch checkins for all days
-      for (final day in daysList) {
-        final checkins = await _firestoreService.getDayCheckInsFuture(
-          habitId: _habitId,
-          date: day.day,
-        );
-        daysCheckins[day.day] = checkins;
+      // 2. Fetch checkins for all days in parallel
+      final checkinResults = await Future.wait(
+        daysList.map(
+          (day) => _firestoreService.getDayCheckInsFuture(
+            habitId: _habitId,
+            date: day.day,
+          ),
+        ),
+      );
+      for (int i = 0; i < daysList.length; i++) {
+        daysCheckins[daysList[i].day] = checkinResults[i];
       }
 
       // 3. Emit loaded state with all fetched data

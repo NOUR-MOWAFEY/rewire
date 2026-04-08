@@ -6,6 +6,8 @@ import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/days_cubit/days_cubit.dart';
 import 'package:rewire/features/home/presentation/views/group_details_view/widgets/group_details_view_app_bar.dart';
 
+import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
+
 import '../../../../../core/widgets/view_background_container.dart';
 import 'widgets/group_details_view_body.dart';
 
@@ -17,10 +19,17 @@ class GroupDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewBackGroundContainer(
       appBar: GroupDetailsViewAppBar(groupModel: groupModel),
-      viewBody: BlocProvider(
-        create: (context) =>
-            DaysCubit(getIt.get<FirestoreService>(), groupModel.id)
-              ..listenToDays(),
+      viewBody: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                DaysCubit(getIt.get<FirestoreService>(), groupModel.id)
+                  ..listenToDays(),
+          ),
+          BlocProvider(
+            create: (context) => MembersCubit(groupModel.id),
+          ),
+        ],
         child: const GroupDetailsViewBody(),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/presentation/view_model/days_cubit/days_cubit.dart';
 import 'package:rewire/features/home/presentation/views/widgets/check_icon_button.dart';
@@ -7,17 +8,28 @@ import 'package:rewire/features/home/presentation/views/widgets/check_icon_butto
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_styles.dart';
 
-class CheckGroupItem extends StatelessWidget {
-  const CheckGroupItem({
+class GroupDayItem extends StatelessWidget {
+  const GroupDayItem({
     super.key,
     required this.date,
     required this.dayCheckins,
   });
+
   final String date;
   final List<CheckInModel> dayCheckins;
 
   @override
   Widget build(BuildContext context) {
+    final currentUserId = context.read<AuthCubit>().getUser()!.uid;
+
+    final sortedCheckins = List<CheckInModel>.from(dayCheckins);
+
+    sortedCheckins.sort((a, b) {
+      if (a.userId == currentUserId) return -1;
+      if (b.userId == currentUserId) return 1;
+      return 0;
+    });
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -42,9 +54,11 @@ class CheckGroupItem extends StatelessWidget {
                 scrollDirection: .horizontal,
 
                 itemBuilder: (context, index) {
+                  final checkIn = sortedCheckins[index];
+
                   return CheckIconButton(
-                    index: index,
-                    checkInStatus: dayCheckins[index].status,
+                    checkIn: checkIn,
+                    isCurrentUser: checkIn.userId == currentUserId,
                     isTodayItem: context.read<DaysCubit>().today == date,
                   );
                 },
@@ -58,7 +72,7 @@ class CheckGroupItem extends StatelessWidget {
                   ),
                 ),
 
-                itemCount: dayCheckins.length,
+                itemCount: sortedCheckins.length,
               ),
             ],
           ),
@@ -67,5 +81,3 @@ class CheckGroupItem extends StatelessWidget {
     );
   }
 }
-
-

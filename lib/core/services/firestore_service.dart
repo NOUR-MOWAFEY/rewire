@@ -209,9 +209,9 @@ class FirestoreService {
 
     final groupDoc = await _groups.doc(habitId).get();
     if (!groupDoc.exists) return;
-    
+
     final members = List<String>.from(groupDoc.data()?['members'] ?? []);
-    
+
     var batch = _firestore.batch();
     int batchCount = 0;
 
@@ -220,7 +220,7 @@ class FirestoreService {
     while (currentDate.isBefore(todayDate)) {
       final dateStr = DateFormat('yyyy-MM-dd').format(currentDate);
       final dayRef = _groups.doc(habitId).collection('days').doc(dateStr);
-      
+
       final daySnapshot = await dayRef.get();
       if (!daySnapshot.exists) {
         batch.set(dayRef, {
@@ -249,7 +249,7 @@ class FirestoreService {
       }
       currentDate = currentDate.add(const Duration(days: 1));
     }
-    
+
     if (batchCount > 0) {
       await batch.commit();
     }
@@ -264,42 +264,45 @@ class FirestoreService {
 
     final dayRef = _groups.doc(habitId).collection('days').doc(dayId);
 
-    // Create day if it doesn't exist
-    final daySnapshot = await dayRef.get();
+    // Fetch day doc and group doc in parallel
+    final results = await Future.wait([
+      dayRef.get(),
+      _groups.doc(habitId).get(),
+    ]);
+    final daySnapshot = results[0];
+    final groupDoc = results[1];
+
+    if (!groupDoc.exists) return;
+    final members = List<String>.from(groupDoc.data()?['members'] ?? []);
+
+    final batch = _firestore.batch();
+    bool hasChanges = false;
 
     if (!daySnapshot.exists) {
-      await dayRef.set({
+      // Create the day document
+      batch.set(dayRef, {
         'day': dayId,
         'updatedAt': FieldValue.serverTimestamp(),
       });
-      
-      final groupDoc = await _groups.doc(habitId).get();
-      if (groupDoc.exists) {
-        final members = List<String>.from(groupDoc.data()?['members'] ?? []);
-        final batch = _firestore.batch();
-        for (final memberId in members) {
-          final checkInRef = dayRef.collection('checkins').doc(memberId);
-          final checkIn = CheckInModel(
-            userId: memberId,
-            date: now.toIso8601String(),
-            status: CheckInStatus.pending,
-            createdAt: now,
-          );
-          batch.set(checkInRef, checkIn.toMap());
-        }
-        await batch.commit();
+
+      // Create check-ins for all members
+      for (final memberId in members) {
+        final checkInRef = dayRef.collection('checkins').doc(memberId);
+        final checkIn = CheckInModel(
+          userId: memberId,
+          date: now.toIso8601String(),
+          status: CheckInStatus.pending,
+          createdAt: now,
+        );
+        batch.set(checkInRef, checkIn.toMap());
       }
-    }
-
-    // Ensure ALL members have a check-in in case they joined after day creation
-    final checkInsSnapshot = await dayRef.collection('checkins').get();
-    final existingCheckInIds = checkInsSnapshot.docs.map((doc) => doc.id).toSet();
-
-    final groupDoc = await _groups.doc(habitId).get();
-    if (groupDoc.exists) {
-      final members = List<String>.from(groupDoc.data()?['members'] ?? []);
-      final batch = _firestore.batch();
-      bool hasChanges = false;
+      hasChanges = true;
+    } else {
+      // Day exists — ensure ALL members have a check-in
+      final checkInsSnapshot = await dayRef.collection('checkins').get();
+      final existingCheckInIds = checkInsSnapshot.docs
+          .map((doc) => doc.id)
+          .toSet();
 
       for (final memberId in members) {
         if (!existingCheckInIds.contains(memberId)) {
@@ -314,10 +317,10 @@ class FirestoreService {
           hasChanges = true;
         }
       }
+    }
 
-      if (hasChanges) {
-        await batch.commit();
-      }
+    if (hasChanges) {
+      await batch.commit();
     }
   }
 
@@ -382,6 +385,7 @@ class FirestoreService {
         .doc(habitId)
         .collection('days')
         .orderBy('day', descending: true)
+        .limit(7)
         .snapshots()
         .map(
           (snapshot) =>
@@ -396,6 +400,7 @@ class FirestoreService {
         .doc(habitId)
         .collection('days')
         .orderBy('day', descending: true)
+        .limit(7)
         .get();
 
     return query.docs.map((doc) => DayModel.fromMap(doc.data())).toList();

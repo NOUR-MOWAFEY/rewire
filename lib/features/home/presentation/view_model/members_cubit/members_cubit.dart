@@ -66,8 +66,14 @@ class MembersCubit extends Cubit<MembersState> {
     _membersSubscription = _firestoreService
         .listenToGroupMembers(groupId)
         .listen(
-          (members) {
-            if (!isClosed) emit(MembersLoaded(members: members));
+          (streamedMembers) {
+            members.clear();
+            membersIds.clear();
+            
+            members.addAll(streamedMembers);
+            membersIds.addAll(streamedMembers.map((e) => e.uid));
+            
+            if (!isClosed) emit(MembersLoaded(members: streamedMembers));
           },
           onError: (e) {
             if (!isClosed) emit(MembersError(errMassage: e.toString()));

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/presentation/views/group_details_view/widgets/popup_menu_body.dart';
 import 'package:rewire/features/home/presentation/views/group_details_view/widgets/popup_menu_checkin_icons.dart';
 import 'package:rewire/features/home/presentation/views/group_details_view/widgets/popup_menu_header.dart';
@@ -6,10 +7,12 @@ import 'package:rewire/features/home/presentation/views/group_details_view/widge
 class PopUpMenu extends StatelessWidget {
   const PopUpMenu({
     super.key,
-    this.isFirstOne = false,
+    required this.checkIn,
+    this.isCurrentUser = false,
     this.isTodayItem = false,
   });
-  final bool isFirstOne;
+  final CheckInModel checkIn;
+  final bool isCurrentUser;
   final bool isTodayItem;
 
   @override
@@ -20,17 +23,21 @@ class PopUpMenu extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
 
         children: [
-          const PopUpMenuHeader(),
+          PopUpMenuHeader(checkIn: checkIn),
 
-          isFirstOne && isTodayItem
+          isCurrentUser && isTodayItem
               ? const Spacer()
               : const SizedBox(height: 12),
 
-          PopUpMenuBody(isFirtOne: isFirstOne, isTodayItem: isTodayItem),
+          PopUpMenuBody(
+            checkIn: checkIn,
+            isCurrentUser: isCurrentUser,
+            isTodayItem: isTodayItem,
+          ),
 
           const SizedBox(height: 4),
 
-          !isFirstOne || !isTodayItem
+          !isCurrentUser || !isTodayItem
               ? const SizedBox()
               : Padding(
                   padding: const EdgeInsets.only(top: 12),

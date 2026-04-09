@@ -26,7 +26,9 @@ class GroupMembersCheckins extends StatelessWidget {
   List<List<T>> _chunk<T>(List<T> list, int size) {
     final chunks = <List<T>>[];
     for (var i = 0; i < list.length; i += size) {
-      chunks.add(list.sublist(i, i + size > list.length ? list.length : i + size));
+      chunks.add(
+        list.sublist(i, i + size > list.length ? list.length : i + size),
+      );
     }
     return chunks;
   }
@@ -42,6 +44,8 @@ class GroupMembersCheckins extends StatelessWidget {
       if (b.userId == currentUserId) return 1;
       return 0;
     });
+
+    if (dayCheckins.isEmpty) return const SizedBox.shrink();
 
     final rows = _chunk(sortedCheckins, _rowSize);
     final rowCount = rows.length;

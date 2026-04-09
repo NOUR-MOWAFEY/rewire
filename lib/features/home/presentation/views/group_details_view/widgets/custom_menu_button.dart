@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +7,8 @@ import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
+import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
+import 'package:rewire/features/home/presentation/views/group_details_view/widgets/leave_group_alert_dialog.dart';
 
 class CustomMenuButton extends StatelessWidget {
   const CustomMenuButton({super.key, required this.groupModel});
@@ -36,7 +37,15 @@ class CustomMenuButton extends StatelessWidget {
           case MenubuttonItems.settings:
             context.push(AppRouter.groupSettingsView, extra: groupModel);
           case MenubuttonItems.leaveGroup:
-            Clipboard.setData(ClipboardData(text: 'Hello'));
+            final groupCubit = context.read<GroupCubit>();
+
+            showDialog(
+              context: context,
+              builder: (context) => BlocProvider.value(
+                value: groupCubit,
+                child: LeaveGroupAlertDialog(groupModel: groupModel),
+              ),
+            );
           case MenubuttonItems.deleteGroup:
         }
       },

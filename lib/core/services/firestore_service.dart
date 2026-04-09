@@ -548,6 +548,15 @@ class FirestoreService {
     });
   }
 
+  Future<void> leaveGroup({
+    required String groupId,
+    required String userId,
+  }) async {
+    await _groups.doc(groupId).update({
+      'members': FieldValue.arrayRemove([userId]),
+    });
+  }
+
   // get all group members
 
   Future<List<UserModel>> getGroupMembers(String groupId) async {

@@ -44,3 +44,15 @@ final class GroupAddMemberFailure extends GroupState {
 
   const GroupAddMemberFailure({required this.errMessage});
 }
+
+// Leave Group States
+
+final class GroupLeaveSuccess extends GroupState {}
+
+final class GroupLeaveLoading extends GroupState {}
+
+final class GroupLeaveFailure extends GroupState {
+  final String errMessage;
+
+  const GroupLeaveFailure({required this.errMessage});
+}

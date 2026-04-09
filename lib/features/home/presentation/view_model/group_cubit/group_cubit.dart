@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/services/shared_preferences_service.dart';
-import 'package:rewire/core/utils/security_helper.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 
@@ -127,6 +126,27 @@ class GroupCubit extends Cubit<GroupState> {
     } catch (e) {
       log(e.toString());
       if (!isClosed) emit(GroupAddMemberFailure(errMessage: e.toString()));
+    }
+  }
+
+  // leave group
+
+  Future<void> leaveGroup(GroupModel groupModel) async {
+    if (!isClosed) emit(GroupLeaveLoading());
+
+    try {
+      if (groupModel.createdBy == user!.uid) {
+        await _firestoreService.deleteGroup(groupModel.id);
+      } else {
+        await _firestoreService.leaveGroup(
+          groupId: groupModel.id,
+          userId: user!.uid,
+        );
+      }
+      if (!isClosed) emit(GroupLeaveSuccess());
+    } catch (e) {
+      log(e.toString());
+      if (!isClosed) emit(GroupLeaveFailure(errMessage: e.toString()));
     }
   }
 }

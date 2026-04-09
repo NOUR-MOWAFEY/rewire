@@ -31,6 +31,8 @@ String? validator(
         if (value != passwordController!.text) {
           return 'Passwords do not match';
         }
+      case InputType.groupId:
+      // TODO
     }
   }
   return null;
@@ -38,4 +40,4 @@ String? validator(
 
 final emailRegex = RegExp(r'^[\w\.\-+]+@([\w-]+\.)+[\w-]{2,4}$');
 
-enum InputType { email, password, confirmPassword, name }
+enum InputType { email, password, confirmPassword, name, groupId }

@@ -104,9 +104,7 @@ class GroupCubit extends Cubit<GroupState> {
       await _firestoreService.updateGroup(
         groupId: groupId,
         newName: newName,
-        newPassword: newPassword == null
-            ? null
-            : SecurityHelper.hashPassword(newPassword),
+        newPassword: newPassword,
       );
 
       if (!isClosed) emit(GroupUpdateSuccess());

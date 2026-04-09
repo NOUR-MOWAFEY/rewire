@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rewire/core/services/firebase_auth_service.dart';
+import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
+import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
 import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/home_view/widgets/join_group_alert_dialog.dart';
 
 class HomeViewAppBar extends StatelessWidget {
@@ -38,7 +42,13 @@ class HomeViewAppBar extends StatelessWidget {
           onPressed: () async {
             await showDialog(
               context: context,
-              builder: (context) => const JoinGroupAlertDialog(),
+              builder: (context) => BlocProvider(
+                create: (context) => JoinGroupCubit(
+                  getIt.get<FirestoreService>(),
+                  getIt.get<FirebaseAuthService>(),
+                ),
+                child: const JoinGroupAlertDialog(),
+              ),
             );
           },
         ),

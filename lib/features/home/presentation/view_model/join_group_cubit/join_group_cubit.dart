@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/services/firebase_auth_service.dart';
 import 'package:rewire/core/services/firestore_service.dart';
@@ -11,7 +13,7 @@ class JoinGroupCubit extends Cubit<JoinGroupState> {
   JoinGroupCubit(this._firestoreService, this._authService)
     : super(JoinGroupInitial());
 
-  Future<void> join({
+  Future<void> joinGroup({
     required String joinCode,
     required String password,
   }) async {
@@ -21,13 +23,14 @@ class JoinGroupCubit extends Cubit<JoinGroupState> {
       final userId = _authService.getCurrentUser()!.uid;
 
       await _firestoreService.joinGroup(
-        joinCode: joinCode,
+        joinCode: joinCode.trim().toUpperCase(),
         password: password,
         userId: userId,
       );
 
       emit(JoinGroupJoined());
     } catch (e) {
+      log(e.toString());
       emit(JoinGroupFailure(errMessage: e.toString()));
     }
   }

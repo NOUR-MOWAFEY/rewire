@@ -469,27 +469,37 @@ class FirestoreService {
     required String password,
     required String userId,
   }) async {
+    final trimmedCode = joinCode.trim().toUpperCase();
+
+    if (trimmedCode.length < 6 || trimmedCode.length > 6) {
+      throw 'Group not found';
+    }
+
     final query = await _firestore
         .collection('habits')
-        .where('joinCode', isEqualTo: joinCode)
+        .where('joinCode', isEqualTo: trimmedCode)
         .limit(1)
         .get();
 
     if (query.docs.isEmpty) {
-      throw Exception("Group not found");
+      throw ("Group not found");
     }
 
     final doc = query.docs.first;
     final data = doc.data();
 
     if (data['members'].contains(userId)) {
-      throw Exception("You already joined this group");
+      throw ("You already joined this group");
     }
 
-    final enteredHash = SecurityHelper.hashPassword(password);
+    final String storedHash = data['passwordHash'] ?? '';
 
-    if (data['passwordHash'] != enteredHash) {
-      throw Exception("Wrong password");
+    if (storedHash.isNotEmpty) {
+      final enteredHash = SecurityHelper.hashPassword(password);
+
+      if (storedHash != enteredHash) {
+        throw ("Wrong password");
+      }
     }
 
     await doc.reference.update({

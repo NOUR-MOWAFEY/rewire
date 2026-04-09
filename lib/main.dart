@@ -46,24 +46,3 @@ class Rewire extends StatelessWidget {
     );
   }
 }
-
-
-/* 
-
-* Todo: click on group id to copy it ✅
-* Todo: fix delete cubit on alert dialog & remove delete states from habit cubit ✅
-* Todo: separate create group cubit ✅
-* Todo: finish group settings view{group image logic & change group data} ✅
-* Todo: show checkin status ✅
-* Todo: fix create group button while creating new group ✅
-  Todo: change input type for login password
-  Todo: change validation on login view
-  Todo: fix user can pop while loading
-  Todo: update group name on details view after update it in group settings
-  Todo: fix group image bug if there is one
-
-* listen to members so when new member added to update the list
-* refactor add member bottom sheet & custom accordion
-  Todo: success toastification shown twice when new account created : FIX IT
-
-*/

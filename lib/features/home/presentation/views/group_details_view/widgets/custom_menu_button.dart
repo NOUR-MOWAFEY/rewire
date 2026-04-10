@@ -36,6 +36,7 @@ class CustomMenuButton extends StatelessWidget {
         switch (value) {
           case MenubuttonItems.settings:
             context.push(AppRouter.groupSettingsView, extra: groupModel);
+
           case MenubuttonItems.leaveGroup:
             final groupCubit = context.read<GroupCubit>();
 
@@ -46,21 +47,24 @@ class CustomMenuButton extends StatelessWidget {
                 child: LeaveGroupAlertDialog(groupModel: groupModel),
               ),
             );
-          case MenubuttonItems.deleteGroup:
+
+          case MenubuttonItems.info:
+            context.push(AppRouter.groupInfoView, extra: groupModel);
         }
       },
 
       itemBuilder: (context) => [
+        const PopupMenuItem(
+          value: MenubuttonItems.info,
+          child: PopupMenuItemText(title: 'Info'),
+        ),
+
         if (isOwner)
           const PopupMenuItem(
             value: MenubuttonItems.settings,
             child: PopupMenuItemText(title: 'Settings'),
           ),
-        if (isOwner)
-          const PopupMenuItem(
-            value: MenubuttonItems.deleteGroup,
-            child: PopupMenuItemText(title: 'Delete Group'),
-          ),
+
         const PopupMenuItem(
           value: MenubuttonItems.leaveGroup,
           child: PopupMenuItemText(title: 'Leave Group'),
@@ -83,4 +87,4 @@ class PopupMenuItemText extends StatelessWidget {
   }
 }
 
-enum MenubuttonItems { settings, deleteGroup, leaveGroup }
+enum MenubuttonItems { info, settings, leaveGroup }

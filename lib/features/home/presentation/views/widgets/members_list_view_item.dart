@@ -10,9 +10,16 @@ import 'package:rewire/features/home/presentation/views/widgets/remove_member_bo
 import 'user_main_info.dart';
 
 class MembersListViewItem extends StatelessWidget {
-  const MembersListViewItem({super.key, required this.member, this.groupModel});
+  const MembersListViewItem({
+    super.key,
+    required this.member,
+    this.groupModel,
+    this.isMembersRemovable = true,
+  });
+
   final UserModel member;
   final GroupModel? groupModel;
+  final bool isMembersRemovable;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +29,12 @@ class MembersListViewItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
         children: [
-          UserMainInfo(userModel: member),
-          context.read<MembersCubit>().isCurrentUser(member)
+          UserMainInfo(
+            userModel: member,
+            isAdmin: groupModel?.createdBy == member.uid,
+          ),
+          context.read<MembersCubit>().isCurrentUser(member) ||
+                  !isMembersRemovable
               ? const SizedBox()
               : IconButton(
                   onPressed: () {

@@ -8,6 +8,7 @@ import 'package:rewire/features/home/presentation/view_model/group_cubit/group_c
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/create_group_view.dart';
+import 'package:rewire/features/home/presentation/views/group_info_view/group_info_view.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/group_settings_view.dart';
 import 'package:rewire/features/home/presentation/views/main_navigation_view.dart';
 
@@ -27,6 +28,7 @@ abstract class AppRouter {
   static const createGroupView = '/CreateGroupView';
   static const groupSettingsView = '/GroupSettingsView';
   static const mainNavigationView = '/MainNavigationView';
+  static const groupInfoView = '/GroupInfoView';
 
   static final _firebaseAuthService = getIt.get<FirebaseAuthService>();
   static final _fireStoreService = getIt.get<FirestoreService>();
@@ -126,6 +128,13 @@ abstract class AppRouter {
             transitionsBuilder: AppAnimation.fade,
           );
         },
+      ),
+
+      GoRoute(
+        path: groupInfoView,
+
+        builder: (context, state) =>
+            GroupInfoView(groupModel: state.extra as GroupModel),
       ),
     ],
   );

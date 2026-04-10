@@ -8,21 +8,28 @@ class MembersListView extends StatelessWidget {
     super.key,
     required this.users,
     this.groupModel,
-
+    this.shrinkWrap = false,
+    this.physics,
+    this.isMembersRemovable = true,
   });
   final List<UserModel> users;
   final GroupModel? groupModel;
-
+  final bool shrinkWrap;
+  final ScrollPhysics? physics;
+  final bool isMembersRemovable;
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      shrinkWrap: shrinkWrap,
+      physics: physics,
       itemCount: users.length,
 
       itemBuilder: (BuildContext context, int index) {
         return MembersListViewItem(
           member: users[index],
           groupModel: groupModel,
+          isMembersRemovable: isMembersRemovable,
         );
       },
 

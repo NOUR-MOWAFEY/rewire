@@ -33,6 +33,7 @@ class Rewire extends StatelessWidget {
         getIt.get<FirebaseAuthService>(),
         getIt.get<FirestoreService>(),
       ),
+
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         routerConfig: AppRouter.router,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
@@ -14,16 +13,29 @@ class PopUpMenuHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<MembersCubit>().members.firstWhere(
-      (element) => element.uid == checkIn.userId,
+    final membersState = context.watch<MembersCubit>().state;
+    final members = context.watch<MembersCubit>().members;
+
+    final foundMember = members.firstWhere(
+      (m) => m.uid == checkIn.userId,
       orElse: () => UserModel(
         uid: '',
-        name: 'Unknown Member',
+        name: '',
         email: '',
         joinedAt: DateTime.now(),
         overallScore: 0,
       ),
     );
+
+    String nameToShow;
+    if (foundMember.uid.isNotEmpty) {
+      nameToShow = foundMember.name;
+    } else if (membersState is MembersLoading ||
+        membersState is MembersInitial) {
+      nameToShow = 'Loading...';
+    } else {
+      nameToShow = 'Unknown Member';
+    }
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,15 +51,15 @@ class PopUpMenuHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              user.name,
+              nameToShow,
               style: AppStyles.textStyle16.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
-              DateFormat.yMd().format(checkIn.createdAt),
-              style: AppStyles.textStyle14,
-            ),
+            // Text(
+            //   DateFormat.yMd().format(checkIn.createdAt),
+            //   style: AppStyles.textStyle14,
+            // ),
           ],
         ),
       ],

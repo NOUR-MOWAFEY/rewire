@@ -21,9 +21,9 @@ class GroupDetailsViewBody extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is DaysLoaded) {
-            final days = state.days;
+          final days = context.read<DaysCubit>().daysList;
 
+          if (days.isNotEmpty) {
             return ListView.builder(
               itemCount: days.length,
               itemBuilder: (BuildContext context, int index) {
@@ -43,7 +43,7 @@ class GroupDetailsViewBody extends StatelessWidget {
           } else if (state is DaysLoading) {
             return const CustomLoading();
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
     );

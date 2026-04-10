@@ -106,12 +106,14 @@ class DaysCubit extends Cubit<DaysState> {
     if (!isClosed) emit(DaysCheckinUpdateLoading());
 
     try {
-      _firestoreService.updateCheckInMessage(
+      await _firestoreService.updateCheckInMessage(
         habitId: _habitId,
         date: today,
         userId: userId,
         message: message,
       );
+      if (!isClosed) emit(DaysCheckinUpdateLoaded());
+      if (!isClosed) emit(DaysLoaded(days: daysList));
     } catch (e) {
       log(e.toString());
       if (!isClosed) emit(DaysCheckinUpdateFailure(errMessage: e.toString()));

@@ -43,7 +43,7 @@ class CheckIconButton extends StatelessWidget {
             ),
           ),
           direction: PopoverDirection.bottom,
-          height: isCurrentUser ? 210 : 160,
+          height: isCurrentUser ? 205 : 160,
           width: 280,
           radius: 28,
           arrowDyOffset: -4,

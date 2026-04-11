@@ -12,6 +12,12 @@ class HomeViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GroupCubit, GroupState>(
+      buildWhen: (previous, current) =>
+          current is GroupSuccess ||
+          current is GroupFailure ||
+          current is GroupLoading ||
+          current is GroupInitial,
+
       builder: (context, state) {
         if (state is GroupSuccess) {
           return CustomScrollView(

@@ -17,48 +17,44 @@ class DeleteGroupButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 24, left: 24, bottom: 28, top: 4),
-
-      child: BlocConsumer<DeleteGroupCubit, DeleteGroupState>(
-        listener: (context, state) {
-          if (state is DeleteGroupFailure) {
-            if (state.errMessage == 'Connection timeout') {
-              context.go(AppRouter.mainNavigationView);
-              ShowToastification.warning(
-                context,
-                'Connection timeout. Groups will sync when you\'re back online',
-              );
-              return;
-            }
-            ShowToastification.failure(context, 'Couldn\'t delete group');
-          } else if (state is DeleteGroupSuccess) {
+    return BlocConsumer<DeleteGroupCubit, DeleteGroupState>(
+      listener: (context, state) {
+        if (state is DeleteGroupFailure) {
+          if (state.errMessage == 'Connection timeout') {
             context.go(AppRouter.mainNavigationView);
-
-            ShowToastification.success(context, 'Group deleted successfully');
+            ShowToastification.warning(
+              context,
+              'Connection timeout. Groups will sync when you\'re back online',
+            );
+            return;
           }
-        },
-        builder: (context, state) {
-          return state is DeleteGroupLoading || state is DeleteGroupSuccess
-              ? const CustomButton(
-                  color: Colors.grey,
-                  child: CustomLoading(size: 20),
-                )
-              : CustomButton(
-                  title: 'Delete group',
-                  color: AppColors.red,
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => BlocProvider.value(
-                        value: context.read<DeleteGroupCubit>(),
-                        child: DeleteGroupAlertDialog(groupModel: groupModel),
-                      ),
-                    );
-                  },
-                );
-        },
-      ),
+          ShowToastification.failure(context, 'Couldn\'t delete group');
+        } else if (state is DeleteGroupSuccess) {
+          context.go(AppRouter.mainNavigationView);
+
+          ShowToastification.success(context, 'Group deleted successfully');
+        }
+      },
+      builder: (context, state) {
+        return state is DeleteGroupLoading || state is DeleteGroupSuccess
+            ? const CustomButton(
+                color: Colors.grey,
+                child: CustomLoading(size: 20),
+              )
+            : CustomButton(
+                title: 'Delete group',
+                color: AppColors.red,
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => BlocProvider.value(
+                      value: context.read<DeleteGroupCubit>(),
+                      child: DeleteGroupAlertDialog(groupModel: groupModel),
+                    ),
+                  );
+                },
+              );
+      },
     );
   }
 }

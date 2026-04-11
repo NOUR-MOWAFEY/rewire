@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
+import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/delete_group_button.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_data_fields.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_settings_view_app_bar.dart';
 import 'package:rewire/features/home/presentation/views/widgets/custom_accordion.dart';
@@ -67,6 +68,8 @@ class GroupSettingsViewBody extends StatelessWidget {
 
             // const AddPeopleContainer(),
             CustomAccordion(groupModel: groupModel),
+
+            DeleteGroupButton(groupModel: groupModel),
           ],
         ),
       ),

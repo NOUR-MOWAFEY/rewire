@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:rewire/core/utils/code_generator.dart';
@@ -6,6 +8,7 @@ import 'package:rewire/features/home/data/models/day_model.dart';
 
 import '../../features/home/data/models/checkin_model.dart';
 import '../../features/home/data/models/group_model.dart';
+import '../../features/home/data/models/invitation_model.dart';
 import '../../features/home/data/models/monthly_stats_model.dart';
 import '../../features/home/data/models/public_message_model.dart';
 import '../../features/home/data/models/user_model.dart';
@@ -78,7 +81,7 @@ class FirestoreService {
   // Groups
   // =====================
 
-  Future<void> createGroup(GroupModel group) async {
+  Future<GroupModel> createGroup(GroupModel group) async {
     final docRef = _groups.doc();
     group = group.copyWith(id: docRef.id);
 
@@ -88,6 +91,8 @@ class FirestoreService {
           Duration(seconds: 5),
           onTimeout: () => throw 'Connection timeout',
         );
+
+    return group;
   }
 
   Future<List<GroupModel>> getUserGroups(String uid) async {
@@ -446,6 +451,98 @@ class FirestoreService {
   }
 
   // =====================
+  // Invitations
+  // =====================
+
+  Future<void> sendInvitation({
+    required String groupId,
+    required String groupName,
+    required String senderId,
+    required String senderName,
+    required String receiverId,
+    required String receiverName,
+    required String receiverEmail,
+  }) async {
+    // Check if invitation already exists
+    final existing = await _firestore
+        .collection('invitations')
+        .where('groupId', isEqualTo: groupId)
+        .where('receiverId', isEqualTo: receiverId)
+        .where('status', isEqualTo: InvitationStatus.pending.name)
+        .get();
+
+    if (existing.docs.isNotEmpty) {
+      throw 'An invitation is already pending for this user';
+    }
+
+    await _firestore.collection('invitations').add({
+      'groupId': groupId,
+      'groupName': groupName,
+      'senderId': senderId,
+      'senderName': senderName,
+      'receiverId': receiverId,
+      'receiverName': receiverName,
+      'receiverEmail': receiverEmail,
+      'status': InvitationStatus.pending.name,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  Stream<List<InvitationModel>> listenToInvitations(String userId) {
+    return _firestore
+        .collection('invitations')
+        .where('receiverId', isEqualTo: userId)
+        .where('status', isEqualTo: InvitationStatus.pending.name)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => InvitationModel.fromMap(doc.id, doc.data()))
+              .toList(),
+        );
+  }
+
+  Future<void> respondToInvitation({
+    required InvitationModel invitation,
+    required bool accept,
+  }) async {
+    if (accept) {
+      // Add to members array in group
+      await _groups.doc(invitation.groupId).update({
+        'members': FieldValue.arrayUnion([invitation.receiverId]),
+      });
+
+      // Initialize check-ins
+      await createDayIfNotExist(
+        habitId: invitation.groupId,
+        userId: invitation.receiverId,
+      );
+
+      // Delete invitation record after processing
+      await _firestore.collection('invitations').doc(invitation.id).delete();
+    } else {
+      // Delete invitation record after declining
+      await _firestore.collection('invitations').doc(invitation.id).delete();
+    }
+  }
+
+  Stream<List<InvitationModel>> listenToGroupInvitations(String groupId) {
+    return _firestore
+        .collection('invitations')
+        .where('groupId', isEqualTo: groupId)
+        .where('status', isEqualTo: InvitationStatus.pending.name)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => InvitationModel.fromMap(doc.id, doc.data()))
+              .toList(),
+        );
+  }
+
+  Future<void> cancelInvitation(String invitationId) async {
+    await _firestore.collection('invitations').doc(invitationId).delete();
+  }
+
+  // =====================
   // Today Date
   // =====================
 
@@ -587,14 +684,21 @@ class FirestoreService {
         doc.data()?['members'] ?? [],
       );
 
-      final List<UserModel> members = [];
+      // Fetch all users in parallel with a safety timeout per fetch
+      final userModels = await Future.wait(
+        memberIds.map(
+          (id) => getUser(id).timeout(
+            const Duration(seconds: 5),
+            onTimeout: () {
+              log('Timeout fetching user: $id');
+              return null;
+            },
+          ),
+        ),
+      );
 
-      for (var id in memberIds) {
-        final user = await getUser(id);
-        if (user != null) members.add(user);
-      }
-
-      return members;
+      // Filter out nulls and return valid users
+      return userModels.whereType<UserModel>().toList();
     });
   }
 }

@@ -12,6 +12,7 @@ import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/members_list_view.dart';
 import 'package:rewire/features/home/presentation/views/widgets/add_member_bottom_sheet.dart';
+import 'package:rewire/features/home/presentation/views/widgets/pending_member_item.dart';
 
 class CustomAccordion extends StatelessWidget {
   const CustomAccordion({super.key, required this.groupModel});
@@ -53,7 +54,8 @@ class CustomAccordionContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.25,
+      height: MediaQuery.of(context).size.height * 0.35,
+
       child: BlocBuilder<MembersCubit, MembersState>(
         builder: (context, state) {
           if (state is MembersError) {
@@ -68,13 +70,52 @@ class CustomAccordionContent extends StatelessWidget {
           }
 
           if (state is MembersLoaded) {
-            return MembersListView(
-              users: state.members,
-              groupModel: groupModel,
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildSectionTitle('Current Members'),
+                  MembersListView(
+                    users: state.members,
+                    groupModel: groupModel,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                  ),
+                  if (state.pendingInvitations.isNotEmpty) ...[
+                    const SizedBox(height: 24),
+                    _buildSectionTitle('Pending Invitations'),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: state.pendingInvitations.length,
+
+                      itemBuilder: (context, index) {
+                        return PendingMemberItem(
+                          invitation: state.pendingInvitations[index],
+                        );
+                      },
+                    ),
+                  ],
+                ],
+              ),
             );
           }
           return const CustomLoading(size: 28);
         },
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8, left: 4),
+      child: Text(
+        title,
+        style: AppStyles.textStyle14.copyWith(
+          color: Colors.white60,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.2,
+        ),
       ),
     );
   }

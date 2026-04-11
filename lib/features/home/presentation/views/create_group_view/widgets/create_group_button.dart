@@ -32,7 +32,7 @@ class CreategroupButton extends StatelessWidget {
               context.read<CreateGroupCubit>().createGroup(
                 title: groupNameController.text.trim(),
                 password: '',
-                members: context.read<MembersCubit>().membersIds.toList(),
+                invitedUsers: context.read<MembersCubit>().members.toList(),
               );
             },
           );

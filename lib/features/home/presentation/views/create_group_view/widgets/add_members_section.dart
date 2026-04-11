@@ -29,7 +29,7 @@ class AddMembersSection extends StatelessWidget {
                     vertical: 22,
                   ),
                   child: Text(
-                    'Added Members (${context.read<MembersCubit>().members.length})',
+                    'Invite Members (${context.read<MembersCubit>().members.length})',
                     style: AppStyles.textStyle18.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

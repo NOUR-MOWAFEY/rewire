@@ -13,8 +13,12 @@ final class MembersLoading extends MembersState {}
 
 final class MembersLoaded extends MembersState {
   final List<UserModel> members;
+  final List<InvitationModel> pendingInvitations;
 
-  MembersLoaded({required this.members});
+  MembersLoaded({
+    required this.members,
+    this.pendingInvitations = const [],
+  });
 }
 
 final class MembersFound extends MembersState {

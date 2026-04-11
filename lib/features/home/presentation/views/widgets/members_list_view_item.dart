@@ -1,68 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rewire/core/utils/app_colors.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
-import 'package:rewire/features/home/presentation/views/widgets/remove_member_bottom_sheet.dart';
-
-import 'user_main_info.dart';
+import 'package:rewire/features/home/presentation/views/widgets/members_list_view_item_icon.dart';
+import 'package:rewire/features/home/presentation/views/widgets/members_list_view_item_title.dart';
 
 class MembersListViewItem extends StatelessWidget {
   const MembersListViewItem({
     super.key,
     required this.member,
+    this.isAdmin = false,
     this.groupModel,
     this.isMembersRemovable = true,
   });
-
   final UserModel member;
   final GroupModel? groupModel;
+  final bool isAdmin;
   final bool isMembersRemovable;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 45,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
 
-        children: [
-          UserMainInfo(
-            userModel: member,
-            isAdmin: groupModel?.createdBy == member.uid,
-          ),
-          context.read<MembersCubit>().isCurrentUser(member) ||
-                  !isMembersRemovable
-              ? const SizedBox()
-              : IconButton(
-                  onPressed: () {
-                    var membersCubit = context.read<MembersCubit>();
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        minTileHeight: 45,
 
-                    groupModel != null
-                        ? showModalBottomSheet(
-                            context: context,
-                            backgroundColor: AppColors.alertDialogColor,
-                            builder: (context) => BlocProvider.value(
-                              value: membersCubit,
-                              child: RemoveMemberBottomSheet(
-                                member: member,
-                                groupId: groupModel!.id,
-                              ),
-                            ),
-                          )
-                        : context.read<MembersCubit>().removeMemberFromList(
-                            member,
-                          );
-                  },
-                  icon: const Icon(
-                    FontAwesomeIcons.x,
-                    size: 20,
-                    color: Color.fromARGB(232, 189, 189, 189),
-                  ),
-                ),
-        ],
+        leading: CircleAvatar(
+          // radius: 30,
+          backgroundColor: Colors.transparent,
+          child: SvgPicture.asset('assets/images/pic.svg'),
+        ),
+
+        title: MembersListViewItemTitle(member: member, isAdmin: isAdmin),
+
+        subtitle: Text(
+          member.email,
+          style: AppStyles.textStyle12.copyWith(color: Colors.white60),
+        ),
+
+        trailing:
+            context.read<MembersCubit>().isCurrentUser(member) ||
+                !isMembersRemovable
+            ? const SizedBox()
+            : MembersListViewItemIcon(groupModel: groupModel, member: member),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/security_helper.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
+import 'package:rewire/features/home/data/models/user_model.dart';
 
 part 'create_group_state.dart';
 
@@ -24,17 +25,14 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
   Future<void> createGroup({
     required String title,
     required String password,
-    List<String>? members,
+    List<UserModel>? invitedUsers,
   }) async {
     try {
       isLoading = true;
       if (!isClosed) emit(CreateGroupLoading());
 
-      final List<String> groupMembers = [];
-
-      if (members != null && members.isNotEmpty) {
-        groupMembers.addAll(members);
-      }
+      // Only the creator is an initial member
+      final List<String> groupMembers = [_user!.uid];
 
       GroupModel habitModel = GroupModel(
         id: '',
@@ -43,11 +41,33 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
             ? SecurityHelper.hashPassword(password)
             : '',
         name: title,
-        createdBy: _user!.uid,
+        createdBy: _user.uid,
         members: groupMembers,
         isActive: true,
       );
-      await _firestoreService.createGroup(habitModel);
+
+      final createdGroup = await _firestoreService.createGroup(habitModel);
+
+      // Send invitations to other users
+      if (invitedUsers != null && invitedUsers.isNotEmpty) {
+        final currentUserModel = await _firestoreService.getUser(_user.uid);
+        final senderName = currentUserModel?.name ?? 'Unknown';
+
+        for (var user in invitedUsers) {
+          if (user.uid == _user.uid) continue; // Skip self if somehow included
+
+          await _firestoreService.sendInvitation(
+            groupId: createdGroup.id,
+            groupName: createdGroup.name,
+            senderId: _user.uid,
+            senderName: senderName,
+            receiverId: user.uid,
+            receiverName: user.name,
+            receiverEmail: user.email,
+          );
+        }
+      }
+
       if (!isClosed) emit(CreateGroupSuccess());
       isLoading = false;
     } catch (e) {

@@ -39,8 +39,9 @@ class AddMemberButton extends StatelessWidget {
         );
 
         if (isMemberFound) {
-          await membersCubit.addMemberByEmail(
+          await membersCubit.sendInvitationByEmail(
             groupId: groupModel.id,
+            groupName: groupModel.name,
             email: email,
           );
         }

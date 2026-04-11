@@ -10,7 +10,6 @@ import 'package:rewire/features/home/presentation/view_model/delete_group_cubit/
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
-import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/delete_group_button.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_settings_view_body.dart';
 
 class GroupSettingsView extends StatefulWidget {
@@ -47,16 +46,15 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
   @override
   Widget build(BuildContext context) {
     return ViewBackGroundContainer(
-      bottomNavigationBar: BlocProvider(
-        create: (context) => DeleteGroupCubit(
-          _firestoreService,
-          supabaseStorageService: _supabaseStorageService,
-        ),
-        child: DeleteGroupButton(groupModel: widget.groupModel),
-      ),
+      viewBody: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => MembersCubit(widget.groupModel.id)),
+          BlocProvider(
+            create: (context) =>
+                DeleteGroupCubit(_firestoreService, _supabaseStorageService),
+          ),
+        ],
 
-      viewBody: BlocProvider(
-        create: (context) => MembersCubit(widget.groupModel.id),
         child: GroupSettingsViewBody(
           viewModel: viewModel,
           groupModel: widget.groupModel,

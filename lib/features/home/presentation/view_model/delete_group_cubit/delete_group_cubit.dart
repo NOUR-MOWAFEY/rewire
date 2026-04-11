@@ -9,10 +9,10 @@ part 'delete_group_state.dart';
 
 class DeleteGroupCubit extends Cubit<DeleteGroupState> {
   DeleteGroupCubit(
-    this._firestoreService, {
-    required SupabaseStorageService supabaseStorageService,
-  }) : _supabaseStorageService = supabaseStorageService,
-       super(DeleteGroupInitial());
+    this._firestoreService,
+    SupabaseStorageService supabaseStorageService,
+  ) : _supabaseStorageService = supabaseStorageService,
+      super(DeleteGroupInitial());
 
   final FirestoreService _firestoreService;
   final SupabaseStorageService _supabaseStorageService;

@@ -20,21 +20,20 @@ class MembersListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return ListView.builder(
       shrinkWrap: shrinkWrap,
       physics: physics,
       itemCount: users.length,
 
       itemBuilder: (BuildContext context, int index) {
+
+
         return MembersListViewItem(
           member: users[index],
-          groupModel: groupModel,
+          isAdmin: groupModel?.createdBy == users[index].uid,
           isMembersRemovable: isMembersRemovable,
+          groupModel: groupModel,
         );
-      },
-
-      separatorBuilder: (BuildContext context, int index) {
-        return const SizedBox(height: 14);
       },
     );
   }

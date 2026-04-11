@@ -15,7 +15,7 @@ class InvitationItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.transparentPrimary.withValues(alpha: 0.15),
+        color: AppColors.transparentPrimary.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(20),
       ),
 

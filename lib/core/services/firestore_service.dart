@@ -16,6 +16,9 @@ import '../../features/home/data/models/user_model.dart';
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  UserModel? _currentUser;
+  UserModel? get currentUser => _currentUser;
+
   // =====================
   // Collections
   // =====================
@@ -31,16 +34,32 @@ class FirestoreService {
 
   Future<void> createUser(UserModel user) async {
     await _users.doc(user.uid).set(user.toMap());
+    _currentUser = user;
   }
 
   Future<UserModel?> getUser(String uid) async {
+    // Return from cache if available
+    if (_currentUser?.uid == uid) return _currentUser;
+
     final doc = await _users.doc(uid).get();
     if (!doc.exists) return null;
-    return UserModel.fromMap(doc.id, doc.data()!);
+
+    final user = UserModel.fromMap(doc.id, doc.data()!);
+
+    // Potentially cache this user if we want (or only if it is the intended current user)
+    // For now, let's cache any user that is fetched directly by ID if it's the first one,
+    // or if we have a way to know it's "me".
+    // Usually, the first fetch of "getUser" is for the current user in GroupCubit/AuthCubit.
+    _currentUser ??= user;
+
+    return user;
   }
 
   Future<void> updateUser(UserModel user) async {
     await _users.doc(user.uid).update(user.toMap());
+    if (_currentUser?.uid == user.uid) {
+      _currentUser = user;
+    }
   }
 
   // get user by email
@@ -493,6 +512,7 @@ class FirestoreService {
         .collection('invitations')
         .where('receiverId', isEqualTo: userId)
         .where('status', isEqualTo: InvitationStatus.pending.name)
+        .orderBy('createdAt', descending: true)
         .snapshots()
         .map(
           (snapshot) => snapshot.docs

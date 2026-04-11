@@ -36,8 +36,13 @@ class InvitationsViewBody extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     itemCount: state.invitations.length,
                     itemBuilder: (context, index) {
-                      return InvitationItem(
-                        invitation: state.invitations[index],
+                      return Column(
+                        children: [
+                          InvitationItem(invitation: state.invitations[index]),
+                          index == state.invitations.length - 1
+                              ? const SizedBox(height: 90)
+                              : const SizedBox(height: 0),
+                        ],
                       );
                     },
                   );

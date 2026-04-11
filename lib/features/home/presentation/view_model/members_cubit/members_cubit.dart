@@ -13,11 +13,21 @@ part 'members_state.dart';
 
 class MembersCubit extends Cubit<MembersState> {
   MembersCubit([String? groupId]) : super(MembersInitial()) {
+    // Check global cache for instant display
+    final cachedUser = _firestoreService.currentUser;
+    if (cachedUser != null) {
+      members.add(cachedUser);
+      _currentMembers = [cachedUser];
+      _emitLoaded();
+    }
+
     getCurrentUser().then((value) {
       if (value != null) {
+        // Replace or add the fetched user
+        members.removeWhere((u) => u.uid == value.uid);
         members.add(value);
-        _currentMembers = [value];
-        _emitLoaded(); // Show the current user immediately
+        _currentMembers = members.toList();
+        _emitLoaded();
       }
     });
 
@@ -76,17 +86,19 @@ class MembersCubit extends Cubit<MembersState> {
     _membersSubscription?.cancel();
     _invitationsSubscription?.cancel();
 
-    _membersSubscription = _firestoreService.listenToGroupMembers(groupId).listen(
-      (streamedMembers) {
-        _currentMembers = streamedMembers;
-        members.clear();
-        members.addAll(streamedMembers);
-        _emitLoaded();
-      },
-      onError: (e) {
-        if (!isClosed) emit(MembersError(errMassage: e.toString()));
-      },
-    );
+    _membersSubscription = _firestoreService
+        .listenToGroupMembers(groupId)
+        .listen(
+          (streamedMembers) {
+            _currentMembers = streamedMembers;
+            members.clear();
+            members.addAll(streamedMembers);
+            _emitLoaded();
+          },
+          onError: (e) {
+            if (!isClosed) emit(MembersError(errMassage: e.toString()));
+          },
+        );
 
     _invitationsSubscription = _firestoreService
         .listenToGroupInvitations(groupId)
@@ -100,14 +112,16 @@ class MembersCubit extends Cubit<MembersState> {
             _emitLoaded(); // Emit current members even if invitations fail
           },
         );
-    }
+  }
 
   void _emitLoaded() {
     if (!isClosed) {
-      emit(MembersLoaded(
-        members: _currentMembers,
-        pendingInvitations: _currentInvitations,
-      ));
+      emit(
+        MembersLoaded(
+          members: _currentMembers,
+          pendingInvitations: _currentInvitations,
+        ),
+      );
     }
   }
 
@@ -233,7 +247,7 @@ class MembersCubit extends Cubit<MembersState> {
         throw "This user is already a member";
       }
 
-    // Send Invitation
+      // Send Invitation
       await _firestoreService.sendInvitation(
         groupId: groupId,
         groupName: groupName,

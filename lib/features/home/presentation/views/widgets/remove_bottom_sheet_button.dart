@@ -33,6 +33,11 @@ class RemoveBottomSheetButtons extends StatelessWidget {
 
         Expanded(
           child: BlocBuilder<MembersCubit, MembersState>(
+            buildWhen: (previous, current) =>
+                current is MembersRemoved ||
+                current is MembersLoading ||
+                current is MembersError,
+
             builder: (context, state) {
               if (state is MembersLoading) {
                 return CustomButton(

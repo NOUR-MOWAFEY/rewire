@@ -35,6 +35,11 @@ class AddMemberBottomSheetButtons extends StatelessWidget {
 
         Expanded(
           child: BlocConsumer<MembersCubit, MembersState>(
+            buildWhen: (previous, current) =>
+                current is MembersAdded ||
+                current is MembersLoading ||
+                current is MembersError ||
+                current is MembersNotFound,
             listener: (BuildContext context, MembersState state) {
               if (state is MembersAdded) {
                 context.pop();

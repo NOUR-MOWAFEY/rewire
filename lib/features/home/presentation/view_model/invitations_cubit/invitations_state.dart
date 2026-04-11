@@ -9,8 +9,14 @@ class InvitationsLoading extends InvitationsState {}
 
 class InvitationsSuccess extends InvitationsState {
   final List<InvitationModel> invitations;
+  final String? loadingId;
+  final bool isDeclining;
 
-  InvitationsSuccess({required this.invitations});
+  InvitationsSuccess({
+    required this.invitations,
+    this.loadingId,
+    this.isDeclining = false,
+  });
 }
 
 class InvitationsFailure extends InvitationsState {

@@ -4,7 +4,6 @@ import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/app_animations.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
-import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/create_group_view.dart';
@@ -99,13 +98,6 @@ abstract class AppRouter {
               create: (context) =>
                   JoinGroupCubit(_fireStoreService, _firebaseAuthService),
             ),
-            BlocProvider(
-              create: (context) => GroupCubit(
-                _fireStoreService,
-                _firebaseAuthService.getCurrentUser(),
-              ),
-            ),
-
             BlocProvider(create: (context) => MembersCubit()),
           ],
           child: GroupSettingsView(groupModel: state.extra as GroupModel),
@@ -118,13 +110,7 @@ abstract class AppRouter {
           return CustomTransitionPage(
             key: state.pageKey,
             transitionDuration: const Duration(milliseconds: 300),
-            child: BlocProvider(
-              create: (context) => GroupCubit(
-                _fireStoreService,
-                _firebaseAuthService.getCurrentUser(),
-              ),
-              child: const MainNavigationView(),
-            ),
+            child: const MainNavigationView(),
             transitionsBuilder: AppAnimation.fade,
           );
         },

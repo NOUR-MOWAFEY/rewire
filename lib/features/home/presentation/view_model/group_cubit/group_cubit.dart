@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/services/shared_preferences_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
+import 'package:rewire/features/home/data/models/checkin_model.dart';
+import 'package:rewire/features/home/data/models/day_model.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 
 import '../../../../../core/services/firestore_service.dart';
@@ -14,16 +15,32 @@ import '../../../data/models/group_model.dart';
 part 'group_state.dart';
 
 class GroupCubit extends Cubit<GroupState> {
-  GroupCubit(this._firestoreService, this.user) : super(GroupInitial()) {
+  GroupCubit(this._firestoreService) : super(GroupInitial()) {
     log('Group Cubit Created');
-    listenToGroups(user!.uid);
     isNewDay();
+  }
+
+  // Caching
+  final Map<String, List<DayModel>> daysCache = {};
+  final Map<String, Map<String, List<CheckInModel>>> checkinsCache = {};
+
+  void cacheDays(String groupId, List<DayModel> days) {
+    daysCache[groupId] = days;
+  }
+
+  void cacheCheckins(String groupId, String date, List<CheckInModel> checkins) {
+    checkinsCache[groupId] ??= {};
+    checkinsCache[groupId]![date] = checkins;
+  }
+
+  void clearCache() {
+    daysCache.clear();
+    checkinsCache.clear();
   }
 
   bool isLoading = false;
   UserModel? userModel;
   final FirestoreService _firestoreService;
-  User? user;
   StreamSubscription? _subscription;
 
   // =====================
@@ -58,7 +75,8 @@ class GroupCubit extends Cubit<GroupState> {
   // =====================
 
   void listenToGroups(String userId) async {
-    await getUserData()?.then((value) => userModel = value);
+    _subscription?.cancel(); // Cancel previous if any
+    await getUserData(userId)?.then((value) => userModel = value);
     _subscription = _firestoreService.listenToGroups(userId).listen((groups) {
       if (!isClosed) emit(GroupSuccess(groups: groups));
     });
@@ -77,8 +95,8 @@ class GroupCubit extends Cubit<GroupState> {
   }
 
   // get user data
-  Future<UserModel?>? getUserData() async {
-    var data = await _firestoreService.getUser(user!.uid);
+  Future<UserModel?>? getUserData(String userId) async {
+    var data = await _firestoreService.getUser(userId);
     return data;
   }
 
@@ -135,12 +153,12 @@ class GroupCubit extends Cubit<GroupState> {
     if (!isClosed) emit(GroupLeaveLoading());
 
     try {
-      if (groupModel.createdBy == user!.uid) {
+      if (groupModel.createdBy == userModel!.uid) {
         await _firestoreService.deleteGroup(groupModel.id);
       } else {
         await _firestoreService.leaveGroup(
           groupId: groupModel.id,
-          userId: user!.uid,
+          userId: userModel!.uid,
         );
       }
       if (!isClosed) emit(GroupLeaveSuccess());

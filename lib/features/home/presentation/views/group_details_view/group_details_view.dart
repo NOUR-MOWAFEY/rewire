@@ -4,6 +4,7 @@ import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/days_cubit/days_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/group_details_view/widgets/group_details_view_app_bar.dart';
 
@@ -21,9 +22,11 @@ class GroupDetailsView extends StatelessWidget {
       viewBody: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) =>
-                DaysCubit(getIt.get<FirestoreService>(), groupModel.id)
-                  ..listenToDays(),
+            create: (context) => DaysCubit(
+              getIt.get<FirestoreService>(),
+              groupModel.id,
+              groupCubit: context.read<GroupCubit>(),
+            )..listenToDays(),
           ),
           BlocProvider(create: (context) => MembersCubit(groupModel.id)),
         ],

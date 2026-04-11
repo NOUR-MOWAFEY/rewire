@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
@@ -27,16 +28,6 @@ class PopUpMenuHeader extends StatelessWidget {
       ),
     );
 
-    String nameToShow;
-    if (foundMember.uid.isNotEmpty) {
-      nameToShow = foundMember.name;
-    } else if (membersState is MembersLoading ||
-        membersState is MembersInitial) {
-      nameToShow = 'Loading...';
-    } else {
-      nameToShow = 'Unknown Member';
-    }
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -50,12 +41,27 @@ class PopUpMenuHeader extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              nameToShow,
-              style: AppStyles.textStyle16.copyWith(
-                fontWeight: FontWeight.bold,
+            if (foundMember.uid.isNotEmpty)
+              Text(
+                foundMember.name,
+                style: AppStyles.textStyle16.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            else if (membersState is MembersLoaded ||
+                membersState is MembersError ||
+                membersState is MembersNotFound)
+              Text(
+                'Unknown Member',
+                style: AppStyles.textStyle16.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            else
+              LoadingAnimationWidget.progressiveDots(
+                color: Colors.white,
+                size: 25,
               ),
-            ),
             // Text(
             //   DateFormat.yMd().format(checkIn.createdAt),
             //   style: AppStyles.textStyle14,

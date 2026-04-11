@@ -10,14 +10,22 @@ import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/data/models/day_model.dart';
+import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 
 part 'days_state.dart';
 
 class DaysCubit extends Cubit<DaysState> {
-  DaysCubit(this._firestoreService, this._habitId) : super(DaysInitial()) {
+  DaysCubit(
+    this._firestoreService,
+    this._habitId, {
+    required GroupCubit groupCubit,
+  }) : _groupCubit = groupCubit,
+       super(DaysInitial()) {
     today = DateFormat('yyyy-MM-dd').format(DateTime.now());
     log('days cubit created');
   }
+
+  final GroupCubit _groupCubit;
 
   final FirestoreService _firestoreService;
   StreamSubscription? _daysSubscription;
@@ -41,7 +49,20 @@ class DaysCubit extends Cubit<DaysState> {
   // fetch days and checkins
 
   void listenToDays() async {
-    if (!isClosed) emit(DaysLoading());
+    // Check cache first
+    final cachedDays = _groupCubit.daysCache[_habitId];
+    if (cachedDays != null && cachedDays.isNotEmpty) {
+      daysList = cachedDays;
+      // Load checkins from cache too if they exist
+      final cachedCheckins = _groupCubit.checkinsCache[_habitId];
+      if (cachedCheckins != null) {
+        daysCheckins.addAll(cachedCheckins);
+      }
+      if (!isClosed) emit(DaysLoaded(days: daysList));
+      log('Loaded days from cache for habit: $_habitId');
+    } else {
+      if (!isClosed) emit(DaysLoading());
+    }
 
     _daysSubscription?.cancel();
     _checkinSub?.cancel();
@@ -75,7 +96,13 @@ class DaysCubit extends Cubit<DaysState> {
       // 3. Emit loaded state with all fetched data
       if (!isClosed) emit(DaysLoaded(days: daysList));
 
-      // 4. Start listening to today's checkins only
+      // 4. Update Cache
+      _groupCubit.cacheDays(_habitId, daysList);
+      for (var entry in daysCheckins.entries) {
+        _groupCubit.cacheCheckins(_habitId, entry.key, entry.value);
+      }
+
+      // 5. Start listening to today's checkins only
       listenToTodayCheckins();
     } catch (e) {
       log('Error fetching days and checkins: $e');
@@ -133,6 +160,9 @@ class DaysCubit extends Cubit<DaysState> {
         .listen((checkins) {
           // Update the specific day's checkins in our map
           daysCheckins[targetDate] = checkins;
+
+          // Update Cache
+          _groupCubit.cacheCheckins(_habitId, targetDate, checkins);
 
           // Emit loaded to rebuild UI with updated data from the stream
           if (!isClosed) emit(DaysLoaded(days: daysList));

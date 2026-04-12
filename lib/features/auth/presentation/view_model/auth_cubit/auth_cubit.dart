@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/services/shared_preferences_service.dart';
+import 'package:rewire/core/utils/service_locator.dart';
 
 import '../../../../../core/services/firebase_auth_service.dart';
 import '../../../../../core/services/firestore_service.dart';
@@ -68,6 +70,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   //  logout
   Future<void> logout([BuildContext? context]) async {
+    _firestoreService.clearCache();
+    await getIt.get<SharedPreferencesService>().clearUserData();
     emit(AuthUnAuthenticated());
     await _firebaseAuthService.signOut();
   }

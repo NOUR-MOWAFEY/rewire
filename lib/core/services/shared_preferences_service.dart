@@ -21,4 +21,9 @@ class SharedPreferencesService {
     final now = DateTime.now();
     return DateTime(now.year, now.month, now.day);
   }
+
+  Future<void> clearUserData() async {
+    await _preferences.remove(StorageKeys.storedDate);
+    await _preferences.remove(StorageKeys.userProfileImage);
+  }
 }

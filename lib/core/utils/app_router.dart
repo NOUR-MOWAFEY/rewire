@@ -4,6 +4,7 @@ import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/app_animations.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/invitations_cubit/invitations_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
@@ -60,75 +61,92 @@ abstract class AppRouter {
         builder: (context, state) => const RegisterView(),
       ),
 
-      GoRoute(
-        path: homeView,
-        builder: (context, state) {
-          var user = BlocProvider.of<AuthCubit>(context).getUser();
-          return HomeView(user: user);
-        },
-      ),
-
-      GoRoute(
-        path: groupDetailsView,
-
-        builder: (context, state) =>
-            GroupDetailsView(groupModel: state.extra as GroupModel),
-      ),
-
-      GoRoute(
-        path: createGroupView,
-        builder: (context, state) => MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => CreateGroupCubit(
-                _fireStoreService,
-                _firebaseAuthService.getCurrentUser(),
-              ),
-            ),
-            BlocProvider(create: (context) => MembersCubit()),
-          ],
-          child: const CreateGroupView(),
-        ),
-      ),
-
-      GoRoute(
-        path: groupSettingsView,
-
-        builder: (context, state) => MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) =>
-                  JoinGroupCubit(_fireStoreService, _firebaseAuthService),
-            ),
-            BlocProvider(create: (context) => MembersCubit()),
-          ],
-          child: GroupSettingsView(groupModel: state.extra as GroupModel),
-        ),
-      ),
-
-      GoRoute(
-        path: mainNavigationView,
-        pageBuilder: (context, state) {
-          return CustomTransitionPage(
-            key: state.pageKey,
-            transitionDuration: const Duration(milliseconds: 300),
-            child: BlocProvider(
-              create: (context) => InvitationsCubit(
-                getIt.get<FirestoreService>(),
-                _firebaseAuthService.getCurrentUser()!.uid,
-              ),
-              child: const MainNavigationView(),
-            ),
-            transitionsBuilder: AppAnimation.fade,
+      ShellRoute(
+        builder: (context, state, child) {
+          return BlocProvider(
+            create: (context) {
+              final groupCubit = GroupCubit(getIt.get<FirestoreService>());
+              final user = _firebaseAuthService.getCurrentUser();
+              if (user != null) {
+                groupCubit.listenToGroups(user.uid);
+              }
+              return groupCubit;
+            },
+            child: child,
           );
         },
-      ),
+        routes: [
+          GoRoute(
+            path: homeView,
+            builder: (context, state) {
+              var user = BlocProvider.of<AuthCubit>(context).getUser();
+              return HomeView(user: user);
+            },
+          ),
 
-      GoRoute(
-        path: groupInfoView,
+          GoRoute(
+            path: groupDetailsView,
 
-        builder: (context, state) =>
-            GroupInfoView(groupModel: state.extra as GroupModel),
+            builder: (context, state) =>
+                GroupDetailsView(groupModel: state.extra as GroupModel),
+          ),
+
+          GoRoute(
+            path: createGroupView,
+            builder: (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => CreateGroupCubit(
+                    _fireStoreService,
+                    _firebaseAuthService.getCurrentUser(),
+                  ),
+                ),
+                BlocProvider(create: (context) => MembersCubit()),
+              ],
+              child: const CreateGroupView(),
+            ),
+          ),
+
+          GoRoute(
+            path: groupSettingsView,
+
+            builder: (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) =>
+                      JoinGroupCubit(_fireStoreService, _firebaseAuthService),
+                ),
+                BlocProvider(create: (context) => MembersCubit()),
+              ],
+              child: GroupSettingsView(groupModel: state.extra as GroupModel),
+            ),
+          ),
+
+          GoRoute(
+            path: mainNavigationView,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                transitionDuration: const Duration(milliseconds: 300),
+                child: BlocProvider(
+                  create: (context) => InvitationsCubit(
+                    getIt.get<FirestoreService>(),
+                    _firebaseAuthService.getCurrentUser()!.uid,
+                  ),
+                  child: const MainNavigationView(),
+                ),
+                transitionsBuilder: AppAnimation.fade,
+              );
+            },
+          ),
+
+          GoRoute(
+            path: groupInfoView,
+
+            builder: (context, state) =>
+                GroupInfoView(groupModel: state.extra as GroupModel),
+          ),
+        ],
       ),
     ],
   );

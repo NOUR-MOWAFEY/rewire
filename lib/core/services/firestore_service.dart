@@ -19,6 +19,10 @@ class FirestoreService {
   UserModel? _currentUser;
   UserModel? get currentUser => _currentUser;
 
+  void clearCache() {
+    _currentUser = null;
+  }
+
   // =====================
   // Collections
   // =====================

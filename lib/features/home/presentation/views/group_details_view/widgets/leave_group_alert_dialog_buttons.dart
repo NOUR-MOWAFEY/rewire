@@ -9,7 +9,7 @@ import 'package:rewire/core/widgets/custom_loading.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 
-class LeaveGroupAlertDialogButtons extends StatelessWidget {
+class LeaveGroupAlertDialogButtons extends StatefulWidget {
   const LeaveGroupAlertDialogButtons({
     super.key,
     required this.isOwner,
@@ -20,15 +20,25 @@ class LeaveGroupAlertDialogButtons extends StatelessWidget {
   final GroupModel groupModel;
 
   @override
+  State<LeaveGroupAlertDialogButtons> createState() =>
+      _LeaveGroupAlertDialogButtonsState();
+}
+
+class _LeaveGroupAlertDialogButtonsState
+    extends State<LeaveGroupAlertDialogButtons> {
+  bool _isLoading = false;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CustomButton(title: 'Cancel', onPressed: () => context.pop()),
         const SizedBox(height: 8),
 
-        BlocConsumer<GroupCubit, GroupState>(
+        BlocListener<GroupCubit, GroupState>(
           listener: (context, state) {
             if (state is GroupLeaveSuccess) {
+              context.pop();
               context.go(AppRouter.mainNavigationView);
               ShowToastification.success(
                 context,
@@ -36,22 +46,20 @@ class LeaveGroupAlertDialogButtons extends StatelessWidget {
               );
             }
           },
-          builder: (context, state) {
-            if (state is GroupLeaveLoading || state is GroupLeaveSuccess) {
-              return CustomButton(
-                color: Colors.grey,
-                onPressed: () {},
-                child: CustomLoading(size: 20),
-              );
-            }
-            return CustomButton(
-              color: AppColors.red,
-              title: isOwner ? 'Delete and Leave' : 'Leave',
-              onPressed: () async {
-                context.read<GroupCubit>().leaveGroup(groupModel);
-              },
-            );
-          },
+          child: _isLoading
+              ? CustomButton(
+                  color: Colors.grey,
+                  onPressed: () {},
+                  child: CustomLoading(size: 20),
+                )
+              : CustomButton(
+                  color: AppColors.red,
+                  title: widget.isOwner ? 'Delete and Leave' : 'Leave',
+                  onPressed: () {
+                    setState(() => _isLoading = true);
+                    context.read<GroupCubit>().leaveGroup(widget.groupModel);
+                  },
+                ),
         ),
       ],
     );

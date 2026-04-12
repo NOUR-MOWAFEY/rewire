@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
 import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
@@ -20,9 +22,29 @@ class CreategroupButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
-      child: BlocBuilder<CreateGroupCubit, CreateGroupState>(
+      child: BlocConsumer<CreateGroupCubit, CreateGroupState>(
+        listener: (BuildContext context, CreateGroupState state) {
+          if (state is CreateGroupFaliure) {
+            context.pop();
+
+            if (state.errMessage == 'Connection timeout') {
+              ShowToastification.warning(
+                context,
+                'Connection timeout. Groups will sync when you\'re back online',
+              );
+              return;
+            }
+            ShowToastification.failure(context, 'Cannot create group');
+          }
+          if (state is CreateGroupSuccess) {
+            ShowToastification.success(context, 'Group created successfully');
+            context.pop();
+          }
+        },
         builder: (context, state) {
-          if (state is CreateGroupLoading || state is CreateGroupSuccess) {
+          if (state is CreateGroupLoading ||
+              state is CreateGroupSuccess ||
+              state is CreateGroupFaliure) {
             return const SizedBox();
           }
 

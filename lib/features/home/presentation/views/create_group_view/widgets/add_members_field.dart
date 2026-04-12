@@ -22,8 +22,9 @@ class AddMembersField extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: Row(
-        crossAxisAlignment: .stretch,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // ── Text field: does NOT rebuild on MembersCubit state changes ──
           Expanded(
             child: CustomTextFormField(
               title: 'Invite member email',
@@ -36,16 +37,19 @@ class AddMembersField extends StatelessWidget {
 
           const SizedBox(width: 6),
 
+          // ── Only the button reacts to state ─────────────────────────────
           BlocConsumer<MembersCubit, MembersState>(
+            // Only rebuild when state changes to/from loading
+            buildWhen: (prev, curr) =>
+                (prev is MembersLoading) != (curr is MembersLoading),
+
             listener: (context, state) {
               if (state is MembersError) {
                 ShowToastification.failure(context, state.errMassage);
               }
-
               if (state is MembersNotFound) {
                 ShowToastification.failure(context, state.errMessage);
               }
-
               if (state is MembersFound) {
                 context.read<MembersCubit>().members.add(state.user);
                 memberEmailController.clear();
@@ -62,9 +66,8 @@ class AddMembersField extends StatelessWidget {
 
               return CustomButton(
                 width: 75,
-
                 onPressed: () async {
-                  var email = memberEmailController.text.trim().toLowerCase();
+                  final email = memberEmailController.text.trim().toLowerCase();
 
                   if (email.isNotEmpty) {
                     if (!emailRegex.hasMatch(email)) {
@@ -79,7 +82,6 @@ class AddMembersField extends StatelessWidget {
                   }
 
                   if (!context.mounted) return;
-
                   log(context.read<MembersCubit>().members.toString());
                 },
 

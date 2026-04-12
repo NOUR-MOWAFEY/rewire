@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_styles.dart';
-import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/add_members_field.dart';
-import 'package:rewire/features/home/presentation/views/create_group_view/widgets/members_list_view.dart';
+import 'package:rewire/features/home/presentation/views/create_group_view/widgets/invited_group_members_list_view.dart';
 
 class AddMembersSection extends StatelessWidget {
   const AddMembersSection({super.key, required this.memberEmailController});
@@ -12,40 +11,36 @@ class AddMembersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: .start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // label
+        Padding(
+          padding: const EdgeInsets.only(left: 18),
+          child: Text(
+            'Invite Members',
+            style: AppStyles.textStyle14.copyWith(
+              color: AppColors.secondary2,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 8),
+
         AddMembersField(memberEmailController: memberEmailController),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
 
-        BlocBuilder<MembersCubit, MembersState>(
-          builder: (context, state) {
-            return Column(
-              crossAxisAlignment: .start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 22,
-                  ),
-                  child: Text(
-                    'Invite Members (${context.read<MembersCubit>().members.length})',
-                    style: AppStyles.textStyle18.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.48,
-                  child: MembersListView(
-                    users: context.read<MembersCubit>().members.toList(),
-                  ),
-                ),
-              ],
-            );
-          },
+        //  divider before the list
+        Divider(
+          height: 1,
+          thickness: 1,
+          color: AppColors.primary.withValues(alpha: 0.2),
         ),
+
+        const SizedBox(height: 4),
+
+        const InvitedGroupMembersListView(),
       ],
     );
   }

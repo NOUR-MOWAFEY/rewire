@@ -22,12 +22,15 @@ class HomeViewBody extends StatelessWidget {
         if (state is GroupSuccess) {
           return CustomScrollView(
             slivers: [
+              // app bar
               const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.only(top: 24, right: 24, left: 24),
                   child: HomeViewAppBar(),
                 ),
               ),
+
+              // groups list view
               SliverPadding(
                 padding: EdgeInsetsGeometry.symmetric(horizontal: 18),
                 sliver: SliverList(

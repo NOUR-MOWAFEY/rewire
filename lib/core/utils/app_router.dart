@@ -13,7 +13,6 @@ import 'package:rewire/features/home/presentation/views/group_info_view/group_in
 import 'package:rewire/features/home/presentation/views/group_settings_view/group_settings_view.dart';
 import 'package:rewire/features/home/presentation/views/main_navigation_view.dart';
 
-import '../../features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import '../../features/auth/presentation/view_model/user_cubit/user_cubit.dart';
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/register_view.dart';
@@ -89,8 +88,7 @@ abstract class AppRouter {
           GoRoute(
             path: homeView,
             builder: (context, state) {
-              var user = BlocProvider.of<AuthCubit>(context).getUser();
-              return HomeView(user: user);
+              return const HomeView();
             },
           ),
 

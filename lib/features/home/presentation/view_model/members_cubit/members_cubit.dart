@@ -15,6 +15,7 @@ class MembersCubit extends Cubit<MembersState> {
   MembersCubit([String? groupId]) : super(MembersInitial()) {
     // Check global cache for instant display
     final cachedUser = _firestoreService.currentUser;
+
     if (cachedUser != null) {
       members.add(cachedUser);
       _currentMembers = [cachedUser];
@@ -43,6 +44,10 @@ class MembersCubit extends Cubit<MembersState> {
   final _firebaseAuthService = getIt.get<FirebaseAuthService>();
 
   final Set<UserModel> members = {};
+
+  /// Cached current user ID — set once in [getCurrentUser] to avoid
+  /// calling into FirebaseAuth on every widget build via [isCurrentUser].
+  String? _currentUserId;
 
   List<UserModel> _currentMembers = [];
   List<InvitationModel> _currentInvitations = [];
@@ -132,6 +137,7 @@ class MembersCubit extends Cubit<MembersState> {
 
     try {
       final userId = _firebaseAuthService.getCurrentUser()!.uid;
+      _currentUserId = userId; // cache once
       userModel = await _firestoreService.getUser(userId);
       if (!isClosed) emit(MembersFound(user: userModel!));
     } catch (e) {
@@ -144,17 +150,13 @@ class MembersCubit extends Cubit<MembersState> {
   // check if current user
 
   bool isCurrentUser(UserModel user) {
+    // Use the cached id — avoids calling FirebaseAuth on every tile build
+    if (_currentUserId != null) return _currentUserId == user.uid;
     try {
-      final userId = _firebaseAuthService.getCurrentUser()!.uid;
-
-      if (userId == user.uid) {
-        return true;
-      }
+      return _firebaseAuthService.getCurrentUser()!.uid == user.uid;
     } catch (e) {
-      e.toString();
+      return false;
     }
-
-    return false;
   }
 
   // get member by email

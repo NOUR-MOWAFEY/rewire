@@ -7,7 +7,6 @@ import 'package:rewire/core/services/shared_preferences_service.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/data/models/day_model.dart';
-import 'package:rewire/features/home/data/models/user_model.dart';
 
 import '../../../../../core/services/firestore_service.dart';
 import '../../../data/models/group_model.dart';
@@ -39,7 +38,6 @@ class GroupCubit extends Cubit<GroupState> {
   }
 
   bool isLoading = false;
-  UserModel? userModel;
   final FirestoreService _firestoreService;
   StreamSubscription? _subscription;
 
@@ -76,7 +74,6 @@ class GroupCubit extends Cubit<GroupState> {
 
   void listenToGroups(String userId) async {
     _subscription?.cancel(); // Cancel previous if any
-    await getUserData(userId)?.then((value) => userModel = value);
     _subscription = _firestoreService.listenToGroups(userId).listen((groups) {
       if (!isClosed) emit(GroupSuccess(groups: groups));
     });
@@ -92,12 +89,6 @@ class GroupCubit extends Cubit<GroupState> {
       log(e.toString());
     }
     return null;
-  }
-
-  // get user data
-  Future<UserModel?>? getUserData(String userId) async {
-    var data = await _firestoreService.getUser(userId);
-    return data;
   }
 
   @override
@@ -153,12 +144,14 @@ class GroupCubit extends Cubit<GroupState> {
     if (!isClosed) emit(GroupLeaveLoading());
 
     try {
-      if (groupModel.createdBy == userModel!.uid) {
+      final userId = _firestoreService.currentUser!.uid;
+
+      if (groupModel.createdBy == userId) {
         await _firestoreService.deleteGroup(groupModel.id);
       } else {
         await _firestoreService.leaveGroup(
           groupId: groupModel.id,
-          userId: userModel!.uid,
+          userId: userId,
         );
       }
       if (!isClosed) emit(GroupLeaveSuccess());

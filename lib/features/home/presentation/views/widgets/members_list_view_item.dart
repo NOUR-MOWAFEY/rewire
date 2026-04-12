@@ -41,6 +41,7 @@ class MembersListViewItem extends StatelessWidget {
         subtitle: Text(
           member.email,
           style: AppStyles.textStyle12.copyWith(color: Colors.white60),
+          overflow: TextOverflow.ellipsis,
         ),
 
         trailing:

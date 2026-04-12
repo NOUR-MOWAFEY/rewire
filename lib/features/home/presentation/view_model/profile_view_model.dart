@@ -92,7 +92,10 @@ class ProfileViewModel extends ChangeNotifier {
   Future<void> loadProfileImage({int? imageUpdatedAt}) async {
     try {
       final userId = authService.getCurrentUser()!.uid;
-      final url = storageService.getUserImageUrl(userId, imageUpdatedAt: imageUpdatedAt);
+      final url = storageService.getUserImageUrl(
+        userId,
+        imageUpdatedAt: imageUpdatedAt,
+      );
       imageUrl = url.isNotEmpty ? url : null;
       notifyListeners();
     } catch (e) {
@@ -106,7 +109,10 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future<void> loadGroupImage(String groupId, {int? imageUpdatedAt}) async {
     try {
-      final url = storageService.getGroupImageUrl(groupId, imageUpdatedAt: imageUpdatedAt);
+      final url = storageService.getGroupImageUrl(
+        groupId,
+        imageUpdatedAt: imageUpdatedAt,
+      );
       imageUrl = url.isNotEmpty ? url : null;
       notifyListeners();
     } catch (e) {

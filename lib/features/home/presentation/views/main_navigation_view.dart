@@ -73,7 +73,10 @@ class _MainNavigationViewState extends State<MainNavigationView> {
       padding: EdgeInsets.symmetric(horizontal: 8),
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(60),
-        border: Border.all(color: AppColors.transparentPrimary, width: 2),
+        border: Border.all(
+          color: AppColors.transparentPrimary.withValues(alpha: 0.3),
+          width: 2,
+        ),
       ),
     );
   }

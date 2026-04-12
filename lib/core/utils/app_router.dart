@@ -14,6 +14,7 @@ import 'package:rewire/features/home/presentation/views/group_settings_view/grou
 import 'package:rewire/features/home/presentation/views/main_navigation_view.dart';
 
 import '../../features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
+import '../../features/auth/presentation/view_model/user_cubit/user_cubit.dart';
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/register_view.dart';
 import '../../features/home/presentation/views/group_details_view/group_details_view.dart';
@@ -63,15 +64,24 @@ abstract class AppRouter {
 
       ShellRoute(
         builder: (context, state, child) {
-          return BlocProvider(
-            create: (context) {
-              final groupCubit = GroupCubit(getIt.get<FirestoreService>());
-              final user = _firebaseAuthService.getCurrentUser();
-              if (user != null) {
-                groupCubit.listenToGroups(user.uid);
-              }
-              return groupCubit;
-            },
+          final userId = _firebaseAuthService.getCurrentUser()?.uid;
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) {
+                  final userCubit = UserCubit(getIt.get<FirestoreService>());
+                  if (userId != null) userCubit.listenToUser(userId);
+                  return userCubit;
+                },
+              ),
+              BlocProvider(
+                create: (context) {
+                  final groupCubit = GroupCubit(getIt.get<FirestoreService>());
+                  if (userId != null) groupCubit.listenToGroups(userId);
+                  return groupCubit;
+                },
+              ),
+            ],
             child: child,
           );
         },

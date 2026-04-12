@@ -150,6 +150,15 @@ class FirestoreService {
         );
   }
 
+  Stream<UserModel?> listenToUser(String userId) {
+    return _users.doc(userId).snapshots().map((snapshot) {
+      if (!snapshot.exists) return null;
+      final user = UserModel.fromMap(snapshot.id, snapshot.data()!);
+      _currentUser = user; // Update cache
+      return user;
+    });
+  }
+
   Future<void> deleteGroup(String habitId) async {
     final habitRef = _groups.doc(habitId);
 

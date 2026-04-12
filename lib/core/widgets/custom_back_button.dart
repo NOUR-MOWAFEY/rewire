@@ -10,8 +10,8 @@ class CustomBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 45,
-      width: 45,
+      height: 40,
+      width: 40,
 
       decoration: BoxDecoration(
         color: AppColors.transparentPrimary,
@@ -21,7 +21,11 @@ class CustomBackButton extends StatelessWidget {
         onPressed: () {
           context.pop();
         },
-        icon: const Icon(FontAwesomeIcons.chevronLeft, color: AppColors.white),
+        icon: const Icon(
+          FontAwesomeIcons.chevronLeft,
+          color: AppColors.white,
+          size: 20,
+        ),
       ),
     );
   }

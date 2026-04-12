@@ -19,9 +19,12 @@ class MembersListViewItemTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          member.name,
-          style: AppStyles.textStyle16.copyWith(fontWeight: FontWeight.bold),
+        Flexible(
+          child: Text(
+            member.name,
+            style: AppStyles.textStyle16.copyWith(fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
 
         context.read<MembersCubit>().isCurrentUser(member)

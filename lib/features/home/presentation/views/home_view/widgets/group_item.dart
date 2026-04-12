@@ -35,7 +35,7 @@ class GroupItem extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 6),
             width: double.infinity,
-            
+
             decoration: BoxDecoration(
               color: AppColors.transparentPrimary,
               borderRadius: BorderRadius.circular(28),
@@ -59,7 +59,7 @@ class GroupItem extends StatelessWidget {
               subtitle: Text(
                 groupModel.createdAt == null
                     ? 'Created at: '
-                    : 'Created at: ${DateFormat.yMd().format(groupModel.createdAt!.toDate())}',
+                    : 'Created at: ${DateFormat('dd/MM/yyyy').format(groupModel.createdAt!.toDate())}',
                 style: AppStyles.textStyle12.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

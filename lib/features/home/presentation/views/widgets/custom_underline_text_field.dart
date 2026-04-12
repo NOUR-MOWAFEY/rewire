@@ -13,6 +13,7 @@ class CustomUnderlineTextField extends StatefulWidget {
     this.inputType = InputType.name,
     this.maxLines = 1,
     this.suffixIcon,
+    this.isEnabled,
   });
 
   final String hintText;
@@ -22,6 +23,7 @@ class CustomUnderlineTextField extends StatefulWidget {
   final InputType inputType;
   final int maxLines;
   final Widget? suffixIcon;
+  final bool? isEnabled;
 
   @override
   State<CustomUnderlineTextField> createState() =>
@@ -42,7 +44,11 @@ class _CustomUnderlineTextFieldState extends State<CustomUnderlineTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(
+        color: widget.isEnabled != null ? Colors.grey.shade400 : null,
+      ),
       controller: widget.controller,
+      enabled: widget.isEnabled,
 
       maxLines: widget.maxLines,
       minLines: 1,
@@ -101,6 +107,9 @@ class _CustomUnderlineTextFieldState extends State<CustomUnderlineTextField> {
         hintText: widget.hintText,
         border: customUnderlineInputBorder(),
         focusedBorder: customUnderlineInputBorder(),
+        disabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
       ),
     );
   }

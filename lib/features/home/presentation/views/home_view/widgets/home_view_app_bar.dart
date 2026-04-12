@@ -7,7 +7,7 @@ import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
+import 'package:rewire/features/auth/presentation/view_model/user_cubit/user_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/home_view/widgets/join_group_alert_dialog.dart';
 
@@ -18,12 +18,23 @@ class HomeViewAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          'Hi, ${BlocProvider.of<GroupCubit>(context).userModel?.name.split(RegExp(r'\s+'))[0] ?? ''}',
-          style: AppStyles.textStyle28,
+        Expanded(
+          child: BlocBuilder<UserCubit, UserState>(
+            builder: (context, state) {
+              String name = '';
+              if (state is UserSuccess) {
+                name = state.user.name.split(RegExp(r'\s+'))[0];
+              }
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: PageScrollPhysics(),
+                child: Text('Hi, $name', style: AppStyles.textStyle28),
+              );
+            },
+          ),
         ),
 
-        const Spacer(),
+        const SizedBox(width: 4),
 
         CustomButton(
           width: 90,

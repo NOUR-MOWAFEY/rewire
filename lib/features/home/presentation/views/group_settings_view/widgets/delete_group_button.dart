@@ -43,7 +43,7 @@ class DeleteGroupButton extends StatelessWidget {
               )
             : CustomButton(
                 title: 'Delete group',
-                color: AppColors.red,
+                color: AppColors.red.withValues(alpha: 0.7),
                 onPressed: () {
                   showDialog(
                     context: context,

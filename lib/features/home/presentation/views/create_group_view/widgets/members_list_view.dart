@@ -26,8 +26,6 @@ class MembersListView extends StatelessWidget {
       itemCount: users.length,
 
       itemBuilder: (BuildContext context, int index) {
-
-
         return MembersListViewItem(
           member: users[index],
           isAdmin: groupModel?.createdBy == users[index].uid,

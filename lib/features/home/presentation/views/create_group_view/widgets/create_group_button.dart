@@ -9,10 +9,12 @@ class CreategroupButton extends StatelessWidget {
     super.key,
     required this.groupNameKey,
     required this.groupNameController,
+    required this.groupPasswordController,
   });
 
   final GlobalKey<FormState> groupNameKey;
   final TextEditingController groupNameController;
+  final TextEditingController groupPasswordController;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class CreategroupButton extends StatelessWidget {
 
               context.read<CreateGroupCubit>().createGroup(
                 title: groupNameController.text.trim(),
-                password: '',
+                password: groupPasswordController.text,
                 invitedUsers: context.read<MembersCubit>().members.toList(),
               );
             },

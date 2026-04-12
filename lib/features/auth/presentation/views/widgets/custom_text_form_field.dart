@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/validator.dart';
 
-class CustomTextFormField extends StatelessWidget {
+class CustomTextFormField extends StatefulWidget {
   const CustomTextFormField({
     super.key,
     required this.title,
@@ -27,29 +27,62 @@ class CustomTextFormField extends StatelessWidget {
   final bool border;
 
   @override
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  late bool obscureText;
+
+  @override
+  void initState() {
+    super.initState();
+    obscureText = widget.isPassword;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      enabled: isEnabled,
-      validator: inputType != null
-          ? (value) => validator(inputType!, value, passwordController)
+      enabled: widget.isEnabled,
+      validator: widget.inputType != null
+          ? (value) =>
+                validator(widget.inputType!, value, widget.passwordController)
           : null,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      controller: controller,
+      autovalidateMode: AutovalidateMode.onUserInteractionIfError,
+      controller: widget.controller,
       cursorColor: AppColors.white,
-      obscureText: isPassword,
-      keyboardType: isPassword
+      obscureText: obscureText,
+      keyboardType: widget.isPassword
           ? TextInputType.text
           : TextInputType.emailAddress,
-      textInputAction: isLastOne ? TextInputAction.done : TextInputAction.next,
+      textInputAction: widget.isLastOne
+          ? TextInputAction.done
+          : TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 16, right: 2),
-          child: Icon(icon, color: Colors.grey, size: 22),
+          child: Icon(widget.icon, color: Colors.grey, size: 20),
         ),
+        suffixIcon: widget.isPassword
+            ? Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  },
+                  child: Icon(
+                    !obscureText ? Icons.visibility : Icons.visibility_off,
+                    color: Colors.grey,
+                    size: 22,
+                  ),
+                ),
+              )
+            : null,
         fillColor: AppColors.transparentPrimary,
         filled: true,
-        hintText: title,
-        hintStyle: TextStyle(fontWeight: FontWeight.bold),
+        hintText: widget.title,
+        hintStyle: const TextStyle(fontWeight: FontWeight.bold),
         border: customOutlineInputBorder(),
         enabledBorder: customOutlineInputBorder(),
         focusedBorder: customOutlineInputBorder(),
@@ -60,9 +93,9 @@ class CustomTextFormField extends StatelessWidget {
   OutlineInputBorder customOutlineInputBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(32),
-      borderSide: border
-          ? BorderSide(color: AppColors.primary, width: 2)
-          : BorderSide(color: Colors.transparent),
+      borderSide: widget.border
+          ? const BorderSide(color: AppColors.primary, width: 2)
+          : const BorderSide(color: Colors.transparent),
     );
   }
 }

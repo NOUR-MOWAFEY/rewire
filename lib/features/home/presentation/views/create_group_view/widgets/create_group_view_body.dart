@@ -17,9 +17,11 @@ class CreateGroupViewBody extends StatelessWidget {
     required this.groupNameController,
     required this.groupNameKey,
     required this.memberEmailController,
+    required this.groupPasswordController,
   });
 
   final TextEditingController groupNameController;
+  final TextEditingController groupPasswordController;
   final GlobalKey<FormState> groupNameKey;
   final TextEditingController memberEmailController;
 
@@ -70,8 +72,19 @@ class CreateGroupViewBody extends StatelessWidget {
                     controller: groupNameController,
                     border: false,
                   ),
+                  const SizedBox(height: 12),
 
-                  const SizedBox(height: 18),
+                  CustomTextFormField(
+                    title: 'Group password',
+                    icon: FontAwesomeIcons.lock,
+                    inputType: InputType.password,
+                    isLastOne: false,
+                    controller: groupPasswordController,
+                    border: false,
+                    isPassword: true,
+                  ),
+
+                  const SizedBox(height: 24),
 
                   AddMembersSection(
                     memberEmailController: memberEmailController,

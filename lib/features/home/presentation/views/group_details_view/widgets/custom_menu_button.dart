@@ -9,6 +9,7 @@ import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cub
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/group_details_view/widgets/leave_group_alert_dialog.dart';
+import 'package:rewire/features/home/presentation/views/qr_view/qr_view.dart';
 
 class CustomMenuButton extends StatelessWidget {
   const CustomMenuButton({super.key, required this.groupModel});
@@ -50,6 +51,13 @@ class CustomMenuButton extends StatelessWidget {
 
           case MenubuttonItems.info:
             context.push(AppRouter.groupInfoView, extra: groupModel);
+          case MenubuttonItems.qr:
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => QrView(groupModel: groupModel),
+              ),
+            );
         }
       },
 
@@ -63,6 +71,12 @@ class CustomMenuButton extends StatelessWidget {
           const PopupMenuItem(
             value: MenubuttonItems.settings,
             child: PopupMenuItemText(title: 'Settings'),
+          ),
+
+        if (isOwner)
+          const PopupMenuItem(
+            value: MenubuttonItems.qr,
+            child: PopupMenuItemText(title: 'Share QR'),
           ),
 
         const PopupMenuItem(
@@ -87,4 +101,4 @@ class PopupMenuItemText extends StatelessWidget {
   }
 }
 
-enum MenubuttonItems { info, settings, leaveGroup }
+enum MenubuttonItems { info, settings, leaveGroup, qr }

@@ -5,7 +5,11 @@ import 'package:go_router/go_router.dart';
 import '../utils/app_colors.dart';
 
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({super.key});
+  const CustomBackButton({
+    super.key,
+    this.color = AppColors.transparentPrimary,
+  });
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +18,7 @@ class CustomBackButton extends StatelessWidget {
       width: 40,
 
       decoration: BoxDecoration(
-        color: AppColors.transparentPrimary,
+        color: color,
         borderRadius: BorderRadius.circular(32),
       ),
       child: IconButton(

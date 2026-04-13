@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/invitations_cubit/invitations_cubit.dart';
-import 'package:rewire/features/home/presentation/views/invitations_view/widgets/invitation_item.dart';
+import 'package:rewire/features/home/presentation/views/invitations_view/widgets/invitation_view_header.dart';
+import 'package:rewire/features/home/presentation/views/invitations_view/widgets/invitations_error_body.dart';
+import 'package:rewire/features/home/presentation/views/invitations_view/widgets/invitations_list.dart';
+import 'package:rewire/features/home/presentation/views/invitations_view/widgets/invitations_list_empty.dart';
 
 class InvitationsViewBody extends StatelessWidget {
   const InvitationsViewBody({super.key});
@@ -13,51 +15,32 @@ class InvitationsViewBody extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 60),
-          const Text('Group Invitations', style: AppStyles.textStyle28),
-          const SizedBox(height: 24),
+      child: CustomScrollView(
+        slivers: [
+          // header
+          const SliverToBoxAdapter(child: InvitationsViewHeader()),
 
-          Expanded(
-            child: BlocBuilder<InvitationsCubit, InvitationsState>(
-              builder: (context, state) {
-                if (state is InvitationsSuccess) {
-                  if (state.invitations.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'No pending invitations',
-                        style: TextStyle(color: Colors.white60),
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: state.invitations.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          InvitationItem(invitation: state.invitations[index]),
-                          index == state.invitations.length - 1
-                              ? const SizedBox(height: 90)
-                              : const SizedBox(height: 0),
-                        ],
-                      );
-                    },
-                  );
-                } else if (state is InvitationsFailure) {
-                  return Center(
-                    child: Text(
-                      state.errMessage,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  );
-                } else {
-                  return const CustomLoading();
+          BlocBuilder<InvitationsCubit, InvitationsState>(
+            builder: (context, state) {
+              if (state is InvitationsSuccess) {
+                if (state.invitations.isEmpty) {
+                  // if list is empty
+                  return const InvitationsListEmpty();
                 }
-              },
-            ),
+
+                // invitations list
+                return InvitationsList(invitations: state.invitations);
+              } else if (state is InvitationsFailure) {
+                // if error
+                return InvitationsErrorBody(errMessage: state.errMessage);
+              } else {
+                // if laoding
+                return const SliverFillRemaining(
+                  hasScrollBody: false, // IMPORTANT
+                  child: Center(child: CustomLoading()),
+                );
+              }
+            },
           ),
         ],
       ),

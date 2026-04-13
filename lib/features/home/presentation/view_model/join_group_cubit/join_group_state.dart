@@ -6,9 +6,12 @@ class JoinGroupInitial extends JoinGroupState {}
 
 class JoinGroupLoading extends JoinGroupState {}
 
+class JoinGroupRequestFailed extends JoinGroupState {
+  final String errMessage;
+  JoinGroupRequestFailed(this.errMessage);
+}
 
 class JoinGroupJoined extends JoinGroupState {}
-
 
 class JoinCodeLoaded extends JoinGroupState {
   final String joinCode;

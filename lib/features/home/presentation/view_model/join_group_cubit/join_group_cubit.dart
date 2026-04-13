@@ -35,6 +35,25 @@ class JoinGroupCubit extends Cubit<JoinGroupState> {
     }
   }
 
+  Future<void> joinGroupViaId({required String groupId}) async {
+    emit(JoinGroupLoading());
+
+    try {
+      final userId = _authService.getCurrentUser()!.uid;
+
+      await _firestoreService.joinGroupViaId(groupId: groupId, userId: userId);
+
+      emit(JoinGroupJoined());
+    } catch (e) {
+      log(e.toString());
+      if (!isClosed) emit(JoinGroupRequestFailed(e.toString()));
+
+      await Future.delayed(Duration(seconds: 3));
+
+      if (!isClosed) emit(JoinGroupInitial());
+    }
+  }
+
   Future<void> getJoinCode(String habitId) async {
     emit(JoinGroupLoading());
 

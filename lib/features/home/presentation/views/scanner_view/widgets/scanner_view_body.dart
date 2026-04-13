@@ -1,7 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/utils/app_styles.dart';
+import 'package:rewire/core/utils/show_toastification.dart';
+import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
+import 'package:rewire/features/home/presentation/views/scanner_view/widgets/qr_scanner.dart';
 import 'package:rewire/features/home/presentation/views/scanner_view/widgets/scanner_view_app_bar.dart';
 
 class ScannerViewBody extends StatelessWidget {
@@ -9,20 +12,46 @@ class ScannerViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Scanner
-        MobileScanner(
-          tapToFocus: true,
-          onDetect: (result) {
-            log(result.barcodes.first.rawValue.toString());
-            // context.pop();
-          },
-        ),
+    return BlocConsumer<JoinGroupCubit, JoinGroupState>(
+      listener: (context, state) {
+        if (state is JoinGroupJoined) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
 
-        // Appbar
-        const ScannerViewAppBar(),
-      ],
+        if (state is JoinGroupRequestFailed) {
+          ShowToastification.failure(context, state.errMessage);
+        }
+      },
+      builder: (context, state) {
+        // if loading
+        if (state is JoinGroupLoading) {
+          return const CustomLoading();
+        }
+
+        // if failure: while waiting 3 seconds
+        if (state is JoinGroupRequestFailed) {
+          return const Column(
+            mainAxisAlignment: .center,
+            children: [
+              CustomLoading(),
+
+              SizedBox(height: 16),
+
+              Text('Wait and try again', style: AppStyles.textStyle22),
+            ],
+          );
+        }
+
+        return const Stack(
+          children: [
+            // Scanner
+            QrScanner(),
+
+            // Appbar
+            ScannerViewAppBar(),
+          ],
+        );
+      },
     );
   }
 }

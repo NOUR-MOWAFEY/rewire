@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rewire/core/utils/app_styles.dart';
+import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/home_view/widgets/join_group_form_buttons.dart';
 import 'package:rewire/features/home/presentation/views/scanner_view/scanner_view.dart';
 import 'package:rewire/features/home/presentation/views/widgets/custom_underline_text_field.dart';
@@ -42,9 +44,14 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
 
             IconButton(
               onPressed: () {
+                final joinGroupCubit = context.read<JoinGroupCubit>();
+                
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ScannerView()),
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ScannerView(joinGroupCubit: joinGroupCubit),
+                  ),
                 );
               },
               icon: const Icon(FontAwesomeIcons.qrcode),

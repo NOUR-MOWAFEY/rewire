@@ -639,6 +639,30 @@ class FirestoreService {
     await createDayIfNotExist(habitId: doc.id, userId: userId);
   }
 
+  Future<void> joinGroupViaId({
+    required String groupId,
+    required String userId,
+  }) async {
+    final docRef = _groups.doc(groupId);
+    final doc = await docRef.get();
+
+    if (!doc.exists) {
+      throw ("Group not found");
+    }
+
+    final data = doc.data()!;
+
+    if ((data['members'] as List).contains(userId)) {
+      throw ("You already joined this group");
+    }
+
+    await docRef.update({
+      'members': FieldValue.arrayUnion([userId]),
+    });
+
+    await createDayIfNotExist(habitId: groupId, userId: userId);
+  }
+
   Future<String> generateUniqueJoinCode() async {
     while (true) {
       final code = generateJoinCode();

@@ -5,8 +5,8 @@ import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/features/home/presentation/views/home_view/home_view.dart';
 import 'package:rewire/features/home/presentation/views/invitations_view/invitations_view.dart';
+import 'package:rewire/features/home/presentation/views/leaderboard_view/leaderboard_view.dart';
 import 'package:rewire/features/home/presentation/views/profile_view/profile_view.dart';
-import 'package:rewire/features/home/presentation/views/settings_view.dart';
 
 class MainNavigationView extends StatefulWidget {
   const MainNavigationView({super.key});
@@ -32,15 +32,15 @@ class _MainNavigationViewState extends State<MainNavigationView> {
 
   List<Widget> _screens() => const [
     HomeView(),
+    LeaderboardView(),
     InvitationsView(),
-    SettingsView(),
     ProfileView(),
   ];
 
   List<PersistentBottomNavBarItem> _items() => [
     _persistentBottomNavBarItem(FontAwesomeIcons.houseChimney, 'Home'),
+    _persistentBottomNavBarItem(FontAwesomeIcons.rankingStar, 'Leaderboard'),
     _persistentBottomNavBarItem(FontAwesomeIcons.solidBell, 'Invitations'),
-    _persistentBottomNavBarItem(FontAwesomeIcons.gear, 'Settings'),
     _persistentBottomNavBarItem(FontAwesomeIcons.solidCircleUser, 'Profile'),
   ];
 

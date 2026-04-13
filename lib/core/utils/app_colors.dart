@@ -20,6 +20,15 @@ class AppColors {
   static const red = Colors.red;
   static const green = Colors.green;
 
+  // Gold
+  static const Color gold = Color(0xFFFFD700);
+
+  // Silver
+  static const Color silver = Color(0xFFC0C0C0);
+
+  // Bronze
+  static const Color bronze = Color(0xFFCD7F32);
+
   // gradient colors for background
   static const List<Color> gradientColors = [
     AppColors.background3,

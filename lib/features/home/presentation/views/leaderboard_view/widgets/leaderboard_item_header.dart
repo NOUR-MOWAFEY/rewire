@@ -11,7 +11,7 @@ class LeaderboardItemHeader extends StatelessWidget {
     return Align(
       alignment: .topLeft,
       child: Padding(
-        padding: const EdgeInsets.only(left: 6, top: 18),
+        padding: const EdgeInsets.only(left: 20, top: 18, right: 20),
         child: Text(
           groupName,
           style: AppStyles.textStyle22.copyWith(

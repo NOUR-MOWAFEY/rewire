@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rewire/core/services/firestore_service.dart';
 import 'package:rewire/core/utils/app_colors.dart';
+import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/leaderboard_cubit/leaderboard_cubit.dart';
@@ -21,16 +23,21 @@ class LeaderboardItem extends StatelessWidget {
             ..getLeaderboard(groupModel.id),
 
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6),
+        // padding: const EdgeInsets.symmetric(horizontal: 12),
+        margin: const EdgeInsets.symmetric(horizontal: 12),
         height: 290,
         width: double.infinity,
         clipBehavior: Clip.antiAlias,
+
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28),
           color: AppColors.transparentPrimary.withValues(alpha: 0.2),
         ),
 
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(28),
+          onTap: () =>
+              context.push(AppRouter.groupDetailsView, extra: groupModel),
           child: Column(
             children: [
               LeaderboardItemHeader(groupName: groupModel.name),

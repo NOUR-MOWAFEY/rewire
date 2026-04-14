@@ -5,6 +5,7 @@ class GroupModel {
   final String name;
   final String createdBy;
   final List<String> members;
+  final Map<String, num> memberCommitments;
   final Timestamp? createdAt;
   final bool isActive;
 
@@ -18,12 +19,13 @@ class GroupModel {
     required this.name,
     required this.createdBy,
     required this.members,
+    Map<String, num>? memberCommitments,
     this.createdAt,
     required this.isActive,
     required this.joinCode,
     required this.passwordHash,
     this.imageUpdatedAt,
-  });
+  }) : memberCommitments = memberCommitments ?? {};
 
   factory GroupModel.fromMap(Map<String, dynamic> map) {
     return GroupModel(
@@ -31,6 +33,7 @@ class GroupModel {
       name: map['name'] ?? '',
       createdBy: map['createdBy'],
       members: List<String>.from(map['members'] ?? []),
+      memberCommitments: Map<String, num>.from(map['memberCommitments'] ?? {}),
       createdAt: map['createdAt'],
       isActive: map['isActive'] ?? true,
       joinCode: map['joinCode'] ?? '',
@@ -45,6 +48,7 @@ class GroupModel {
       'name': name,
       'createdBy': createdBy,
       'members': members,
+      'memberCommitments': memberCommitments,
       'createdAt': FieldValue.serverTimestamp(),
       'isActive': isActive,
       'joinCode': joinCode,
@@ -58,6 +62,7 @@ class GroupModel {
     String? name,
     String? createdBy,
     List<String>? members,
+    Map<String, num>? memberCommitments,
     bool? isActive,
     String? joinCode,
     String? passwordHash,
@@ -68,6 +73,7 @@ class GroupModel {
       name: name ?? this.name,
       createdBy: createdBy ?? this.createdBy,
       members: members ?? this.members,
+      memberCommitments: memberCommitments ?? this.memberCommitments,
       createdAt: createdAt,
       isActive: isActive ?? this.isActive,
       joinCode: joinCode ?? this.joinCode,

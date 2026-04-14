@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/core/utils/app_styles.dart';
+import 'package:rewire/features/home/data/models/user_model.dart';
+import 'package:rewire/features/home/presentation/views/leaderboard_view/widgets/leaderboard_item_member_image.dart';
+import 'package:rewire/features/home/presentation/views/leaderboard_view/widgets/leaderboard_item_member_name.dart';
+import 'package:rewire/features/home/presentation/views/leaderboard_view/widgets/leaderboard_item_member_points.dart';
 
 class LeaderboardStageData extends StatelessWidget {
-  const LeaderboardStageData({super.key, required this.crownColor});
+  const LeaderboardStageData({
+    super.key,
+    required this.crownColor,
+    required this.user,
+    required this.score,
+  });
 
   final Color crownColor;
+  final UserModel user;
+  final num score;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: .center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 20),
@@ -21,14 +30,13 @@ class LeaderboardStageData extends StatelessWidget {
           ),
         ),
 
-        CircleAvatar(backgroundImage: AssetImage('assets/images/pic.png')),
+        LeaderboardItemMemberImage(user: user),
 
         const SizedBox(height: 4),
 
-        Text(
-          'Nour Mowafey',
-          style: AppStyles.textStyle12.copyWith(color: AppColors.white),
-        ),
+        LeaderboardItemMemberName(user: user),
+
+        LeaderboardItemMemberPoints(score: score),
       ],
     );
   }

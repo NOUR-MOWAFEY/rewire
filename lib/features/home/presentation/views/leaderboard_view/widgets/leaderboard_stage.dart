@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/views/leaderboard_view/widgets/leaderboard_stage_data.dart';
 
 class LeaderboardStage extends StatelessWidget {
@@ -8,53 +9,59 @@ class LeaderboardStage extends StatelessWidget {
     required this.bgColor,
     required this.crownColor,
     required this.height,
-    required this.borderColor,
+    this.borderColor,
     required this.iconAtTheTop,
+    required this.user,
+    required this.score,
   });
 
   final Color bgColor;
-  final Color borderColor;
+  final Color? borderColor;
   final Color crownColor;
   final double height;
   final IconData iconAtTheTop;
+  final UserModel user;
+  final num score;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
-        crossAxisAlignment: .stretch,
-
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          // hashtag + number
           Row(
-            mainAxisAlignment: .center,
-
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(FontAwesomeIcons.hashtag, size: 22),
               Icon(iconAtTheTop, size: 22),
             ],
           ),
-
           const SizedBox(height: 8),
-
           Container(
             height: height,
-
-            decoration: BoxDecoration(
-              color: bgColor,
-
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(8),
-              ),
-
-              border: Border.all(color: borderColor, width: 2),
+            decoration: _leaderboardStageDecoration(),
+            child: LeaderboardStageData(
+              crownColor: crownColor,
+              user: user,
+              score: score,
             ),
-
-            child: LeaderboardStageData(crownColor: crownColor),
           ),
         ],
       ),
+    );
+  }
+
+  BoxDecoration _leaderboardStageDecoration() {
+    return BoxDecoration(
+      color: bgColor,
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(8),
+        topRight: Radius.circular(8),
+      ),
+      border: borderColor != null
+          ? Border.all(color: borderColor!, width: 2)
+          : null,
     );
   }
 }

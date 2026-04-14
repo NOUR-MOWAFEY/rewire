@@ -17,11 +17,11 @@ class PopupMenuCheckInIcons extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 12),
 
       child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: .center,
 
         children: [
           PopupMenuCheckInIconbutton(icon: FontAwesomeIcons.circleCheck),
-          PopupMenuCheckInIconbutton(icon: FontAwesomeIcons.circleDot),
+          SizedBox(width: 12),
           PopupMenuCheckInIconbutton(icon: FontAwesomeIcons.circleXmark),
         ],
       ),
@@ -45,10 +45,7 @@ class PopupMenuCheckInIconbutton extends StatelessWidget {
             daysCubit.updateCheckInStatus(userId, CheckInStatus.success);
             context.pop();
             break;
-          case FontAwesomeIcons.circleDot:
-            daysCubit.updateCheckInStatus(userId, CheckInStatus.pending);
-            context.pop();
-            break;
+
           case FontAwesomeIcons.circleXmark:
             daysCubit.updateCheckInStatus(userId, CheckInStatus.fail);
             context.pop();
@@ -56,7 +53,7 @@ class PopupMenuCheckInIconbutton extends StatelessWidget {
           default:
         }
       },
-      icon: Icon(icon, size: 36, color: AppColors.white),
+      icon: Icon(icon, size: 38, color: AppColors.white),
     );
   }
 }

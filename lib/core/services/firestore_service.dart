@@ -127,12 +127,17 @@ class FirestoreService {
     return query.docs.map((doc) => GroupModel.fromMap(doc.data())).toList();
   }
 
+  List<GroupModel> filterGroupsWithLeaderboard(List<GroupModel> groups) {
+    return groups.where((group) => group.members.length > 1).toList();
+  }
+
   Future<void> addMembers({
     required String groupId,
     required String userId,
   }) async {
     await _groups.doc(groupId).update({
       'members': FieldValue.arrayUnion([userId]),
+      'memberCommitments.$userId': 0,
     });
 
     await createDayIfNotExist(habitId: groupId, userId: userId);
@@ -270,6 +275,7 @@ class FirestoreService {
           final checkInRef = dayRef.collection('checkins').doc(memberId);
           final checkIn = CheckInModel(
             userId: memberId,
+            groupId: habitId,
             date: currentDate.toIso8601String(),
             status: CheckInStatus.pending,
             createdAt: currentDate,
@@ -327,6 +333,7 @@ class FirestoreService {
         final checkInRef = dayRef.collection('checkins').doc(memberId);
         final checkIn = CheckInModel(
           userId: memberId,
+          groupId: habitId,
           date: now.toIso8601String(),
           status: CheckInStatus.pending,
           createdAt: now,
@@ -346,6 +353,7 @@ class FirestoreService {
           final checkInRef = dayRef.collection('checkins').doc(memberId);
           final checkIn = CheckInModel(
             userId: memberId,
+            groupId: habitId,
             date: now.toIso8601String(),
             status: CheckInStatus.pending,
             createdAt: now,
@@ -395,6 +403,32 @@ class FirestoreService {
         .doc(userId);
 
     await checkInRef.update({'status': status.name});
+    // Recalculate member commitment score / percentage
+    await _recalculateCommitmentPercentage(habitId, userId);
+  }
+
+  Future<void> _recalculateCommitmentPercentage(String habitId, String userId) async {
+    final days = await _groups.doc(habitId).collection('days').get();
+    
+    int successCount = 0;
+    int totalDays = days.docs.length;
+    
+    if (totalDays == 0) return;
+    
+    for (var dayDoc in days.docs) {
+      final checkInDoc = await dayDoc.reference.collection('checkins').doc(userId).get();
+      if (checkInDoc.exists) {
+        if (checkInDoc.data()?['status'] == CheckInStatus.success.name) {
+          successCount++;
+        }
+      }
+    }
+    
+    num points = successCount * 10;
+    
+    await _groups.doc(habitId).update({
+      'memberCommitments.$userId': points,
+    });
   }
 
   // update message
@@ -542,6 +576,7 @@ class FirestoreService {
       // Add to members array in group
       await _groups.doc(invitation.groupId).update({
         'members': FieldValue.arrayUnion([invitation.receiverId]),
+        'memberCommitments.${invitation.receiverId}': 0,
       });
 
       // Initialize check-ins
@@ -634,6 +669,7 @@ class FirestoreService {
 
     await doc.reference.update({
       'members': FieldValue.arrayUnion([userId]),
+      'memberCommitments.$userId': 0,
     });
 
     await createDayIfNotExist(habitId: doc.id, userId: userId);
@@ -658,6 +694,7 @@ class FirestoreService {
 
     await docRef.update({
       'members': FieldValue.arrayUnion([userId]),
+      'memberCommitments.$userId': 0,
     });
 
     await createDayIfNotExist(habitId: groupId, userId: userId);
@@ -699,6 +736,7 @@ class FirestoreService {
   }) async {
     await _groups.doc(groupId).update({
       'members': FieldValue.arrayRemove([userId]),
+      'memberCommitments.$userId': FieldValue.delete(),
     });
   }
 
@@ -708,6 +746,7 @@ class FirestoreService {
   }) async {
     await _groups.doc(groupId).update({
       'members': FieldValue.arrayRemove([userId]),
+      'memberCommitments.$userId': FieldValue.delete(),
     });
   }
 

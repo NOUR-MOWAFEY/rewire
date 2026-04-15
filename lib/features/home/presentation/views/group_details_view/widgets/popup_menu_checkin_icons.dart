@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rewire/core/widgets/custom_button.dart';
 import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/presentation/view_model/days_cubit/days_cubit.dart';
@@ -18,10 +19,9 @@ class PopupMenuCheckInIcons extends StatelessWidget {
 
       child: const Row(
         mainAxisAlignment: .center,
-
         children: [
           PopupMenuCheckInIconbutton(icon: FontAwesomeIcons.circleCheck),
-          SizedBox(width: 12),
+          SizedBox(width: 6),
           PopupMenuCheckInIconbutton(icon: FontAwesomeIcons.circleXmark),
         ],
       ),
@@ -35,25 +35,27 @@ class PopupMenuCheckInIconbutton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        final userId = context.read<AuthCubit>().getUser()!.uid;
-        final daysCubit = context.read<DaysCubit>();
+    return Expanded(
+      child: CustomButton(
+        onPressed: () {
+          final userId = context.read<AuthCubit>().getUser()!.uid;
+          final daysCubit = context.read<DaysCubit>();
 
-        switch (icon) {
-          case FontAwesomeIcons.circleCheck:
-            daysCubit.updateCheckInStatus(userId, CheckInStatus.success);
-            context.pop();
-            break;
+          switch (icon) {
+            case FontAwesomeIcons.circleCheck:
+              daysCubit.updateCheckInStatus(userId, CheckInStatus.success);
+              context.pop();
+              break;
 
-          case FontAwesomeIcons.circleXmark:
-            daysCubit.updateCheckInStatus(userId, CheckInStatus.fail);
-            context.pop();
-            break;
-          default:
-        }
-      },
-      icon: Icon(icon, size: 38, color: AppColors.white),
+            case FontAwesomeIcons.circleXmark:
+              daysCubit.updateCheckInStatus(userId, CheckInStatus.fail);
+              context.pop();
+              break;
+            default:
+          }
+        },
+        child: Icon(icon, size: 30, color: AppColors.white),
+      ),
     );
   }
 }

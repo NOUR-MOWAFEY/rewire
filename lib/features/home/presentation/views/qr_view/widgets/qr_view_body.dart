@@ -16,15 +16,28 @@ class QrViewBody extends StatelessWidget {
         crossAxisAlignment: .start,
 
         children: [
-          Text(groupModel.name, style: AppStyles.textStyle24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 48),
+            child: Text(groupModel.name, style: AppStyles.textStyle24),
+          ),
 
           const SizedBox(height: 8),
 
-          QrImageView(
-            data: groupModel.id,
-            version: QrVersions.auto,
-            size: MediaQuery.of(context).size.width - 50,
-            backgroundColor: AppColors.white,
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(28),
+              ),
+
+              padding: const EdgeInsets.all(12),
+
+              child: QrImageView(
+                data: groupModel.id,
+                version: QrVersions.auto,
+                size: MediaQuery.of(context).size.width - 80,
+              ),
+            ),
           ),
         ],
       ),

@@ -62,7 +62,7 @@ class GroupSettingsViewBody extends StatelessWidget {
               builder: (context, state) => context.read<GroupCubit>().isLoading
                   ? CustomUpdateButton(title: 'Loading ..', isEnabled: false)
                   : CustomUpdateButton(
-                      onPressed: () async => updateButtonOnPressed(context),
+                      onPressed: () async => _updateButtonOnPressed(context),
                     ),
             ),
 
@@ -76,7 +76,7 @@ class GroupSettingsViewBody extends StatelessWidget {
     );
   }
 
-  Future<void> updateButtonOnPressed(BuildContext context) async {
+  Future<void> _updateButtonOnPressed(BuildContext context) async {
     if (!updateGroupDataKey.currentState!.validate()) {
       return;
     }
@@ -93,7 +93,6 @@ class GroupSettingsViewBody extends StatelessWidget {
               : groupPasswordController.text,
         )
         .then((value) {
-          groupNameController.clear();
           groupPasswordController.clear();
         });
   }

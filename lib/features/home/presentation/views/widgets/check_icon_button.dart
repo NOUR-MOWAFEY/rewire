@@ -24,42 +24,47 @@ class CheckIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        final daysCubit = context.read<DaysCubit>();
-        final membersCubit = context.read<MembersCubit>();
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: IconButton(
+        onPressed: () {
+          final daysCubit = context.read<DaysCubit>();
+          final membersCubit = context.read<MembersCubit>();
 
-        showPopover(
-          context: context,
-          bodyBuilder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: daysCubit),
-              BlocProvider.value(value: membersCubit),
-            ],
-            child: PopUpMenu(
-              checkIn: checkIn,
-              isCurrentUser: isCurrentUser,
-              isTodayItem: isTodayItem,
+          showPopover(
+            context: context,
+            bodyBuilder: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: daysCubit),
+                BlocProvider.value(value: membersCubit),
+              ],
+              child: PopUpMenu(
+                checkIn: checkIn,
+                isCurrentUser: isCurrentUser,
+                isTodayItem: isTodayItem,
+              ),
             ),
-          ),
-          direction: PopoverDirection.bottom,
-          height: isCurrentUser ? 205 : 160,
-          width: 280,
-          radius: 28,
-          arrowDyOffset: -4,
-          backgroundColor: AppColors.alertDialogColor,
-        );
-      },
-      icon: Icon(
-        switch (checkIn.status) {
-          CheckInStatus.success => FontAwesomeIcons.circleCheck,
-
-          CheckInStatus.fail => FontAwesomeIcons.circleXmark,
-
-          CheckInStatus.pending => FontAwesomeIcons.circleDot,
+            direction: PopoverDirection.bottom,
+            height: isCurrentUser && isTodayItem ? 200 : 160,
+            width: 250,
+            radius: 28,
+            arrowDyOffset: -10,
+            backgroundColor: AppColors.alertDialogColor,
+          );
         },
-        size: 38,
-        color: isCurrentUser ? const Color.fromARGB(255, 128, 227, 209) : color,
+        icon: Icon(
+          switch (checkIn.status) {
+            CheckInStatus.success => FontAwesomeIcons.circleCheck,
+
+            CheckInStatus.fail => FontAwesomeIcons.circleXmark,
+
+            CheckInStatus.pending => FontAwesomeIcons.circleDot,
+          },
+          size: 38,
+          color: isCurrentUser
+              ? const Color.fromARGB(255, 128, 227, 209)
+              : color,
+        ),
       ),
     );
   }

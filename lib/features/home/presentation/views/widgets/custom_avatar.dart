@@ -47,13 +47,19 @@ class CustomAvatar extends StatelessWidget {
                     await FirebaseFirestore.instance
                         .collection('habits')
                         .doc(groupId)
-                        .update({'imageUpdatedAt': DateTime.now().millisecondsSinceEpoch});
+                        .update({
+                          'imageUpdatedAt':
+                              DateTime.now().millisecondsSinceEpoch,
+                        });
                   } else if (imageType == ImageType.user) {
                     final userId = viewModel.authService.getCurrentUser()!.uid;
                     await FirebaseFirestore.instance
                         .collection('users')
                         .doc(userId)
-                        .update({'imageUpdatedAt': DateTime.now().millisecondsSinceEpoch});
+                        .update({
+                          'imageUpdatedAt':
+                              DateTime.now().millisecondsSinceEpoch,
+                        });
                   }
                 } catch (e) {
                   // Ignore errors

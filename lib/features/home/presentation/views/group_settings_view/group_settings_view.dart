@@ -76,7 +76,8 @@ class _GroupSettingsViewState extends State<GroupSettingsView> {
       authService: getIt.get<FirebaseAuthService>(),
     );
 
-    groupNameController = TextEditingController();
+    groupNameController = TextEditingController()
+      ..text = widget.groupModel.name;
     groupPasswordController = TextEditingController();
     updateGroupDataKey = GlobalKey<FormState>();
 

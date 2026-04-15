@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/widgets/custom_back_button.dart';
 import 'package:rewire/core/widgets/view_background_container.dart';
@@ -14,7 +15,7 @@ class GroupInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewBackGroundContainer(
-      appBar: const GroupInfoViewAppBar(),
+      appBar: GroupInfoViewAppBar(groupModel: groupModel),
       viewBody: BlocProvider(
         create: (context) => MembersCubit(groupModel.id),
         child: GroupInfoViewBody(groupModel: groupModel),
@@ -25,7 +26,8 @@ class GroupInfoView extends StatelessWidget {
 
 class GroupInfoViewAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const GroupInfoViewAppBar({super.key});
+  const GroupInfoViewAppBar({super.key, required this.groupModel});
+  final GroupModel groupModel;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,17 @@ class GroupInfoViewAppBar extends StatelessWidget
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+          ),
+
+          Text(
+            groupModel.createdAt == null
+                ? 'Created at: '
+                : DateFormat(
+                    'dd/MM/yyyy',
+                  ).format(groupModel.createdAt!.toDate()),
+            style: AppStyles.textStyle16.copyWith(fontWeight: FontWeight.bold),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),

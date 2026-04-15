@@ -8,12 +8,8 @@ import 'package:rewire/features/home/presentation/views/widgets/check_icon_butto
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_styles.dart';
 
-class GroupMembersCheckins extends StatelessWidget {
-  const GroupMembersCheckins({
-    super.key,
-    required this.date,
-    required this.dayCheckins,
-  });
+class DayItem extends StatelessWidget {
+  const DayItem({super.key, required this.date, required this.dayCheckins});
 
   final String date;
   final List<CheckInModel> dayCheckins;
@@ -59,8 +55,9 @@ class GroupMembersCheckins extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10, bottom: 4),
           child: Text(date, style: AppStyles.textStyle14),
         ),
+
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           height: containerHeight,
           decoration: BoxDecoration(
             color: AppColors.transparentPrimary,
@@ -105,13 +102,11 @@ class GroupMembersCheckins extends StatelessWidget {
             isTodayItem: isTodayItem,
           );
         },
-        separatorBuilder: (context, index) => const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 2),
-          child: VerticalDivider(
-            color: AppColors.primary,
-            indent: 10,
-            endIndent: 10,
-          ),
+        separatorBuilder: (context, index) => VerticalDivider(
+          color: AppColors.primary,
+          indent: 16,
+          endIndent: 16,
+          width: 14,
         ),
       ),
     );

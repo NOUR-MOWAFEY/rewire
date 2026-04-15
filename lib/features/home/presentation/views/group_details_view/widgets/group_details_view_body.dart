@@ -4,7 +4,7 @@ import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/days_cubit/days_cubit.dart';
 
-import 'group_members_checkins.dart';
+import 'day_item.dart';
 
 class GroupDetailsViewBody extends StatelessWidget {
   const GroupDetailsViewBody({super.key});
@@ -33,10 +33,7 @@ class GroupDetailsViewBody extends StatelessWidget {
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 14),
-                  child: GroupMembersCheckins(
-                    date: dayString,
-                    dayCheckins: dayCheckins,
-                  ),
+                  child: DayItem(date: dayString, dayCheckins: dayCheckins),
                 );
               },
             );

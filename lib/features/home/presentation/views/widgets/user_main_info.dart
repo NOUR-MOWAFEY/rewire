@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
+import 'package:rewire/features/home/presentation/views/widgets/member_item_image.dart';
 
 import '../../../../../core/utils/app_styles.dart';
 
@@ -20,11 +21,7 @@ class UserMainInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: Colors.transparent,
-          child: SvgPicture.asset('assets/images/pic.svg'),
-        ),
+        MemberItemImage(user: userModel, radius: 30),
         const SizedBox(width: 8),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -5,6 +5,7 @@ import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
+import 'package:rewire/features/home/presentation/views/widgets/member_item_image.dart';
 import 'package:rewire/features/home/presentation/views/widgets/members_list_view_item_icon.dart';
 import 'package:rewire/features/home/presentation/views/widgets/members_list_view_item_title.dart';
 
@@ -30,11 +31,7 @@ class MembersListViewItem extends StatelessWidget {
         contentPadding: EdgeInsets.zero,
         minTileHeight: 45,
 
-        leading: CircleAvatar(
-          // radius: 30,
-          backgroundColor: Colors.transparent,
-          child: SvgPicture.asset('assets/images/pic.svg'),
-        ),
+        leading: MemberItemImage(user: member),
 
         title: MembersListViewItemTitle(member: member, isAdmin: isAdmin),
 

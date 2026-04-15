@@ -24,10 +24,10 @@ class PopUpMenu extends StatelessWidget {
         children: [
           PopUpMenuHeader(checkIn: checkIn),
 
+          SizedBox(height: 4),
+
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-
               child: PopUpMenuBody(
                 checkIn: checkIn,
                 isCurrentUser: isCurrentUser,
@@ -38,7 +38,7 @@ class PopUpMenu extends StatelessWidget {
           !isCurrentUser || !isTodayItem
               ? const SizedBox()
               : Padding(
-                  padding: const EdgeInsets.only(top: 4, bottom: 6),
+                  padding: const EdgeInsets.only(top: 4),
                   child: PopupMenuCheckInIcons(),
                 ),
         ],

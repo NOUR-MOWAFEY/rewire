@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/members_list_view.dart';
@@ -100,7 +100,7 @@ class CustomAccordionContent extends StatelessWidget {
               ),
             );
           }
-          return const CustomLoading(size: 28);
+          return const CustomCircularLoading(size: 28);
         },
       ),
     );

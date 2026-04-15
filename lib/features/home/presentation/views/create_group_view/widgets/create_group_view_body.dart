@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/add_members_section.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_fields.dart';
@@ -27,7 +27,7 @@ class CreateGroupViewBody extends StatelessWidget {
         if (state is CreateGroupLoading ||
             state is CreateGroupSuccess ||
             state is CreateGroupFaliure) {
-          return const CustomLoading();
+          return const CustomCircularLoading();
         }
 
         return Padding(

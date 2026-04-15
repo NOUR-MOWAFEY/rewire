@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/invitations_cubit/invitations_cubit.dart';
 import 'package:rewire/features/home/presentation/views/invitations_view/widgets/invitation_view_header.dart';
 import 'package:rewire/features/home/presentation/views/invitations_view/widgets/invitations_error_body.dart';
@@ -37,7 +37,7 @@ class InvitationsViewBody extends StatelessWidget {
                 // if laoding
                 return const SliverFillRemaining(
                   hasScrollBody: false, // IMPORTANT
-                  child: Center(child: CustomLoading()),
+                  child: Center(child: CustomCircularLoading()),
                 );
               }
             },

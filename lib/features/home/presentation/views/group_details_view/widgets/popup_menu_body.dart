@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/utils/app_styles.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/presentation/view_model/days_cubit/days_cubit.dart';
@@ -58,7 +58,7 @@ class _PopUpMenuBodyState extends State<PopUpMenuBody> {
                     ? const SizedBox(
                         height: 20,
                         width: 20,
-                        child: CustomLoading(size: 16),
+                        child: CustomCircularLoading(size: 16),
                       )
                     : IconButton(
                         onPressed: () {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/auth/presentation/view_model/user_cubit/user_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
 import 'package:rewire/features/home/presentation/views/profile_view/widgets/profile_view_app_bar.dart';
@@ -91,7 +91,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
               ),
             );
           }
-          return const Center(child: CustomLoading(size: 32));
+          return const Center(child: CustomCircularLoading(size: 32));
         },
       ),
     );

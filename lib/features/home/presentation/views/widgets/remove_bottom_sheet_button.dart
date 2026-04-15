@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 
@@ -43,7 +43,7 @@ class RemoveBottomSheetButtons extends StatelessWidget {
                 return CustomButton(
                   color: Colors.grey,
                   height: 45,
-                  child: const CustomLoading(size: 20),
+                  child: const CustomCircularLoading(size: 20),
                 );
               }
               return CustomButton(

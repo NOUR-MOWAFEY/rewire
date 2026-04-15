@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/leaderboard_view/widgets/leaderboard_list.dart';
 import 'package:rewire/features/home/presentation/views/leaderboard_view/widgets/leaderboard_view_empty_body.dart';
@@ -29,7 +29,7 @@ class LeaderboardViewBody extends StatelessWidget {
         } else if (state is GroupFailure) {
           return Center(child: Text(state.errMessage));
         } else {
-          return const CustomLoading();
+          return const CustomCircularLoading();
         }
       },
     );

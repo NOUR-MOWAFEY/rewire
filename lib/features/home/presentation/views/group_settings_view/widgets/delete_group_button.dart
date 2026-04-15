@@ -5,7 +5,7 @@ import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/delete_group_cubit/delete_group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/delete_group_alert_dialog.dart';
@@ -39,11 +39,11 @@ class DeleteGroupButton extends StatelessWidget {
         return state is DeleteGroupLoading || state is DeleteGroupSuccess
             ? const CustomButton(
                 color: Colors.grey,
-                child: CustomLoading(size: 20),
+                child: CustomCircularLoading(size: 20),
               )
             : CustomButton(
                 title: 'Delete group',
-                color: AppColors.red.withValues(alpha: 0.7),
+                color: AppColors.red,
                 onPressed: () {
                   showDialog(
                     context: context,

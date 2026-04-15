@@ -9,7 +9,7 @@ import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/utils/validator.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 
 import '../../../../../auth/presentation/views/widgets/custom_text_form_field.dart';
@@ -60,7 +60,7 @@ class AddMembersField extends StatelessWidget {
               if (state is MembersLoading) {
                 return const CustomButton(
                   width: 75,
-                  child: CustomLoading(size: 12),
+                  child: CustomCircularLoading(size: 12),
                 );
               }
 

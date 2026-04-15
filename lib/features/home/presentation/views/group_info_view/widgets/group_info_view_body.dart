@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/data/models/group_info_view_data.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/members_list_view.dart';
@@ -61,7 +61,7 @@ class GroupInfoViewBody extends StatelessWidget {
               if (state is MembersLoading) {
                 return SizedBox(
                   height: MediaQuery.of(context).size.height / 2,
-                  child: const CustomLoading(size: 26),
+                  child: const CustomCircularLoading(size: 26),
                 );
               } else if (state is MembersLoaded) {
                 return MembersListView(

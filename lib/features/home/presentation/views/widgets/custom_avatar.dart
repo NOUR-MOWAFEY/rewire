@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
 
 class CustomAvatar extends StatelessWidget {
@@ -89,7 +89,7 @@ class CustomAvatar extends StatelessWidget {
                           fit: BoxFit.cover,
                           imageUrl: viewModel.imageUrl!,
                           placeholder: (context, url) =>
-                              const CustomLoading(size: 28),
+                              const CustomCircularLoading(size: 28),
                           errorWidget: (context, url, error) =>
                               const UserProfileDefaultAvatar(),
                         )

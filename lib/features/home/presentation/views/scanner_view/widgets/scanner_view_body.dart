@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/views/scanner_view/widgets/qr_scanner.dart';
 import 'package:rewire/features/home/presentation/views/scanner_view/widgets/scanner_view_app_bar.dart';
@@ -25,7 +25,7 @@ class ScannerViewBody extends StatelessWidget {
       builder: (context, state) {
         // if loading
         if (state is JoinGroupLoading) {
-          return const CustomLoading();
+          return const CustomCircularLoading();
         }
 
         // if failure: while waiting 3 seconds
@@ -33,7 +33,7 @@ class ScannerViewBody extends StatelessWidget {
           return const Column(
             mainAxisAlignment: .center,
             children: [
-              CustomLoading(),
+              CustomCircularLoading(),
 
               SizedBox(height: 16),
 

@@ -1,99 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
-import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
-import 'package:rewire/features/home/presentation/view_model/profile_view_model.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/delete_group_button.dart';
-import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_data_fields.dart';
+import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_data_form.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_settings_view_app_bar.dart';
 import 'package:rewire/features/home/presentation/views/widgets/custom_accordion.dart';
-import 'package:rewire/features/home/presentation/views/widgets/custom_avatar.dart';
-import 'package:rewire/features/home/presentation/views/widgets/custom_update_button.dart';
+import 'package:rewire/features/home/presentation/views/widgets/group_image_builder.dart';
 
 class GroupSettingsViewBody extends StatelessWidget {
-  const GroupSettingsViewBody({
-    super.key,
-    required this.viewModel,
-    required this.groupModel,
-    required this.groupNameController,
-    required this.groupPasswordController,
-    required this.updateGroupDataKey,
-  });
+  const GroupSettingsViewBody({super.key, required this.groupModel});
 
   final GroupModel groupModel;
-  final ProfileViewModel viewModel;
-
-  final TextEditingController groupNameController;
-  final TextEditingController groupPasswordController;
-  final GlobalKey<FormState> updateGroupDataKey;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Form(
-        key: updateGroupDataKey,
+      child: Stack(
+        children: [
+          ListView(
+            children: [
+              const GroupSettingsViewAppBar(),
 
-        child: ListView(
-          children: [
-            const GroupSettingsViewAppBar(),
+              const SizedBox(height: 24),
 
-            const SizedBox(height: 24),
+              GroupImageBuilder(groupModel: groupModel),
 
-            AnimatedBuilder(
-              animation: viewModel,
-              builder: (BuildContext context, Widget? child) {
-                return CustomAvatar(
-                  viewModel: viewModel,
-                  imageType: ImageType.group,
-                  groupId: groupModel.id,
-                );
-              },
+              const SizedBox(height: 24),
+
+              GroupDataForm(groupModel: groupModel),
+
+              CustomAccordion(groupModel: groupModel),
+
+              const SizedBox(height: 36),
+            ],
+          ),
+
+          Align(
+            alignment: .bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: DeleteGroupButton(groupModel: groupModel),
             ),
-
-            const SizedBox(height: 24),
-
-            GroupDataFields(
-              groupNameController: groupNameController,
-              groupPasswordController: groupPasswordController,
-            ),
-
-            BlocBuilder<GroupCubit, GroupState>(
-              builder: (context, state) => context.read<GroupCubit>().isLoading
-                  ? CustomUpdateButton(title: 'Loading ..', isEnabled: false)
-                  : CustomUpdateButton(
-                      onPressed: () async => _updateButtonOnPressed(context),
-                    ),
-            ),
-
-            // const AddPeopleContainer(),
-            CustomAccordion(groupModel: groupModel),
-
-            DeleteGroupButton(groupModel: groupModel),
-          ],
-        ),
+          ),
+        ],
       ),
     );
-  }
-
-  Future<void> _updateButtonOnPressed(BuildContext context) async {
-    if (!updateGroupDataKey.currentState!.validate()) {
-      return;
-    }
-
-    await context
-        .read<GroupCubit>()
-        .updateGroupData(
-          groupModel.id,
-
-          groupNameController.text.isEmpty ? null : groupNameController.text,
-
-          groupPasswordController.text.isEmpty
-              ? null
-              : groupPasswordController.text,
-        )
-        .then((value) {
-          groupPasswordController.clear();
-        });
   }
 }

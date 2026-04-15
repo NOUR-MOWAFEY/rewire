@@ -17,14 +17,10 @@ class GroupDataFields extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-
       child: Column(
         crossAxisAlignment: .start,
-
         children: [
-          // ==========================
-          //  Group Name Text Section
-          // ==========================
+          // group name text field
           const Text('Group name: ', style: AppStyles.textStyle14),
           CustomUnderlineTextField(
             controller: groupNameController,
@@ -35,9 +31,7 @@ class GroupDataFields extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // ==========================
-          //  Group Password Section
-          // ==========================
+          // group password text field
           const Text('Password: ', style: AppStyles.textStyle14),
           CustomUnderlineTextField(
             controller: groupPasswordController,

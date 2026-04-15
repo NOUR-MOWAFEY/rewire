@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 
 class JoinGroupFormButtons extends StatelessWidget {
@@ -43,7 +43,7 @@ class JoinGroupFormButtons extends StatelessWidget {
             if (state is JoinGroupLoading || state is JoinGroupJoined) {
               return const CustomButton(
                 color: Colors.grey,
-                child: CustomLoading(size: 20),
+                child: CustomCircularLoading(size: 20),
               );
             }
 

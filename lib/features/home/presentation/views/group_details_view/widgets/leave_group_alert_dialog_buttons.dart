@@ -5,7 +5,7 @@ import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 
@@ -50,7 +50,7 @@ class _LeaveGroupAlertDialogButtonsState
               ? CustomButton(
                   color: Colors.grey,
                   onPressed: () {},
-                  child: CustomLoading(size: 20),
+                  child: CustomCircularLoading(size: 20),
                 )
               : CustomButton(
                   color: AppColors.red,

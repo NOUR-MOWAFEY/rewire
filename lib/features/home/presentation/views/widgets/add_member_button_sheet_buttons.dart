@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/widgets/add_member_button.dart';
@@ -67,7 +67,7 @@ class AddMemberBottomSheetButtons extends StatelessWidget {
                 return const CustomButton(
                   color: Colors.grey,
                   height: 45,
-                  child: CustomLoading(size: 20),
+                  child: CustomCircularLoading(size: 20),
                 );
               }
               return AddMemberButton(

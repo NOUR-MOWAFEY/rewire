@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/features/home/presentation/views/home_view/widgets/groups_list.dart';
 import 'package:rewire/features/home/presentation/views/home_view/widgets/home_view_app_bar.dart';
 
-import '../../../../../../core/widgets/custom_loading.dart';
+import '../../../../../../core/widgets/custom_circular_loading.dart';
 import '../../../view_model/group_cubit/group_cubit.dart';
 
 class HomeViewBody extends StatelessWidget {
@@ -37,7 +37,7 @@ class HomeViewBody extends StatelessWidget {
         } else if (state is GroupFailure) {
           return Center(child: Text(state.errMessage));
         } else {
-          return const CustomLoading();
+          return const CustomCircularLoading();
         }
       },
     );

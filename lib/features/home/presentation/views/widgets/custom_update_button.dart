@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/app_colors.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 
 class CustomUpdateButton extends StatelessWidget {
   const CustomUpdateButton({
@@ -31,7 +31,7 @@ class CustomUpdateButton extends StatelessWidget {
             height: 40,
             onPressed: onPressed,
             child: isLoading
-                ? const CustomLoading(size: 20)
+                ? const CustomCircularLoading(size: 20)
                 : Text(
                     title ?? '',
                     style: AppStyles.textStyle16.copyWith(

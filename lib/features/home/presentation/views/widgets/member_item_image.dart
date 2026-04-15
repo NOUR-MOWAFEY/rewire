@@ -4,7 +4,7 @@ import 'package:rewire/core/services/supabase_storage_service.dart';
 import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/service_locator.dart';
-import 'package:rewire/core/widgets/custom_loading.dart';
+import 'package:rewire/core/widgets/custom_circular_loading.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/views/widgets/custom_avatar.dart';
 
@@ -61,7 +61,7 @@ class MemberItemImage extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           fit: BoxFit.cover,
-          placeholder: (context, url) => CustomLoading(size: radius),
+          placeholder: (context, url) => CustomCircularLoading(size: radius),
           errorWidget: (context, url, error) => fallback(),
         ),
       ),

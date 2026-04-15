@@ -3,8 +3,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../utils/app_colors.dart';
 
-class CustomLoading extends StatelessWidget {
-  const CustomLoading({super.key, this.size});
+class CustomCircularLoading extends StatelessWidget {
+  const CustomCircularLoading({super.key, this.size});
   final double? size;
 
   @override
@@ -19,3 +19,4 @@ class CustomLoading extends StatelessWidget {
     );
   }
 }
+

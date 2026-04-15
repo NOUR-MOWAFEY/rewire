@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:rewire/core/utils/app_styles.dart';
-import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/views/widgets/custom_underline_text_field.dart';
 
 class UserDataFields extends StatelessWidget {
   const UserDataFields({
     super.key,
-    required this.user,
-    required this.nameController,
     required this.emailController,
+    required this.nameController,
   });
 
-  final UserModel user;
-  final TextEditingController nameController;
   final TextEditingController emailController;
+  final TextEditingController nameController;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
+
       children: [
-        Text('Email address: ', style: AppStyles.textStyle14),
+        const Text('Email address: ', style: AppStyles.textStyle14),
+
         CustomUnderlineTextField(
-          hintText: user.email,
+          hintText: 'user@email.com',
           controller: emailController,
           textInputAction: TextInputAction.next,
           textInputType: TextInputType.emailAddress,
@@ -40,9 +39,9 @@ class UserDataFields extends StatelessWidget {
 
         const SizedBox(height: 24),
 
-        Text('Full name: ', style: AppStyles.textStyle14),
+        const Text('Full name: ', style: AppStyles.textStyle14),
         CustomUnderlineTextField(
-          hintText: user.name,
+          hintText: 'username',
           controller: nameController,
         ),
       ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/core/widgets/custom_button.dart';
-import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/app_colors.dart';
+import 'package:rewire/core/utils/app_styles.dart';
+import 'package:rewire/core/widgets/custom_button.dart';
 import 'package:rewire/core/widgets/custom_circular_loading.dart';
 
 class CustomUpdateButton extends StatelessWidget {

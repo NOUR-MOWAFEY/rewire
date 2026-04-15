@@ -6,6 +6,7 @@ import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
+import 'package:rewire/features/home/presentation/views/widgets/custom_avatar.dart';
 
 class MemberItemImage extends StatelessWidget {
   const MemberItemImage({super.key, required this.user, this.radius = 20});
@@ -31,7 +32,11 @@ class MemberItemImage extends StatelessWidget {
           ),
         );
       }
-      return CircleAvatar(radius: radius, backgroundColor: Colors.transparent);
+      return CircleAvatar(
+        radius: radius,
+        backgroundColor: AppColors.primary.withValues(alpha: 0.5),
+        child: const UserProfileDefaultAvatar(size: 22),
+      );
     }
 
     // If we have no timestamp, we assume no image is set yet

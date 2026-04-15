@@ -17,20 +17,24 @@ class GroupDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewBackGroundContainer(
-      appBar: GroupDetailsViewAppBar(groupModel: groupModel),
-      viewBody: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => DaysCubit(
-              getIt.get<FirestoreService>(),
-              groupModel.id,
-              groupCubit: context.read<GroupCubit>(),
-            )..listenToDays(),
-          ),
-          BlocProvider(create: (context) => MembersCubit(groupModel.id)),
-        ],
-        child: const GroupDetailsViewBody(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          lazy: false,
+          create: (context) =>
+              MembersCubit()..listenToAllMembers(groupModel.id),
+        ),
+        BlocProvider(
+          create: (context) => DaysCubit(
+            getIt.get<FirestoreService>(),
+            groupModel.id,
+            groupCubit: context.read<GroupCubit>(),
+          )..listenToDays(),
+        ),
+      ],
+      child: ViewBackGroundContainer(
+        appBar: GroupDetailsViewAppBar(groupModel: groupModel),
+        viewBody: const GroupDetailsViewBody(),
       ),
     );
   }

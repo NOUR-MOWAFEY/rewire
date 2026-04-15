@@ -54,19 +54,4 @@ class JoinGroupCubit extends Cubit<JoinGroupState> {
     }
   }
 
-  Future<void> getJoinCode(String habitId) async {
-    emit(JoinGroupLoading());
-
-    try {
-      final code = await _firestoreService.getJoinCode(habitId);
-
-      if (code == null) {
-        emit(JoinGroupFailure(errMessage: "Join code not found"));
-      } else {
-        emit(JoinCodeLoaded(joinCode: code));
-      }
-    } catch (e) {
-      emit(JoinGroupFailure(errMessage: e.toString()));
-    }
-  }
 }

@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_loading.dart';
-import 'package:rewire/features/home/data/models/group_model.dart';
+import 'package:rewire/features/home/data/models/group_info_view_data.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/members_list_view.dart';
 
 class GroupInfoViewBody extends StatelessWidget {
-  const GroupInfoViewBody({super.key, required this.groupModel});
-  final GroupModel groupModel;
+  const GroupInfoViewBody({super.key, required this.dataModel});
+  final GroupDataModel dataModel;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,9 @@ class GroupInfoViewBody extends StatelessWidget {
           // ID Section
           GestureDetector(
             onTap: () {
-              Clipboard.setData(ClipboardData(text: groupModel.joinCode)).then((
-                value,
-              ) {
+              Clipboard.setData(
+                ClipboardData(text: dataModel.groupModel.joinCode),
+              ).then((value) {
                 if (!context.mounted) return;
                 ShowToastification.popUp(context, 'Copied to clipboard');
               });
@@ -37,7 +37,7 @@ class GroupInfoViewBody extends StatelessWidget {
                 const Text('ID: ', style: AppStyles.textStyle24),
                 Flexible(
                   child: Text(
-                    groupModel.joinCode,
+                    dataModel.groupModel.joinCode,
                     style: AppStyles.textStyle24,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -50,7 +50,7 @@ class GroupInfoViewBody extends StatelessWidget {
 
           // Members Section
           Text(
-            'Members (${groupModel.members.length})',
+            'Members (${dataModel.groupModel.members.length})',
             style: AppStyles.textStyle18.copyWith(fontWeight: FontWeight.bold),
           ),
 
@@ -59,11 +59,14 @@ class GroupInfoViewBody extends StatelessWidget {
           BlocBuilder<MembersCubit, MembersState>(
             builder: (context, state) {
               if (state is MembersLoading) {
-                return CustomLoading(size: 26);
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: const CustomLoading(size: 26),
+                );
               } else if (state is MembersLoaded) {
                 return MembersListView(
-                  users: state.members,
-                  groupModel: groupModel,
+                  users: dataModel.membersCubit.members.toList(),
+                  groupModel: dataModel.groupModel,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   isMembersRemovable: false,

@@ -54,32 +54,6 @@ class MembersCubit extends Cubit<MembersState> {
 
   Set<String> get membersIds => members.map((e) => e.uid).toSet();
 
-  // convert list of ids to usermodels
-
-  // Future<void> getUsersFromIds(List<String> ids) async {
-  //   emit(MembersLoading());
-
-  //   List<UserModel> users = [];
-
-  //   try {
-  //     for (var id in ids) {
-  //       try {
-  //         await _firestoreService
-  //             .getUser(id)
-  //             .then((value) => users.add(value!));
-  //       } catch (e) {
-  //         log(e.toString());
-  //       }
-  //     }
-
-  //     members.addAll(users);
-
-  //     emit(MembersLoaded(members: members.toList()));
-  //   } catch (e) {
-  //     emit(MembersError(errMassage: e.toString()));
-  //   }
-  // }
-
   StreamSubscription? _membersSubscription;
   StreamSubscription? _invitationsSubscription;
 

@@ -6,8 +6,10 @@ import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cubit.dart';
+import 'package:rewire/features/home/data/models/group_info_view_data.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/group_details_view/widgets/leave_group_alert_dialog.dart';
 import 'package:rewire/features/home/presentation/views/qr_view/qr_view.dart';
 
@@ -36,7 +38,17 @@ class CustomMenuButton extends StatelessWidget {
       onSelected: (value) {
         switch (value) {
           case MenubuttonItems.settings:
-            context.push(AppRouter.groupSettingsView, extra: groupModel);
+            final membersCubit = context.read<MembersCubit>();
+            final groupCubit = context.read<GroupCubit>();
+
+            context.push(
+              AppRouter.groupSettingsView,
+              extra: GroupDataModel(
+                groupModel: groupModel,
+                membersCubit: membersCubit,
+                groupCubit: groupCubit,
+              ),
+            );
 
           case MenubuttonItems.leaveGroup:
             final groupCubit = context.read<GroupCubit>();
@@ -50,7 +62,16 @@ class CustomMenuButton extends StatelessWidget {
             );
 
           case MenubuttonItems.info:
-            context.push(AppRouter.groupInfoView, extra: groupModel);
+            final membersCubit = context.read<MembersCubit>();
+
+            context.push(
+              AppRouter.groupInfoView,
+              extra: GroupDataModel(
+                groupModel: groupModel,
+                membersCubit: membersCubit,
+                groupCubit: context.read<GroupCubit>(),
+              ),
+            );
           case MenubuttonItems.qr:
             Navigator.push(
               context,

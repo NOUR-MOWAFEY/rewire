@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/widgets/custom_back_button.dart';
-import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 
 class GroupSettingsViewAppBar extends StatelessWidget {
   const GroupSettingsViewAppBar({super.key});
@@ -17,12 +17,12 @@ class GroupSettingsViewAppBar extends StatelessWidget {
 
         const SizedBox(width: 8),
 
-        BlocConsumer<JoinGroupCubit, JoinGroupState>(
+        BlocConsumer<GroupCubit, GroupState>(
           builder: (context, state) {
             return InkWell(
               borderRadius: BorderRadius.circular(32),
               onTap: () {
-                state is JoinCodeLoaded
+                state is GroupJoinCodeLoaded
                     ? Clipboard.setData(
                         ClipboardData(text: state.joinCode),
                       ).then((value) {
@@ -45,7 +45,7 @@ class GroupSettingsViewAppBar extends StatelessWidget {
                       ),
                     ),
 
-                    state is JoinCodeLoaded
+                    state is GroupJoinCodeLoaded
                         ? Text(
                             state.joinCode,
                             style: AppStyles.textStyle20.copyWith(
@@ -64,8 +64,8 @@ class GroupSettingsViewAppBar extends StatelessWidget {
               ),
             );
           },
-          listener: (BuildContext context, JoinGroupState state) {
-            if (state is JoinGroupFailure) {
+          listener: (BuildContext context, GroupState state) {
+            if (state is GroupJoinCodeFailure) {
               ShowToastification.failure(context, 'Failed to load group id');
             }
           },

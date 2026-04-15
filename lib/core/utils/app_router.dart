@@ -1,12 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rewire/core/services/firestore_service.dart';
+import 'package:rewire/core/services/supabase_storage_service.dart';
 import 'package:rewire/core/utils/app_animations.dart';
+import 'package:rewire/features/home/data/models/group_info_view_data.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
+import 'package:rewire/features/home/presentation/view_model/delete_group_cubit/delete_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/invitations_cubit/invitations_cubit.dart';
-import 'package:rewire/features/home/presentation/view_model/join_group_cubit/join_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/create_group_view/create_group_view.dart';
 import 'package:rewire/features/home/presentation/views/group_info_view/group_info_view.dart';
@@ -34,6 +36,7 @@ abstract class AppRouter {
 
   static final _firebaseAuthService = getIt.get<FirebaseAuthService>();
   static final _fireStoreService = getIt.get<FirestoreService>();
+  static final _supabaseStorageService = getIt.get<SupabaseStorageService>();
 
   static final router = GoRouter(
     initialLocation: loginView,
@@ -68,14 +71,14 @@ abstract class AppRouter {
             providers: [
               BlocProvider(
                 create: (context) {
-                  final userCubit = UserCubit(getIt.get<FirestoreService>());
+                  final userCubit = UserCubit(_fireStoreService);
                   if (userId != null) userCubit.listenToUser(userId);
                   return userCubit;
                 },
               ),
               BlocProvider(
                 create: (context) {
-                  final groupCubit = GroupCubit(getIt.get<FirestoreService>());
+                  final groupCubit = GroupCubit(_fireStoreService);
                   if (userId != null) groupCubit.listenToGroups(userId);
                   return groupCubit;
                 },
@@ -118,15 +121,12 @@ abstract class AppRouter {
           GoRoute(
             path: groupSettingsView,
 
-            builder: (context, state) => MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) =>
-                      JoinGroupCubit(_fireStoreService, _firebaseAuthService),
-                ),
-                BlocProvider(create: (context) => MembersCubit()),
-              ],
-              child: GroupSettingsView(groupModel: state.extra as GroupModel),
+            builder: (context, state) => BlocProvider(
+              create: (context) =>
+                  DeleteGroupCubit(_fireStoreService, _supabaseStorageService),
+              child: GroupSettingsView(
+                groupDataModel: state.extra as GroupDataModel,
+              ),
             ),
           ),
 
@@ -152,7 +152,7 @@ abstract class AppRouter {
             path: groupInfoView,
 
             builder: (context, state) =>
-                GroupInfoView(groupModel: state.extra as GroupModel),
+                GroupInfoView(dataModel: state.extra as GroupDataModel),
           ),
         ],
       ),

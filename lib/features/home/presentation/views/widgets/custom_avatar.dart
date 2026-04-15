@@ -123,13 +123,14 @@ class CustomAvatar extends StatelessWidget {
 }
 
 class UserProfileDefaultAvatar extends StatelessWidget {
-  const UserProfileDefaultAvatar({super.key});
+  const UserProfileDefaultAvatar({super.key, this.size = 48});
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return Icon(
       FontAwesomeIcons.user,
-      size: 48,
+      size: size,
       color: Color.fromARGB(218, 224, 224, 224),
     );
   }

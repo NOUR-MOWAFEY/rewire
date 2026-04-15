@@ -1,22 +1,20 @@
 part of 'group_cubit.dart';
 
 @immutable
-sealed class GroupState {
-  const GroupState();
-}
+sealed class GroupState {}
 
 final class GroupInitial extends GroupState {}
 
 final class GroupSuccess extends GroupState {
   final List<GroupModel>? groups;
 
-  const GroupSuccess({this.groups});
+  GroupSuccess({this.groups});
 }
 
 final class GroupFailure extends GroupState {
   final String errMessage;
 
-  const GroupFailure({required this.errMessage});
+  GroupFailure({required this.errMessage});
 }
 
 final class GroupLoading extends GroupState {}
@@ -30,7 +28,7 @@ final class GroupUpdateLoading extends GroupState {}
 final class GroupUpdateFailure extends GroupState {
   final String errMessage;
 
-  const GroupUpdateFailure({required this.errMessage});
+  GroupUpdateFailure({required this.errMessage});
 }
 
 // Add Member States
@@ -42,7 +40,7 @@ final class GroupAddMemberLoading extends GroupState {}
 final class GroupAddMemberFailure extends GroupState {
   final String errMessage;
 
-  const GroupAddMemberFailure({required this.errMessage});
+  GroupAddMemberFailure({required this.errMessage});
 }
 
 // Leave Group States
@@ -54,5 +52,21 @@ final class GroupLeaveLoading extends GroupState {}
 final class GroupLeaveFailure extends GroupState {
   final String errMessage;
 
-  const GroupLeaveFailure({required this.errMessage});
+  GroupLeaveFailure({required this.errMessage});
+}
+
+// Join Code States
+
+final class GroupJoinCodeLoaded extends GroupState {
+  final String joinCode;
+
+  GroupJoinCodeLoaded(this.joinCode);
+}
+
+final class GroupJoinCodeLoading extends GroupState {}
+
+final class GroupJoinCodeFailure extends GroupState {
+  final String errMessage;
+
+  GroupJoinCodeFailure(this.errMessage);
 }

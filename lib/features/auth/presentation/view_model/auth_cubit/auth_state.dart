@@ -17,6 +17,8 @@ final class AuthAuthenticated extends AuthState {
 
 final class AuthUnAuthenticated extends AuthState {}
 
+final class AuthAccountCreated extends AuthState {}
+
 final class AuthFailure extends AuthState {
   final String? errMessage;
 

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rewire/core/utils/show_toastification.dart';
 
 import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/constants.dart';
-import '../../../../../core/utils/show_toastification.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_circular_loading.dart';
 import '../../view_model/auth_cubit/auth_cubit.dart';
 import 'auth_footer.dart';
-import 'greetin_section.dart';
+import 'auth_header.dart';
 import 'register_data_section.dart';
 
 class RegisterViewBody extends StatelessWidget {
@@ -31,9 +31,9 @@ class RegisterViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (BuildContext context, AuthState state) {
-        if (state is AuthUnAuthenticated) {
-          context.go(AppRouter.loginView);
+        if (state is AuthAccountCreated) {
           ShowToastification.success(context, 'Account created Successfully');
+          context.go(AppRouter.loginView);
         } else if (state is AuthFailure) {}
       },
       builder: (context, state) {
@@ -47,7 +47,7 @@ class RegisterViewBody extends StatelessWidget {
             child: ListView(
               children: [
                 const SizedBox(height: 30),
-                const GreetingSection(
+                const AuthHeader(
                   title: 'Create account',
                   subtitle: 'Start rewiring your habits today',
                 ),

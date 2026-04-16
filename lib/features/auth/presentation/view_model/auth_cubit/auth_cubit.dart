@@ -27,24 +27,28 @@ class AuthCubit extends Cubit<AuthState> {
   // login
   Future<void> login(String email, String password) async {
     try {
-      emit(AuthLoading());
+      if (!isClosed) emit(AuthLoading());
       var userCredential = await _firebaseAuthService.signIn(
         email.trim(),
         password,
       );
-      emit(AuthAuthenticated(user: userCredential.user));
+      if (!isClosed) emit(AuthAuthenticated(user: userCredential.user));
     } on FirebaseAuthException catch (e) {
-      emit(AuthFailure(errMessage: FirebaseAuthErrorHandler.message(e)));
+      if (!isClosed) {
+        emit(AuthFailure(errMessage: FirebaseAuthErrorHandler.message(e)));
+      }
     } catch (e) {
       log(e.toString());
-      emit(AuthFailure(errMessage: 'Somthing went wrong, try again'));
+      if (!isClosed) {
+        emit(AuthFailure(errMessage: 'Somthing went wrong, try again'));
+      }
     }
   }
 
   // register
   Future<void> register(String email, String password, String name) async {
     try {
-      emit(AuthLoading());
+      if (!isClosed) emit(AuthLoading());
       var userCredential = await _firebaseAuthService.signUp(
         email.trim(),
         password,
@@ -59,12 +63,16 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
       await logout();
-      emit(AuthUnAuthenticated());
+      if (!isClosed) emit(AuthAccountCreated());
     } on FirebaseAuthException catch (e) {
-      emit(AuthFailure(errMessage: FirebaseAuthErrorHandler.message(e)));
+      if (!isClosed) {
+        emit(AuthFailure(errMessage: FirebaseAuthErrorHandler.message(e)));
+      }
     } catch (e) {
       log(e.toString());
-      emit(AuthFailure(errMessage: 'Somthing went wrong, try again'));
+      if (!isClosed) {
+        emit(AuthFailure(errMessage: 'Somthing went wrong, try again'));
+      }
     }
   }
 
@@ -72,7 +80,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout([BuildContext? context]) async {
     _firestoreService.clearCache();
     await getIt.get<SharedPreferencesService>().clearUserData();
-    emit(AuthUnAuthenticated());
+    if (!isClosed) emit(AuthUnAuthenticated());
     await _firebaseAuthService.signOut();
   }
 }

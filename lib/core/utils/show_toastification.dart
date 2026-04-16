@@ -11,11 +11,13 @@ class ShowToastification {
       icon: Icon(FontAwesomeIcons.circleExclamation, color: AppColors.white),
       foregroundColor: AppColors.white,
       backgroundColor: Colors.red,
-      borderSide: BorderSide(color: Colors.red),
+      borderSide: BorderSide(color: Colors.transparent),
       context: context,
       title: Text(text, style: TextStyle(color: AppColors.white)),
       autoCloseDuration: const Duration(seconds: 5),
       pauseOnHover: true,
+      applyBlurEffect: true,
+      closeOnClick: true,
     );
   }
 
@@ -25,11 +27,13 @@ class ShowToastification {
       icon: Icon(FontAwesomeIcons.circleCheck, color: AppColors.white),
       foregroundColor: AppColors.white,
       backgroundColor: Colors.green,
-      borderSide: BorderSide(color: Colors.green),
+      borderSide: BorderSide(color: Colors.transparent),
       context: context,
       title: Text(text, style: TextStyle(color: AppColors.white)),
-      autoCloseDuration: const Duration(seconds: 5),
+      autoCloseDuration: const Duration(seconds: 3),
       pauseOnHover: true,
+      applyBlurEffect: true,
+      closeOnClick: true,
     );
   }
 
@@ -44,6 +48,8 @@ class ShowToastification {
       title: Text(text, style: TextStyle(color: AppColors.white)),
       autoCloseDuration: const Duration(seconds: 5),
       pauseOnHover: true,
+      applyBlurEffect: true,
+      closeOnClick: true,
     );
   }
 

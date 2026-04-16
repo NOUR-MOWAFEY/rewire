@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../../../../core/utils/app_styles.dart';
 
-class GreetingSection extends StatelessWidget {
-  const GreetingSection({
-    super.key,
-    required this.title,
-    required this.subtitle,
-  });
+class AuthHeader extends StatelessWidget {
+  const AuthHeader({super.key, required this.title, required this.subtitle});
   final String title;
   final String subtitle;
 
@@ -20,10 +17,13 @@ class GreetingSection extends StatelessWidget {
           title,
           style: GoogleFonts.archivoBlack(
             fontSize: 32,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        Text(subtitle, style: AppStyles.textStyle18),
+        Padding(
+          padding: const EdgeInsets.only(left: 2),
+          child: Text(subtitle, style: AppStyles.textStyle18),
+        ),
       ],
     );
   }

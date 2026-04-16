@@ -3,8 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../../core/utils/validator.dart';
 import 'custom_text_form_field.dart';
 
-class LoginDataSection extends StatelessWidget {
-  const LoginDataSection({
+class LoginDataFields extends StatelessWidget {
+  const LoginDataFields({
     super.key,
     required this.emailController,
     required this.passwordController,
@@ -23,7 +23,9 @@ class LoginDataSection extends StatelessWidget {
           inputType: InputType.email,
           controller: emailController,
         ),
+
         const SizedBox(height: 12),
+        
         CustomTextFormField(
           title: 'Password',
           isPassword: true,

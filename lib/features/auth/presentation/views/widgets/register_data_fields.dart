@@ -4,8 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../../core/utils/validator.dart';
 import 'custom_text_form_field.dart';
 
-class RegisterDataSection extends StatelessWidget {
-  const RegisterDataSection({
+class RegisterDataFields extends StatelessWidget {
+  const RegisterDataFields({
     super.key,
     required this.nameController,
     required this.emailController,
@@ -45,7 +45,9 @@ class RegisterDataSection extends StatelessWidget {
           controller: passwordController,
           inputType: InputType.password,
         ),
+
         const SizedBox(height: 12),
+
         CustomTextFormField(
           title: 'Confirm password',
           isPassword: true,
@@ -55,6 +57,7 @@ class RegisterDataSection extends StatelessWidget {
           isLastOne: true,
           passwordController: passwordController,
         ),
+
         const SizedBox(height: 20),
       ],
     );

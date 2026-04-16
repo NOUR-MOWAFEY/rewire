@@ -5,7 +5,7 @@ import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/widgets/member_item_image.dart';
-import 'package:rewire/features/home/presentation/views/widgets/members_list_view_item_icon.dart';
+import 'package:rewire/features/home/presentation/views/widgets/members_list_view_item_remove_icon.dart';
 import 'package:rewire/features/home/presentation/views/widgets/members_list_view_item_title.dart';
 
 class MembersListViewItem extends StatelessWidget {
@@ -44,7 +44,10 @@ class MembersListViewItem extends StatelessWidget {
             context.read<MembersCubit>().isCurrentUser(member) ||
                 !isMembersRemovable
             ? const SizedBox()
-            : MembersListViewItemIcon(groupModel: groupModel, member: member),
+            : MembersListViewItemRemoveIcon(
+                groupModel: groupModel,
+                member: member,
+              ),
       ),
     );
   }

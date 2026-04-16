@@ -7,8 +7,8 @@ import 'package:rewire/features/home/data/models/user_model.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 import 'package:rewire/features/home/presentation/views/widgets/remove_member_bottom_sheet.dart';
 
-class MembersListViewItemIcon extends StatelessWidget {
-  const MembersListViewItemIcon({
+class MembersListViewItemRemoveIcon extends StatelessWidget {
+  const MembersListViewItemRemoveIcon({
     super.key,
     required this.groupModel,
     required this.member,
@@ -21,7 +21,7 @@ class MembersListViewItemIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        var membersCubit = context.read<MembersCubit>();
+        final membersCubit = context.read<MembersCubit>();
 
         groupModel != null
             ? showModalBottomSheet(

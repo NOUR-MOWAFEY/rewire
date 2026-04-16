@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
-import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/delete_group_button.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_data_form.dart';
 import 'package:rewire/features/home/presentation/views/group_settings_view/widgets/group_settings_view_app_bar.dart';
 import 'package:rewire/features/home/presentation/views/widgets/custom_accordion.dart';
@@ -33,14 +32,6 @@ class GroupSettingsViewBody extends StatelessWidget {
 
               const SizedBox(height: 36),
             ],
-          ),
-
-          Align(
-            alignment: .bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: DeleteGroupButton(groupModel: groupModel),
-            ),
           ),
         ],
       ),

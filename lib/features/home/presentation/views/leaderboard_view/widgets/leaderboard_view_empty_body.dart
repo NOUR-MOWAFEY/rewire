@@ -6,17 +6,15 @@ class LeaderboardViewEmptyBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      mainAxisAlignment: .center,
-      crossAxisAlignment: .start,
-
+    return ListView(
       children: [
-        LeaderboardViewHeader(),
+        const LeaderboardViewHeader(),
 
-        Expanded(
-          child: Center(
-            child: Text('You are not in any groups with enough members.'),
-          ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+
+        const Row(
+          mainAxisAlignment: .center,
+          children: [Text('You are not in any groups with enough members.')],
         ),
       ],
     );

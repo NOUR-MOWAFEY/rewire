@@ -6,18 +6,17 @@ class HomeViewEmptyBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(top: 24, right: 24, left: 24),
-      child: Column(
-        mainAxisAlignment: .center,
-        crossAxisAlignment: .start,
-
+    return Padding(
+      padding: const EdgeInsets.only(top: 24, right: 24, left: 24),
+      child: ListView(
         children: [
-          HomeViewAppBar(),
-          Expanded(
-            child: Center(
-              child: Text('Create or join a group to get started!'),
-            ),
+          const HomeViewAppBar(),
+
+          SizedBox(height: MediaQuery.of(context).size.height * 0.387),
+
+          const Row(
+            mainAxisAlignment: .center,
+            children: [Text('Create or join a group to get started!')],
           ),
         ],
       ),

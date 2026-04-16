@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rewire/features/home/presentation/views/invitations_view/widgets/invitation_view_header.dart';
 
 class InvitationsErrorBody extends StatelessWidget {
   const InvitationsErrorBody({super.key, required this.errMessage});
@@ -6,10 +7,19 @@ class InvitationsErrorBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Center(
-        child: Text(errMessage, style: const TextStyle(color: Colors.red)),
-      ),
+    return ListView(
+      children: [
+        const InvitationsViewHeader(),
+
+        SizedBox(height: MediaQuery.of(context).size.height * 0.3),
+
+        Row(
+          mainAxisAlignment: .center,
+          children: [
+            Text(errMessage, style: const TextStyle(color: Colors.red)),
+          ],
+        ),
+      ],
     );
   }
 }

@@ -68,7 +68,7 @@ class _MainNavigationViewState extends State<MainNavigationView> {
       navBarStyle: NavBarStyle.style7,
       resizeToAvoidBottomInset: true,
       hideNavigationBarWhenKeyboardAppears: true,
-      backgroundColor: const Color.fromARGB(147, 32, 61, 45),
+      backgroundColor: const Color.fromARGB(165, 44, 68, 51),
       margin: EdgeInsets.symmetric(horizontal: 38, vertical: 28),
       padding: EdgeInsets.symmetric(horizontal: 4),
       decoration: NavBarDecoration(

@@ -23,7 +23,6 @@ class LeaderboardItem extends StatelessWidget {
             ..getLeaderboard(groupModel.id),
 
       child: Container(
-        // padding: const EdgeInsets.symmetric(horizontal: 12),
         margin: const EdgeInsets.symmetric(horizontal: 12),
         height: 290,
         width: double.infinity,

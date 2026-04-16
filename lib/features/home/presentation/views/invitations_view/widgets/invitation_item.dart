@@ -24,7 +24,7 @@ class InvitationItem extends StatelessWidget {
         children: [
           InvitationItemHeader(invitation: invitation),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 26),
 
           InvitationItemButtons(invitation: invitation),
         ],

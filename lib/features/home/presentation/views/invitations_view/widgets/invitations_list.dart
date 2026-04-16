@@ -14,7 +14,7 @@ class InvitationsList extends StatelessWidget {
           children: [
             InvitationItem(invitation: invitations[index]),
             index == invitations.length - 1
-                ? const SizedBox(height: 90)
+                ? const SizedBox(height: 100)
                 : const SizedBox(height: 0),
           ],
         ),

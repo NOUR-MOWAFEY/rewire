@@ -36,7 +36,7 @@ class InvitationsViewBody extends StatelessWidget {
               } else {
                 // if laoding
                 return const SliverFillRemaining(
-                  hasScrollBody: false, // IMPORTANT
+                  hasScrollBody: false,
                   child: Center(child: CustomCircularLoading()),
                 );
               }

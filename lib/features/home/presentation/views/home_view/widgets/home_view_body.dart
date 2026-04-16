@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rewire/features/home/presentation/views/home_view/widgets/groups_list.dart';
 import 'package:rewire/features/home/presentation/views/home_view/widgets/home_view_app_bar.dart';
+import 'package:rewire/features/home/presentation/views/home_view/widgets/home_view_empty_body.dart';
 
 import '../../../../../../core/widgets/custom_circular_loading.dart';
 import '../../../view_model/group_cubit/group_cubit.dart';
@@ -20,6 +21,12 @@ class HomeViewBody extends StatelessWidget {
 
       builder: (context, state) {
         if (state is GroupSuccess) {
+          if (state.groups != null && state.groups!.isEmpty) {
+            // empty list
+            return const HomeViewEmptyBody();
+          }
+
+          // group list
           return CustomScrollView(
             slivers: [
               // app bar

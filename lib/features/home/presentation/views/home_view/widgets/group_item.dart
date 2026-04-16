@@ -79,9 +79,7 @@ class GroupItem extends StatelessWidget {
           ),
         ),
 
-        isLastItem
-            ? SizedBox(height: MediaQuery.of(context).size.height * 0.1)
-            : const SizedBox(),
+        isLastItem ? const SizedBox(height: 100) : const SizedBox(),
       ],
     );
   }

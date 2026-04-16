@@ -38,8 +38,8 @@ class _MainNavigationViewState extends State<MainNavigationView> {
   ];
 
   List<PersistentBottomNavBarItem> _items() => [
-    _persistentBottomNavBarItem(FontAwesomeIcons.houseChimney, 'Home'),
-    _persistentBottomNavBarItem(FontAwesomeIcons.rankingStar, 'Leaderboard'),
+    _persistentBottomNavBarItem(FontAwesomeIcons.userGroup, 'Groups'),
+    _persistentBottomNavBarItem(FontAwesomeIcons.rankingStar, 'Ranks'),
     _persistentBottomNavBarItem(FontAwesomeIcons.solidBell, 'Invitations'),
     _persistentBottomNavBarItem(FontAwesomeIcons.solidCircleUser, 'Profile'),
   ];
@@ -49,10 +49,10 @@ class _MainNavigationViewState extends State<MainNavigationView> {
     String title,
   ) {
     return PersistentBottomNavBarItem(
-      icon: Icon(icon, size: 22),
+      icon: Icon(icon, size: 20),
       title: title,
       textStyle: AppStyles.textStyle12,
-      inactiveColorPrimary: Colors.white60,
+      inactiveColorPrimary: Colors.white24,
       activeColorPrimary: AppColors.transparentPrimary,
       activeColorSecondary: AppColors.white,
     );
@@ -68,14 +68,13 @@ class _MainNavigationViewState extends State<MainNavigationView> {
       navBarStyle: NavBarStyle.style7,
       resizeToAvoidBottomInset: true,
       hideNavigationBarWhenKeyboardAppears: true,
-      backgroundColor: AppColors.transparentDarkBackground,
+      backgroundColor: const Color.fromARGB(147, 32, 61, 45),
       margin: EdgeInsets.symmetric(horizontal: 38, vertical: 28),
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 4),
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(60),
         border: Border.all(
-          color: AppColors.transparentPrimary.withValues(alpha: 0.3),
-          width: 2,
+          color: AppColors.transparentPrimary.withValues(alpha: 0.5),
         ),
       ),
     );

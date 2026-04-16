@@ -14,15 +14,14 @@ class LeaderboardViewBody extends StatelessWidget {
       buildWhen: (previous, current) =>
           current is GroupSuccess ||
           current is GroupFailure ||
-          current is GroupLoading ||
-          current is GroupInitial,
+          current is GroupLoading,
       builder: (context, state) {
         if (state is GroupSuccess) {
           final displayableGroups =
               state.groups?.where((g) => g.members.length >= 2).toList() ?? [];
 
           if (displayableGroups.isEmpty) {
-            return LeaderboardViewEmptyBody();
+            return const LeaderboardViewEmptyBody();
           }
 
           return LeaderboardList(displayableGroups: displayableGroups);

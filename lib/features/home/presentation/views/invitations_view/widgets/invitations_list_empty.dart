@@ -5,7 +5,7 @@ class InvitationsListEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SliverToBoxAdapter(
+    return const SliverFillRemaining(
       child: Center(
         child: Text(
           'No pending invitations',

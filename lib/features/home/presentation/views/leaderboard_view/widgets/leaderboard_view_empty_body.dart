@@ -6,10 +6,14 @@ class LeaderboardViewEmptyBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(child: LeaderboardViewHeader()),
-        SliverFillRemaining(
+    return const Column(
+      mainAxisAlignment: .center,
+      crossAxisAlignment: .start,
+
+      children: [
+        LeaderboardViewHeader(),
+
+        Expanded(
           child: Center(
             child: Text('You are not in any groups with enough members.'),
           ),

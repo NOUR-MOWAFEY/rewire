@@ -73,7 +73,9 @@ class GroupCubit extends Cubit<GroupState> {
   // =====================
 
   void listenToGroups(String userId) async {
-    _subscription?.cancel(); // Cancel previous if any
+    if (!isClosed) emit(GroupLoading());
+
+    _subscription?.cancel();
     _subscription = _firestoreService.listenToGroups(userId).listen((groups) {
       if (!isClosed) emit(GroupSuccess(groups: groups));
     });

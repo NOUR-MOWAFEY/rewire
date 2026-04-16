@@ -4,7 +4,6 @@ import 'package:rewire/features/home/presentation/views/home_view/widgets/groups
 import 'package:rewire/features/home/presentation/views/home_view/widgets/home_view_app_bar.dart';
 import 'package:rewire/features/home/presentation/views/home_view/widgets/home_view_empty_body.dart';
 
-import '../../../../../../core/widgets/custom_circular_loading.dart';
 import '../../../view_model/group_cubit/group_cubit.dart';
 
 class HomeViewBody extends StatelessWidget {
@@ -18,34 +17,32 @@ class HomeViewBody extends StatelessWidget {
           current is GroupFailure ||
           current is GroupLoading ||
           current is GroupInitial,
-
       builder: (context, state) {
-        if (state is GroupSuccess) {
-          if (state.groups != null && state.groups!.isEmpty) {
-            // empty list
-            return const HomeViewEmptyBody();
-          }
-
-          // group list
-          return CustomScrollView(
-            slivers: [
-              // app bar
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 24, right: 24, left: 24),
-                  child: HomeViewAppBar(),
-                ),
-              ),
-
-              // groups list view
-              GroupsList(groups: state.groups),
-            ],
-          );
-        } else if (state is GroupFailure) {
+        if (state is GroupFailure) {
           return Center(child: Text(state.errMessage));
-        } else {
-          return const CustomCircularLoading();
         }
+
+        if (state is GroupSuccess &&
+            state.groups != null &&
+            state.groups!.isEmpty) {
+          return const HomeViewEmptyBody();
+        }
+
+        return CustomScrollView(
+          slivers: [
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(top: 24, right: 24, left: 24),
+                child: HomeViewAppBar(),
+              ),
+            ),
+
+            GroupsList(
+              groups: state is GroupSuccess ? state.groups : null,
+              isLoading: state is GroupLoading,
+            ),
+          ],
+        );
       },
     );
   }

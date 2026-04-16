@@ -14,13 +14,17 @@ class HomeViewAppBar extends StatelessWidget {
         Expanded(
           child: BlocBuilder<UserCubit, UserState>(
             builder: (context, state) {
+              if (state is UserLoading) {
+                return const Text('Loading...', style: AppStyles.textStyle28);
+              }
+
               String name = '';
               if (state is UserSuccess) {
                 name = state.user.name.split(RegExp(r'\s+'))[0];
               }
               return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                physics: PageScrollPhysics(),
+                physics: const PageScrollPhysics(),
                 child: Text('Hi, $name', style: AppStyles.textStyle28),
               );
             },

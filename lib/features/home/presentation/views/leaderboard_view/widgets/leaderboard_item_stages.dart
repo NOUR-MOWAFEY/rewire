@@ -10,10 +10,12 @@ class LeaderboardItemStages extends StatelessWidget {
     super.key,
     required this.members,
     required this.groupModel,
+    this.isLoading = false,
   });
 
   final List<UserModel> members;
   final GroupModel groupModel;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +26,18 @@ class LeaderboardItemStages extends StatelessWidget {
           LeaderboardStage(
             user: members[1],
             score: groupModel.memberCommitments[members[1].uid] ?? 0,
-            bgColor: const Color.fromARGB(
-              255,
-              144,
-              144,
-              144,
-            ).withValues(alpha: 0.35),
+            bgColor: isLoading
+                ? AppColors.primary.withValues(alpha: 0.3)
+                : const Color.fromARGB(
+                    255,
+                    144,
+                    144,
+                    144,
+                  ).withValues(alpha: 0.35),
             // borderColor: AppColors.silver,
-            crownColor: AppColors.silver,
+            crownColor: isLoading
+                ? AppColors.primary.withValues(alpha: 0.3)
+                : AppColors.silver,
             iconAtTheTop: FontAwesomeIcons.two,
             height: 155,
           )
@@ -44,14 +50,18 @@ class LeaderboardItemStages extends StatelessWidget {
           LeaderboardStage(
             user: members[0],
             score: groupModel.memberCommitments[members[0].uid] ?? 0,
-            bgColor: const Color.fromARGB(
-              255,
-              171,
-              145,
-              0,
-            ).withValues(alpha: 0.35),
+            bgColor: isLoading
+                ? AppColors.primary.withValues(alpha: 0.3)
+                : const Color.fromARGB(
+                    255,
+                    171,
+                    145,
+                    0,
+                  ).withValues(alpha: 0.35),
             // borderColor: AppColors.gold,
-            crownColor: AppColors.gold,
+            crownColor: isLoading
+                ? AppColors.primary.withValues(alpha: 0.3)
+                : AppColors.gold,
             iconAtTheTop: FontAwesomeIcons.one,
             height: 190,
           )
@@ -64,14 +74,18 @@ class LeaderboardItemStages extends StatelessWidget {
           LeaderboardStage(
             user: members[2],
             score: groupModel.memberCommitments[members[2].uid] ?? 0,
-            bgColor: const Color.fromARGB(
-              255,
-              164,
-              102,
-              40,
-            ).withValues(alpha: 0.35),
+            bgColor: isLoading
+                ? AppColors.primary.withValues(alpha: 0.3)
+                : const Color.fromARGB(
+                    255,
+                    164,
+                    102,
+                    40,
+                  ).withValues(alpha: 0.35),
             // borderColor: AppColors.bronze,
-            crownColor: AppColors.bronze,
+            crownColor: isLoading
+                ? AppColors.primary.withValues(alpha: 0.3)
+                : AppColors.bronze,
             iconAtTheTop: FontAwesomeIcons.three,
             height: 120,
           )

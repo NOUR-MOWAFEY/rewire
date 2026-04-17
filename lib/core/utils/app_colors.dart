@@ -21,8 +21,8 @@ class AppColors {
   static const green = Colors.green;
 
   // skeleton loading colors
-  static const skeletonBaseColor = Color.fromARGB(76, 94, 147, 108);
-  static const skeletonHighlightColor = Color.fromARGB(192, 94, 147, 108);
+  static const skeletonBaseColor = Color.fromARGB(150, 94, 147, 108);
+  static const skeletonHighlightColor = Color.fromARGB(230, 94, 147, 108);
 
   // Gold
   static const Color gold = Color(0xFFFFD700);

@@ -39,6 +39,8 @@ class DaysCubit extends Cubit<DaysState> {
   // add days
 
   Future<void> addDays() async {
+    if (!isClosed) emit(DaysLoading());
+
     await _firestoreService.fillMissingDays(habitId: _habitId);
     await _firestoreService.createDayIfNotExist(
       habitId: _habitId,
@@ -49,6 +51,7 @@ class DaysCubit extends Cubit<DaysState> {
   // fetch days and checkins
 
   void listenToDays() async {
+    if (!isClosed) emit(DaysLoading());
     // Check cache first
     final cachedDays = _groupCubit.daysCache[_habitId];
     if (cachedDays != null && cachedDays.isNotEmpty) {

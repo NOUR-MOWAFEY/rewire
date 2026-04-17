@@ -15,22 +15,22 @@ class GroupDataForm extends StatefulWidget {
 }
 
 class _GroupDataFormState extends State<GroupDataForm> {
-  late final TextEditingController groupNameController;
-  late final TextEditingController groupPasswordController;
+  late final TextEditingController _groupNameController;
+  late final TextEditingController _groupPasswordController;
 
   @override
   void initState() {
     super.initState();
-    groupNameController = TextEditingController();
-    groupPasswordController = TextEditingController();
+    _groupNameController = TextEditingController();
+    _groupPasswordController = TextEditingController();
 
-    groupNameController.text = widget.groupModel.name;
+    _groupNameController.text = widget.groupModel.name;
   }
 
   @override
   void dispose() {
-    groupNameController.dispose();
-    groupPasswordController.dispose();
+    _groupNameController.dispose();
+    _groupPasswordController.dispose();
     super.dispose();
   }
 
@@ -40,8 +40,8 @@ class _GroupDataFormState extends State<GroupDataForm> {
       children: [
         // text fields
         GroupDataFields(
-          groupNameController: groupNameController,
-          groupPasswordController: groupPasswordController,
+          groupNameController: _groupNameController,
+          groupPasswordController: _groupPasswordController,
         ),
 
         // update button
@@ -63,14 +63,15 @@ class _GroupDataFormState extends State<GroupDataForm> {
         .updateGroupData(
           widget.groupModel.id,
 
-          groupNameController.text.isEmpty ? null : groupNameController.text,
+          _groupNameController.text.isEmpty ? null : _groupNameController.text,
 
-          groupPasswordController.text.isEmpty
+          _groupPasswordController.text.isEmpty
               ? null
-              : groupPasswordController.text,
+              : _groupPasswordController.text,
         )
         .then((value) {
-          groupPasswordController.clear();
+          if (!mounted) return;
+          _groupPasswordController.clear();
         });
   }
 }

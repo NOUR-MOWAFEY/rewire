@@ -39,7 +39,7 @@ class HomeViewBody extends StatelessWidget {
 
             GroupsList(
               groups: state is GroupSuccess ? state.groups : null,
-              isLoading: state is GroupLoading,
+              isLoading: state is GroupLoading || state is GroupInitial,
             ),
           ],
         );

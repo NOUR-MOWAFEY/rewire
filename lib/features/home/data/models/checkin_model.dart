@@ -38,4 +38,14 @@ class CheckInModel {
       'createdAt': createdAt.toIso8601String(),
     };
   }
+
+  static CheckInModel fakeData() {
+    return CheckInModel(
+      userId: '',
+      groupId: '',
+      date: '',
+      status: CheckInStatus.pending,
+      createdAt: DateTime(2000),
+    );
+  }
 }

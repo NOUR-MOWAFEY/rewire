@@ -4,6 +4,7 @@ import 'package:rewire/features/auth/presentation/view_model/auth_cubit/auth_cub
 import 'package:rewire/features/home/data/models/checkin_model.dart';
 import 'package:rewire/features/home/presentation/view_model/days_cubit/days_cubit.dart';
 import 'package:rewire/features/home/presentation/views/widgets/check_icon_button.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_styles.dart';
@@ -41,9 +42,20 @@ class DayItem extends StatelessWidget {
       return 0;
     });
 
-    if (dayCheckins.isEmpty) return const SizedBox.shrink();
+    if (dayCheckins.isEmpty && !Skeletonizer.of(context).enabled) {
+      return const SizedBox.shrink();
+    }
 
-    final rows = _chunk(sortedCheckins, _rowSize);
+    final displayCheckins = dayCheckins.isEmpty
+        ? [
+            CheckInModel.fakeData(),
+            CheckInModel.fakeData(),
+            CheckInModel.fakeData(),
+            CheckInModel.fakeData(),
+          ]
+        : sortedCheckins;
+
+    final rows = _chunk(displayCheckins, _rowSize);
     final rowCount = rows.length;
     final containerHeight =
         rowCount * _rowHeight + (rowCount - 1) * _dividerHeight;
@@ -53,7 +65,10 @@ class DayItem extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 10, bottom: 4),
-          child: Text(date, style: AppStyles.textStyle14),
+          child: Text(
+            date.isEmpty ? '0000-00-00' : date,
+            style: AppStyles.textStyle14,
+          ),
         ),
 
         Container(
@@ -84,7 +99,7 @@ class DayItem extends StatelessWidget {
 
   Widget _buildRow(
     BuildContext context,
-    List<CheckInModel> checkins,
+    List<CheckInModel>? checkins,
     String currentUserId,
     bool isTodayItem,
   ) {
@@ -93,9 +108,9 @@ class DayItem extends StatelessWidget {
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: checkins.length,
+        itemCount: checkins?.length ?? 5,
         itemBuilder: (context, index) {
-          final checkIn = checkins[index];
+          final checkIn = checkins?[index] ?? CheckInModel.fakeData();
           return CheckIconButton(
             checkIn: checkIn,
             isCurrentUser: checkIn.userId == currentUserId,

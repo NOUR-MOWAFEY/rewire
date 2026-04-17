@@ -21,6 +21,7 @@ class GroupsList extends StatelessWidget {
         baseColor: AppColors.skeletonBaseColor,
         highlightColor: AppColors.skeletonHighlightColor,
       ),
+
       child: SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         sliver: SliverList(

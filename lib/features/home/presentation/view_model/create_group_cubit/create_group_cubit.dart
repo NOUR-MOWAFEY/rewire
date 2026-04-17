@@ -16,7 +16,20 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
   final FirestoreService _firestoreService;
   final User? _user;
 
+  final groupNameController = TextEditingController();
+  final groupPasswordController = TextEditingController();
+  final memberEmailController = TextEditingController();
+  final createGroupKey = GlobalKey<FormState>();
+
   bool isLoading = false;
+
+  @override
+  Future<void> close() {
+    groupNameController.dispose();
+    groupPasswordController.dispose();
+    memberEmailController.dispose();
+    return super.close();
+  }
 
   // =====================
   // Create group

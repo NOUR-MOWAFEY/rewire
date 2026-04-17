@@ -19,17 +19,20 @@ class HomeViewBody extends StatelessWidget {
           current is GroupInitial,
       builder: (context, state) {
         if (state is GroupFailure) {
+          // error body
           return Center(child: Text(state.errMessage));
         }
 
         if (state is GroupSuccess &&
             state.groups != null &&
             state.groups!.isEmpty) {
+          // empty body
           return const HomeViewEmptyBody();
         }
 
         return CustomScrollView(
           slivers: [
+            // app bar
             const SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.only(top: 24, right: 24, left: 24),
@@ -37,6 +40,7 @@ class HomeViewBody extends StatelessWidget {
               ),
             ),
 
+            // group list
             GroupsList(
               groups: state is GroupSuccess ? state.groups : null,
               isLoading: state is GroupLoading || state is GroupInitial,

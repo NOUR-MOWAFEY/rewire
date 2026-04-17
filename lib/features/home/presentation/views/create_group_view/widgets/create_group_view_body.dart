@@ -7,21 +7,12 @@ import 'package:rewire/features/home/presentation/views/create_group_view/widget
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/create_group_view_app_bar.dart';
 
 class CreateGroupViewBody extends StatelessWidget {
-  const CreateGroupViewBody({
-    super.key,
-    required this.groupNameController,
-    required this.createGroupKey,
-    required this.memberEmailController,
-    required this.groupPasswordController,
-  });
-
-  final TextEditingController groupNameController;
-  final TextEditingController groupPasswordController;
-  final GlobalKey<FormState> createGroupKey;
-  final TextEditingController memberEmailController;
+  const CreateGroupViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<CreateGroupCubit>();
+
     return BlocBuilder<CreateGroupCubit, CreateGroupState>(
       builder: (context, state) {
         if (state is CreateGroupLoading ||
@@ -31,27 +22,24 @@ class CreateGroupViewBody extends StatelessWidget {
         }
 
         return Padding(
-          padding: EdgeInsetsGeometry.all(16),
+          padding: const EdgeInsets.all(16),
 
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: .start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const CreateGroupViewAppBar(),
 
                 const SizedBox(height: 24),
 
                 Form(
-                  key: createGroupKey,
-                  child: CreateGroupFields(
-                    groupNameController: groupNameController,
-                    groupPasswordController: groupPasswordController,
-                  ),
+                  key: cubit.createGroupKey,
+                  child: const CreateGroupFields(),
                 ),
 
                 const SizedBox(height: 24),
 
-                AddMembersSection(memberEmailController: memberEmailController),
+                const AddMembersSection(),
               ],
             ),
           ),

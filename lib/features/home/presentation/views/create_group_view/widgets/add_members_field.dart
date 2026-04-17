@@ -10,16 +10,18 @@ import 'package:rewire/core/utils/show_toastification.dart';
 import 'package:rewire/core/utils/validator.dart';
 import 'package:rewire/core/widgets/custom_button.dart';
 import 'package:rewire/core/widgets/custom_circular_loading.dart';
+import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 
 import '../../../../../auth/presentation/views/widgets/custom_text_form_field.dart';
 
 class AddMembersField extends StatelessWidget {
-  const AddMembersField({super.key, required this.memberEmailController});
-  final TextEditingController memberEmailController;
+  const AddMembersField({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final createGroupCubit = context.read<CreateGroupCubit>();
+
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -28,7 +30,7 @@ class AddMembersField extends StatelessWidget {
           Expanded(
             child: CustomTextFormField(
               title: 'Invite member email',
-              controller: memberEmailController,
+              controller: createGroupCubit.memberEmailController,
               icon: FontAwesomeIcons.solidEnvelope,
               isLastOne: false,
               border: false,
@@ -52,7 +54,7 @@ class AddMembersField extends StatelessWidget {
               }
               if (state is MembersFound) {
                 context.read<MembersCubit>().members.add(state.user);
-                memberEmailController.clear();
+                createGroupCubit.memberEmailController.clear();
               }
             },
 
@@ -67,7 +69,10 @@ class AddMembersField extends StatelessWidget {
               return CustomButton(
                 width: 75,
                 onPressed: () async {
-                  final email = memberEmailController.text.trim().toLowerCase();
+                  final email =
+                      createGroupCubit.memberEmailController.text
+                          .trim()
+                          .toLowerCase();
 
                   if (email.isNotEmpty) {
                     if (!emailRegex.hasMatch(email)) {

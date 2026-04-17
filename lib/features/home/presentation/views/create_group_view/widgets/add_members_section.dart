@@ -5,8 +5,7 @@ import 'package:rewire/features/home/presentation/views/create_group_view/widget
 import 'package:rewire/features/home/presentation/views/create_group_view/widgets/invited_group_members_list_view.dart';
 
 class AddMembersSection extends StatelessWidget {
-  const AddMembersSection({super.key, required this.memberEmailController});
-  final TextEditingController memberEmailController;
+  const AddMembersSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class AddMembersSection extends StatelessWidget {
 
         const SizedBox(height: 8),
 
-        AddMembersField(memberEmailController: memberEmailController),
+        const AddMembersField(),
 
         const SizedBox(height: 10),
 

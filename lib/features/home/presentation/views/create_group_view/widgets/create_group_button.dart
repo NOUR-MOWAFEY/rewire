@@ -7,16 +7,7 @@ import 'package:rewire/features/home/presentation/view_model/create_group_cubit/
 import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
 
 class CreategroupButton extends StatelessWidget {
-  const CreategroupButton({
-    super.key,
-    required this.groupNameKey,
-    required this.groupNameController,
-    required this.groupPasswordController,
-  });
-
-  final GlobalKey<FormState> groupNameKey;
-  final TextEditingController groupNameController;
-  final TextEditingController groupPasswordController;
+  const CreategroupButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,20 +33,19 @@ class CreategroupButton extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is CreateGroupLoading ||
-              state is CreateGroupSuccess ||
-              state is CreateGroupFaliure) {
+          if (state is CreateGroupLoading || state is CreateGroupSuccess) {
             return const SizedBox();
           }
 
           return CustomButton(
             title: 'Create Group',
             onPressed: () async {
-              if (!groupNameKey.currentState!.validate()) return;
+              final cubit = context.read<CreateGroupCubit>();
+              if (!cubit.createGroupKey.currentState!.validate()) return;
 
-              context.read<CreateGroupCubit>().createGroup(
-                title: groupNameController.text.trim(),
-                password: groupPasswordController.text,
+              cubit.createGroup(
+                title: cubit.groupNameController.text.trim(),
+                password: cubit.groupPasswordController.text,
                 invitedUsers: context.read<MembersCubit>().members.toList(),
               );
             },

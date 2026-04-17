@@ -19,16 +19,16 @@ class InvitationsCubit extends Cubit<InvitationsState> {
   StreamSubscription? _invitationsSubscription;
 
   void listenToInvitations() {
-    emit(InvitationsLoading());
+    if (!isClosed) emit(InvitationsLoading());
     _invitationsSubscription?.cancel();
     _invitationsSubscription = _firestoreService
         .listenToInvitations(_userId)
         .listen(
           (invitations) {
-            emit(InvitationsSuccess(invitations: invitations));
+            if (!isClosed) emit(InvitationsSuccess(invitations: invitations));
           },
           onError: (e) {
-            emit(InvitationsFailure(errMessage: e.toString()));
+            if (!isClosed) emit(InvitationsFailure(errMessage: e.toString()));
           },
         );
   }
@@ -36,6 +36,9 @@ class InvitationsCubit extends Cubit<InvitationsState> {
   Future<void> acceptInvitation(InvitationModel invitation) async {
     if (state is InvitationsSuccess) {
       final currentInvitations = (state as InvitationsSuccess).invitations;
+
+      if (isClosed) return;
+
       emit(
         InvitationsSuccess(
           invitations: currentInvitations,
@@ -50,7 +53,7 @@ class InvitationsCubit extends Cubit<InvitationsState> {
           accept: true,
         );
       } catch (e) {
-        emit(InvitationsFailure(errMessage: e.toString()));
+        if (!isClosed) emit(InvitationsFailure(errMessage: e.toString()));
       }
     }
   }
@@ -58,6 +61,9 @@ class InvitationsCubit extends Cubit<InvitationsState> {
   Future<void> declineInvitation(InvitationModel invitation) async {
     if (state is InvitationsSuccess) {
       final currentInvitations = (state as InvitationsSuccess).invitations;
+
+      if (isClosed) return;
+
       emit(
         InvitationsSuccess(
           invitations: currentInvitations,
@@ -72,7 +78,7 @@ class InvitationsCubit extends Cubit<InvitationsState> {
           accept: false,
         );
       } catch (e) {
-        emit(InvitationsFailure(errMessage: e.toString()));
+        if (!isClosed) emit(InvitationsFailure(errMessage: e.toString()));
       }
     }
   }

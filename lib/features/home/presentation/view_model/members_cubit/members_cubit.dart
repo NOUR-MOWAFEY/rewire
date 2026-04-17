@@ -192,7 +192,7 @@ class MembersCubit extends Cubit<MembersState> {
       );
     } catch (e) {
       log(e.toString());
-      emit(MembersError(errMassage: e.toString()));
+      if (!isClosed) emit(MembersError(errMassage: e.toString()));
     }
   }
 

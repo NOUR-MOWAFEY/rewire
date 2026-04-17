@@ -25,7 +25,7 @@ class DeleteGroupCubit extends Cubit<DeleteGroupState> {
 
   Future<void> deleteGroup(String groupId) async {
     isLoading = true;
-    emit(DeleteGroupLoading());
+  if(!isClosed)  emit(DeleteGroupLoading());
 
     try {
       await _firestoreService

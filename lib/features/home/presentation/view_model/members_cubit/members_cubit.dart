@@ -202,6 +202,7 @@ class MembersCubit extends Cubit<MembersState> {
     required String groupId,
     required String groupName,
     required String email,
+    int? groupImageUpdatedAt,
   }) async {
     if (!isClosed) emit(MembersLoading());
 
@@ -232,6 +233,7 @@ class MembersCubit extends Cubit<MembersState> {
         receiverId: user.uid,
         receiverName: user.name,
         receiverEmail: user.email,
+        groupImageUpdatedAt: groupImageUpdatedAt,
       );
 
       if (!isClosed) emit(MembersAdded());

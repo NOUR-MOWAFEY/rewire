@@ -64,6 +64,7 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
             receiverId: user.uid,
             receiverName: user.name,
             receiverEmail: user.email,
+            groupImageUpdatedAt: createdGroup.imageUpdatedAt,
           );
         }
       }

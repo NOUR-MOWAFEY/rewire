@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/features/home/data/models/invitation_model.dart';
+import 'package:rewire/features/home/presentation/views/widgets/small_group_image.dart';
 
 class InvitationItemHeader extends StatelessWidget {
   const InvitationItemHeader({super.key, required this.invitation});
@@ -13,13 +12,9 @@ class InvitationItemHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const CircleAvatar(
-          backgroundColor: AppColors.transparentPrimary,
-          child: Icon(
-            FontAwesomeIcons.userGroup,
-            size: 16,
-            color: Color.fromARGB(213, 224, 224, 224),
-          ),
+        SmallGroupImage(
+          groupId: invitation.groupId,
+          imageUpdatedAt: invitation.groupImageUpdatedAt,
         ),
 
         const SizedBox(width: 12),

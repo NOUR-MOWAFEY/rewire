@@ -13,6 +13,7 @@ class InvitationModel {
   final String receiverEmail;
   final InvitationStatus status;
   final Timestamp createdAt;
+  final int? groupImageUpdatedAt;
 
   InvitationModel({
     required this.id,
@@ -25,6 +26,7 @@ class InvitationModel {
     required this.receiverEmail,
     required this.status,
     required this.createdAt,
+    this.groupImageUpdatedAt,
   });
 
   factory InvitationModel.fromMap(String id, Map<String, dynamic> map) {
@@ -42,6 +44,7 @@ class InvitationModel {
         orElse: () => InvitationStatus.pending,
       ),
       createdAt: map['createdAt'] ?? Timestamp.now(),
+      groupImageUpdatedAt: map['groupImageUpdatedAt'],
     );
   }
 
@@ -56,6 +59,7 @@ class InvitationModel {
       'receiverEmail': receiverEmail,
       'status': status.name,
       'createdAt': createdAt,
+      'groupImageUpdatedAt': groupImageUpdatedAt,
     };
   }
 

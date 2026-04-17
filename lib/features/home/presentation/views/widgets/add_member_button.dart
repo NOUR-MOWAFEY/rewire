@@ -43,6 +43,7 @@ class AddMemberButton extends StatelessWidget {
             groupId: groupModel.id,
             groupName: groupModel.name,
             email: email,
+            groupImageUpdatedAt: groupModel.imageUpdatedAt,
           );
         }
       },

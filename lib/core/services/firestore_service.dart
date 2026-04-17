@@ -528,6 +528,7 @@ class FirestoreService {
     required String receiverId,
     required String receiverName,
     required String receiverEmail,
+    int? groupImageUpdatedAt,
   }) async {
     // Check if invitation already exists
     final existing = await _firestore
@@ -551,6 +552,7 @@ class FirestoreService {
       'receiverEmail': receiverEmail,
       'status': InvitationStatus.pending.name,
       'createdAt': FieldValue.serverTimestamp(),
+      'groupImageUpdatedAt': groupImageUpdatedAt,
     });
   }
 

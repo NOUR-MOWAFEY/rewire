@@ -81,4 +81,16 @@ class GroupModel {
       imageUpdatedAt: imageUpdatedAt ?? this.imageUpdatedAt,
     );
   }
+
+  static GroupModel fakeData() {
+    return GroupModel(
+      id: '00000000',
+      name: 'name',
+      createdBy: 'createdBy',
+      members: ['members', '', '', ''],
+      isActive: true,
+      joinCode: 'joinCode',
+      passwordHash: 'passwordHash',
+    );
+  }
 }

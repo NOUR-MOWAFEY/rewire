@@ -18,7 +18,6 @@ class InvitationsCubit extends Cubit<InvitationsState> {
 
   StreamSubscription? _invitationsSubscription;
 
-
   void listenToInvitations() {
     emit(InvitationsLoading());
     _invitationsSubscription?.cancel();
@@ -37,11 +36,13 @@ class InvitationsCubit extends Cubit<InvitationsState> {
   Future<void> acceptInvitation(InvitationModel invitation) async {
     if (state is InvitationsSuccess) {
       final currentInvitations = (state as InvitationsSuccess).invitations;
-      emit(InvitationsSuccess(
-        invitations: currentInvitations,
-        loadingId: invitation.id,
-        isDeclining: false,
-      ));
+      emit(
+        InvitationsSuccess(
+          invitations: currentInvitations,
+          loadingId: invitation.id,
+          isDeclining: false,
+        ),
+      );
 
       try {
         await _firestoreService.respondToInvitation(
@@ -57,11 +58,13 @@ class InvitationsCubit extends Cubit<InvitationsState> {
   Future<void> declineInvitation(InvitationModel invitation) async {
     if (state is InvitationsSuccess) {
       final currentInvitations = (state as InvitationsSuccess).invitations;
-      emit(InvitationsSuccess(
-        invitations: currentInvitations,
-        loadingId: invitation.id,
-        isDeclining: true,
-      ));
+      emit(
+        InvitationsSuccess(
+          invitations: currentInvitations,
+          loadingId: invitation.id,
+          isDeclining: true,
+        ),
+      );
 
       try {
         await _firestoreService.respondToInvitation(

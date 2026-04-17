@@ -14,7 +14,6 @@ class InvitationsView extends StatelessWidget {
       viewBody: CustomRefreshIndicator(
         onRefresh: () async {
           context.read<InvitationsCubit>().listenToInvitations();
-
           await Future.delayed(Duration(seconds: 5));
         },
         child: const InvitationsViewBody(),

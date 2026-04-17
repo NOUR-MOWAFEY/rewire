@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -12,13 +13,13 @@ class GroupsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemCount = isLoading ? 10 : (groups?.length ?? 0);
+    final itemCount = isLoading ? 7 : (groups?.length ?? 0);
 
     return Skeletonizer.sliver(
       enabled: isLoading,
-      effect: ShimmerEffect(
-        baseColor: const Color.fromARGB(111, 94, 147, 108),
-        highlightColor: const Color.fromARGB(192, 94, 147, 108),
+      effect: const ShimmerEffect(
+        baseColor: AppColors.skeletonBaseColor,
+        highlightColor: AppColors.skeletonHighlightColor,
       ),
       child: SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -30,7 +31,7 @@ class GroupsList extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: GroupItem(
-                groupModel: isLoading ? _fakeData() : groups![index],
+                groupModel: isLoading ? GroupModel.fakeData() : groups![index],
                 isFirstItem: index == 0,
                 isLastItem: index == itemCount - 1,
               ),
@@ -38,18 +39,6 @@ class GroupsList extends StatelessWidget {
           }),
         ),
       ),
-    );
-  }
-
-  GroupModel _fakeData() {
-    return GroupModel(
-      id: 'id',
-      name: 'name',
-      createdBy: 'createdBy',
-      members: ['members'],
-      isActive: true,
-      joinCode: 'joinCode',
-      passwordHash: 'passwordHash',
     );
   }
 }

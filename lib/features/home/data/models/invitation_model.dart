@@ -58,4 +58,19 @@ class InvitationModel {
       'createdAt': createdAt,
     };
   }
+
+  static InvitationModel fakeData() {
+    return InvitationModel(
+      id: '0000000',
+      groupId: 'groupId',
+      groupName: 'groupName',
+      senderId: 'senderId',
+      senderName: 'senderName',
+      receiverId: 'receiverId',
+      receiverName: 'receiverName',
+      receiverEmail: 'receiverEmail',
+      status: InvitationStatus.pending,
+      createdAt: Timestamp.now(),
+    );
+  }
 }

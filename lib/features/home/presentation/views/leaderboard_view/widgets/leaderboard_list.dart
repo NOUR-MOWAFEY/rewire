@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/features/home/data/models/group_model.dart';
 import 'package:rewire/features/home/presentation/views/leaderboard_view/widgets/leaderboard_item.dart';
 import 'package:rewire/features/home/presentation/views/leaderboard_view/widgets/leaderboard_view_header.dart';
@@ -16,7 +17,7 @@ class LeaderboardList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemCount = isLoading ? 5 : displayableGroups.length;
+    final itemCount = isLoading ? 3 : displayableGroups.length;
 
     return CustomScrollView(
       slivers: [
@@ -24,9 +25,9 @@ class LeaderboardList extends StatelessWidget {
 
         Skeletonizer.sliver(
           enabled: isLoading,
-          effect: ShimmerEffect(
-            baseColor: const Color.fromARGB(76, 94, 147, 108),
-            highlightColor: const Color.fromARGB(192, 94, 147, 108),
+          effect: const ShimmerEffect(
+            baseColor: AppColors.skeletonBaseColor,
+            highlightColor: AppColors.skeletonHighlightColor,
           ),
           child: SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -36,15 +37,7 @@ class LeaderboardList extends StatelessWidget {
                   children: [
                     LeaderboardItem(
                       groupModel: isLoading
-                          ? GroupModel(
-                              id: '00000000',
-                              name: 'name',
-                              createdBy: 'createdBy',
-                              members: ['members', '', '', ''],
-                              isActive: true,
-                              joinCode: 'joinCode',
-                              passwordHash: 'passwordHash',
-                            )
+                          ? GroupModel.fakeData()
                           : displayableGroups[index],
                     ),
                     index == itemCount - 1

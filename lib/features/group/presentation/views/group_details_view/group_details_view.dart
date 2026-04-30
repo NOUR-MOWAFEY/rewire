@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/services/firestore_service.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 import '../../../../../core/utils/service_locator.dart';
 import '../../../data/models/group_model.dart';
 import '../../view_model/days_cubit/days_cubit.dart';

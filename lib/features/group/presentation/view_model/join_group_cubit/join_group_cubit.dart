@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 
 import '../../../../../core/services/firebase_auth_service.dart';
-import '../../../../../core/services/firestore_service.dart';
 
 part 'join_group_state.dart';
 

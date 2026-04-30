@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 
-import '../../../../../core/services/firestore_service.dart';
 import '../../../../../core/services/shared_preferences_service.dart';
 import '../../../../../core/utils/service_locator.dart';
 import '../../../data/models/checkin_model.dart';

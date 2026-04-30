@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 
 import '../../../../../../core/services/firebase_auth_service.dart';
-import '../../../../../../core/services/firestore_service.dart';
 import '../../../../../../core/utils/app_router.dart';
 import '../../../../../../core/utils/service_locator.dart';
 import '../../../../../../core/widgets/custom_button.dart';

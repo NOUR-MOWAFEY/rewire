@@ -1,11 +1,13 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 
-import '../../../../../core/services/firestore_service.dart';
 import '../../../../../core/utils/security_helper.dart';
+import '../../../../invitations/data/models/invitation_model.dart';
 import '../../../../profile_view/data/models/user_model.dart';
 import '../../../data/models/group_model.dart';
 
@@ -71,14 +73,19 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
           if (user.uid == _user.uid) continue; // Skip self if somehow included
 
           await _firestoreService.sendInvitation(
-            groupId: createdGroup.id,
-            groupName: createdGroup.name,
-            senderId: _user.uid,
-            senderName: senderName,
-            receiverId: user.uid,
-            receiverName: user.name,
-            receiverEmail: user.email,
-            groupImageUpdatedAt: createdGroup.imageUpdatedAt,
+            InvitationModel(
+              id: '',
+              groupId: createdGroup.id,
+              groupName: createdGroup.name,
+              senderId: _user.uid,
+              senderName: senderName,
+              receiverId: user.uid,
+              receiverName: user.name,
+              receiverEmail: user.email,
+              status: InvitationStatus.pending,
+              createdAt: Timestamp.now(),
+              groupImageUpdatedAt: createdGroup.imageUpdatedAt,
+            ),
           );
         }
       }

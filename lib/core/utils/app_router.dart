@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 
 import '../../../main_navigation_view.dart';
 import '../../features/auth/presentation/view_model/user_cubit/user_cubit.dart';
@@ -16,7 +17,6 @@ import '../../features/group/presentation/views/group_settings_view/group_settin
 import '../../features/group/presentation/views/groups_view/groups_view.dart';
 import '../../features/invitations/presentation/view_model/invitations_cubit/invitations_cubit.dart';
 import '../services/firebase_auth_service.dart';
-import '../services/firestore_service.dart';
 import '../services/supabase_storage_service.dart';
 import 'app_animations.dart';
 import 'service_locator.dart';

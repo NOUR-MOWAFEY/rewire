@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/services/firestore_service.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 import '../../../../../core/services/supabase_storage_service.dart';
 
 part 'delete_group_state.dart';

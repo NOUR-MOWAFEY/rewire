@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 
 import '../../../../../core/services/firebase_auth_service.dart';
-import '../../../../../core/services/firestore_service.dart';
 import '../../../../../core/utils/service_locator.dart';
 import '../../../../invitations/data/models/invitation_model.dart';
 import '../../../../profile_view/data/models/user_model.dart';
@@ -227,14 +228,19 @@ class MembersCubit extends Cubit<MembersState> {
 
       // Send Invitation
       await _firestoreService.sendInvitation(
-        groupId: groupId,
-        groupName: groupName,
-        senderId: currentUser.uid,
-        senderName: currentUser.name,
-        receiverId: user.uid,
-        receiverName: user.name,
-        receiverEmail: user.email,
-        groupImageUpdatedAt: groupImageUpdatedAt,
+        InvitationModel(
+          id: '',
+          groupId: groupId,
+          groupName: groupName,
+          senderId: currentUser.uid,
+          senderName: currentUser.name,
+          receiverId: user.uid,
+          receiverName: user.name,
+          receiverEmail: user.email,
+          status: InvitationStatus.pending,
+          createdAt: Timestamp.now(),
+          groupImageUpdatedAt: groupImageUpdatedAt,
+        ),
       );
 
       if (!isClosed) emit(MembersAdded());

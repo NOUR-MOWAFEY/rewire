@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 
-import '../../../../../core/services/firestore_service.dart';
 import '../../../../profile_view/data/models/user_model.dart';
 
 part 'leaderboard_state.dart';

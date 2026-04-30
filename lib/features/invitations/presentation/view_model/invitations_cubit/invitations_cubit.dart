@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 
-import '../../../../../core/services/firestore_service.dart';
 import '../../../data/models/invitation_model.dart';
 
 part 'invitations_state.dart';

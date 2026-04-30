@@ -5,9 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rewire/core/services/firestore/firestore_service.dart';
 
 import '../../../../../core/services/firebase_auth_service.dart';
-import '../../../../../core/services/firestore_service.dart';
 import '../../../../../core/utils/service_locator.dart';
 import '../../../data/models/checkin_model.dart';
 import '../../../data/models/day_model.dart';

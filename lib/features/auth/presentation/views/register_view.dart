@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/features/auth/presentation/views/widgets/register_view_app_bar.dart';
 
 import '../../../../core/widgets/view_background_container.dart';
+import 'widgets/register_view_app_bar.dart';
 import 'widgets/register_view_body.dart';
 
 class RegisterView extends StatelessWidget {

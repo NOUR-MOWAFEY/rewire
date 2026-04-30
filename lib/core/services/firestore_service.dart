@@ -2,16 +2,15 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:rewire/core/utils/code_generator.dart';
-import 'package:rewire/core/utils/security_helper.dart';
-import 'package:rewire/features/home/data/models/day_model.dart';
 
-import '../../features/home/data/models/checkin_model.dart';
-import '../../features/home/data/models/group_model.dart';
-import '../../features/home/data/models/invitation_model.dart';
-import '../../features/home/data/models/monthly_stats_model.dart';
-import '../../features/home/data/models/public_message_model.dart';
-import '../../features/home/data/models/user_model.dart';
+import '../../features/group/data/models/checkin_model.dart';
+import '../../features/group/data/models/day_model.dart';
+import '../../features/group/data/models/group_model.dart';
+import '../../features/group/data/models/public_message_model.dart';
+import '../../features/invitations/data/models/invitation_model.dart';
+import '../../features/profile_view/data/models/user_model.dart';
+import '../utils/code_generator.dart';
+import '../utils/security_helper.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -82,23 +81,23 @@ class FirestoreService {
   // Monthly Stats
   // =====================
 
-  Future<void> saveMonthlyStats(String uid, MonthlyStatsModel stats) async {
-    await _users
-        .doc(uid)
-        .collection('stats')
-        .doc(stats.month)
-        .set(stats.toMap());
-  }
+  // Future<void> saveMonthlyStats(String uid, MonthlyStatsModel stats) async {
+  //   await _users
+  //       .doc(uid)
+  //       .collection('stats')
+  //       .doc(stats.month)
+  //       .set(stats.toMap());
+  // }
 
-  Future<MonthlyStatsModel?> getMonthlyStats(
-    String uid,
-    String month, // YYYY-MM
-  ) async {
-    final doc = await _users.doc(uid).collection('stats').doc(month).get();
+  // Future<MonthlyStatsModel?> getMonthlyStats(
+  //   String uid,
+  //   String month, // YYYY-MM
+  // ) async {
+  //   final doc = await _users.doc(uid).collection('stats').doc(month).get();
 
-    if (!doc.exists) return null;
-    return MonthlyStatsModel.fromMap(doc.data()!);
-  }
+  //   if (!doc.exists) return null;
+  //   return MonthlyStatsModel.fromMap(doc.data()!);
+  // }
 
   // =====================
   // Groups
@@ -407,28 +406,32 @@ class FirestoreService {
     await _recalculateCommitmentPercentage(habitId, userId);
   }
 
-  Future<void> _recalculateCommitmentPercentage(String habitId, String userId) async {
+  Future<void> _recalculateCommitmentPercentage(
+    String habitId,
+    String userId,
+  ) async {
     final days = await _groups.doc(habitId).collection('days').get();
-    
+
     int successCount = 0;
     int totalDays = days.docs.length;
-    
+
     if (totalDays == 0) return;
-    
+
     for (var dayDoc in days.docs) {
-      final checkInDoc = await dayDoc.reference.collection('checkins').doc(userId).get();
+      final checkInDoc = await dayDoc.reference
+          .collection('checkins')
+          .doc(userId)
+          .get();
       if (checkInDoc.exists) {
         if (checkInDoc.data()?['status'] == CheckInStatus.success.name) {
           successCount++;
         }
       }
     }
-    
+
     num points = successCount * 10;
-    
-    await _groups.doc(habitId).update({
-      'memberCommitments.$userId': points,
-    });
+
+    await _groups.doc(habitId).update({'memberCommitments.$userId': points});
   }
 
   // update message

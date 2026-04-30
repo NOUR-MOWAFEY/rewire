@@ -1,26 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rewire/core/services/firestore_service.dart';
-import 'package:rewire/core/services/supabase_storage_service.dart';
-import 'package:rewire/core/utils/app_animations.dart';
-import 'package:rewire/features/home/data/models/group_info_view_data.dart';
-import 'package:rewire/features/home/data/models/group_model.dart';
-import 'package:rewire/features/home/presentation/view_model/create_group_cubit/create_group_cubit.dart';
-import 'package:rewire/features/home/presentation/view_model/delete_group_cubit/delete_group_cubit.dart';
-import 'package:rewire/features/home/presentation/view_model/group_cubit/group_cubit.dart';
-import 'package:rewire/features/home/presentation/view_model/invitations_cubit/invitations_cubit.dart';
-import 'package:rewire/features/home/presentation/view_model/members_cubit/members_cubit.dart';
-import 'package:rewire/features/home/presentation/views/create_group_view/create_group_view.dart';
-import 'package:rewire/features/home/presentation/views/group_info_view/group_info_view.dart';
-import 'package:rewire/features/home/presentation/views/group_settings_view/group_settings_view.dart';
-import 'package:rewire/features/home/presentation/views/main_navigation_view.dart';
 
+import '../../../main_navigation_view.dart';
 import '../../features/auth/presentation/view_model/user_cubit/user_cubit.dart';
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/auth/presentation/views/register_view.dart';
-import '../../features/home/presentation/views/group_details_view/group_details_view.dart';
-import '../../features/home/presentation/views/home_view/home_view.dart';
+import '../../features/group/data/models/group_info_view_data.dart';
+import '../../features/group/data/models/group_model.dart';
+import '../../features/group/presentation/view_model/delete_group_cubit/delete_group_cubit.dart';
+import '../../features/group/presentation/view_model/group_cubit/group_cubit.dart';
+import '../../features/group/presentation/views/create_group_view/create_group_view.dart';
+import '../../features/group/presentation/views/group_details_view/group_details_view.dart';
+import '../../features/group/presentation/views/group_info_view/group_info_view.dart';
+import '../../features/group/presentation/views/group_settings_view/group_settings_view.dart';
+import '../../features/group/presentation/views/groups_view/groups_view.dart';
+import '../../features/invitations/presentation/view_model/invitations_cubit/invitations_cubit.dart';
 import '../services/firebase_auth_service.dart';
+import '../services/firestore_service.dart';
+import '../services/supabase_storage_service.dart';
+import 'app_animations.dart';
 import 'service_locator.dart';
 
 abstract class AppRouter {
@@ -91,7 +89,7 @@ abstract class AppRouter {
           GoRoute(
             path: homeView,
             builder: (context, state) {
-              return const HomeView();
+              return const GroupsView();
             },
           ),
 

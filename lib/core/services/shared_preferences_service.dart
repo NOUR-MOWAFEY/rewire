@@ -1,4 +1,4 @@
-import 'package:rewire/core/utils/constants.dart';
+import '../utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesService {

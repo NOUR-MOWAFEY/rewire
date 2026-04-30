@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/core/widgets/custom_back_button.dart';
+import '../../../../../core/widgets/custom_back_button.dart';
 
 class RegisterViewAppBar extends StatelessWidget
     implements PreferredSizeWidget {

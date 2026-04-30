@@ -1,0 +1,123 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../utils/app_colors.dart';
+import '../utils/validator.dart';
+
+class CustomUnderlineTextField extends StatefulWidget {
+  const CustomUnderlineTextField({
+    super.key,
+    required this.hintText,
+    this.textInputAction = TextInputAction.done,
+    this.textInputType = TextInputType.text,
+    this.controller,
+    this.inputType = InputType.name,
+    this.maxLines = 1,
+    this.suffixIcon,
+    this.isEnabled,
+  });
+
+  final String hintText;
+  final TextInputAction? textInputAction;
+  final TextInputType? textInputType;
+  final TextEditingController? controller;
+  final InputType inputType;
+  final int maxLines;
+  final Widget? suffixIcon;
+  final bool? isEnabled;
+
+  @override
+  State<CustomUnderlineTextField> createState() =>
+      _CustomUnderlineTextFieldState();
+}
+
+class _CustomUnderlineTextFieldState extends State<CustomUnderlineTextField> {
+  late bool _isObscure;
+  late IconData _icon;
+
+  @override
+  void initState() {
+    super.initState();
+    _isObscure = true;
+    _icon = FontAwesomeIcons.eyeSlash;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      style: TextStyle(
+        color: widget.isEnabled != null ? Colors.grey.shade400 : null,
+      ),
+      controller: widget.controller,
+      enabled: widget.isEnabled,
+
+      maxLines: widget.maxLines,
+      minLines: 1,
+
+      validator: (value) {
+        if (value!.isEmpty) {
+          return null;
+        }
+        if (widget.inputType == InputType.password && value.trim().isEmpty) {
+          return 'Password cannot be all spaces';
+        } else if (widget.inputType == InputType.password && value.isNotEmpty) {
+          return value.length < 8
+              ? 'Password must be at least 8 characters'
+              : null;
+        }
+
+        if (widget.inputType == InputType.name && value.trim().isEmpty) {
+          return 'Name cannot be all spaces';
+        } else if (widget.inputType == InputType.name &&
+            value.trim().isNotEmpty) {
+          return value.length < 3 ? 'Name is too short' : null;
+        }
+
+        return validator(widget.inputType, value, null);
+      },
+
+      autovalidateMode: .onUserInteractionIfError,
+
+      obscureText: widget.textInputType == TextInputType.visiblePassword
+          ? _isObscure
+          : false,
+
+      textInputAction: widget.textInputAction,
+
+      keyboardType: widget.textInputType,
+
+      cursorColor: AppColors.white,
+
+      cursorWidth: 1,
+
+      decoration: InputDecoration(
+        suffixIcon: widget.textInputType == TextInputType.visiblePassword
+            ? GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isObscure = !_isObscure;
+                    _icon = _isObscure == true
+                        ? FontAwesomeIcons.eyeSlash
+                        : FontAwesomeIcons.eye;
+                  });
+                },
+                child: Icon(_icon, size: 20),
+              )
+            : widget.suffixIcon,
+
+        hintText: widget.hintText,
+        border: _customUnderlineInputBorder(),
+        focusedBorder: _customUnderlineInputBorder(),
+        disabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+      ),
+    );
+  }
+
+  UnderlineInputBorder _customUnderlineInputBorder() {
+    return const UnderlineInputBorder(
+      borderSide: BorderSide(color: AppColors.primary),
+    );
+  }
+}

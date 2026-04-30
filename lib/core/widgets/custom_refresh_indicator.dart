@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rewire/core/utils/app_colors.dart';
+
+import '../utils/app_colors.dart';
 
 class CustomRefreshIndicator extends StatelessWidget {
   const CustomRefreshIndicator({

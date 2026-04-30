@@ -1,0 +1,137 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../utils/app_colors.dart';
+import '../utils/show_toastification.dart';
+import 'custom_circular_loading.dart';
+import '../../features/profile_view/presentation/view_model/profile_view_model.dart';
+
+class CustomAvatar extends StatelessWidget {
+  const CustomAvatar({
+    super.key,
+    required this.viewModel,
+    required this.imageType,
+    this.groupId,
+  });
+
+  final ProfileViewModel viewModel;
+  final ImageType imageType;
+  final String? groupId;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: AbsorbPointer(
+        absorbing: viewModel.isLoading,
+        child: Container(
+          height: 130,
+          width: 130,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: AppColors.transparentPrimary,
+          ),
+          child: InkWell(
+            onTap: () async {
+              await viewModel.pickImage();
+              final success = await viewModel.uploadImage(
+                groupId: imageType == ImageType.group ? groupId : null,
+              );
+
+              if (!context.mounted) return;
+              if (success == false) return;
+
+              if (success) {
+                try {
+                  if (imageType == ImageType.group && groupId != null) {
+                    await FirebaseFirestore.instance
+                        .collection('habits')
+                        .doc(groupId)
+                        .update({
+                          'imageUpdatedAt':
+                              DateTime.now().millisecondsSinceEpoch,
+                        });
+                  } else if (imageType == ImageType.user) {
+                    final userId = viewModel.authService.getCurrentUser()!.uid;
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(userId)
+                        .update({
+                          'imageUpdatedAt':
+                              DateTime.now().millisecondsSinceEpoch,
+                        });
+                  }
+                } catch (e) {
+                  // Ignore errors
+                }
+
+                if (!context.mounted) return;
+                ShowToastification.success(
+                  context,
+                  'Image uploaded successfully',
+                );
+              } else {
+                ShowToastification.failure(
+                  context,
+                  'Upload failed. Please check your connection and try again.',
+                );
+              }
+            },
+            borderRadius: BorderRadius.circular(100),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ClipOval(
+                  child: viewModel.imageFile != null
+                      ? Image.file(viewModel.imageFile!, fit: BoxFit.cover)
+                      : viewModel.imageUrl != null
+                      ? CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: viewModel.imageUrl!,
+                          placeholder: (context, url) =>
+                              const CustomCircularLoading(size: 28),
+                          errorWidget: (context, url, error) =>
+                              const UserProfileDefaultAvatar(),
+                        )
+                      : const UserProfileDefaultAvatar(),
+                ),
+                Positioned(
+                  bottom: 5,
+                  right: 5,
+                  child: Container(
+                    height: 28,
+                    width: 28,
+                    decoration: BoxDecoration(
+                      color: AppColors.transparentPrimary,
+                      shape: BoxShape.circle,
+                    ),
+
+                    child: Icon(
+                      FontAwesomeIcons.plus,
+                      size: 14,
+                      color: AppColors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class UserProfileDefaultAvatar extends StatelessWidget {
+  const UserProfileDefaultAvatar({super.key, this.size = 48});
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      FontAwesomeIcons.user,
+      size: size,
+      color: Color.fromARGB(218, 224, 224, 224),
+    );
+  }
+}

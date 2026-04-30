@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rewire/features/auth/presentation/views/widgets/register_form.dart';
 
 import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/constants.dart';
 import 'auth_footer.dart';
 import 'auth_header.dart';
+import 'register_form.dart';
 
 class RegisterViewBody extends StatelessWidget {
   const RegisterViewBody({super.key});

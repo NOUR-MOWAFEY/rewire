@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewire/core/services/firestore_service.dart';
-import 'package:rewire/features/home/data/models/user_model.dart';
+
+import '../../../../../core/services/firestore_service.dart';
+import '../../../../profile_view/data/models/user_model.dart';
 
 part 'user_state.dart';
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rewire/features/group/presentation/views/create_group_view/widgets/member_item_image.dart';
+
 import '../../../../profile_view/data/models/user_model.dart';
-import 'leaderboard_item_member_image.dart';
 import 'leaderboard_item_member_name.dart';
 import 'leaderboard_item_member_points.dart';
 
@@ -30,7 +31,7 @@ class LeaderboardStageData extends StatelessWidget {
           ),
         ),
 
-        LeaderboardItemMemberImage(user: user),
+        MemberItemImage(user: user),
 
         const SizedBox(height: 4),
 

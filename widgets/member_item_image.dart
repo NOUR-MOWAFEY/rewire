@@ -5,8 +5,8 @@ import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/core/utils/app_styles.dart';
 import 'package:rewire/core/utils/service_locator.dart';
 import 'package:rewire/core/widgets/custom_circular_loading.dart';
+import 'package:rewire/core/widgets/user_default_avatar.dart';
 import 'package:rewire/features/profile_view/data/models/user_model.dart';
-import 'package:rewire/core/widgets/custom_avatar.dart';
 
 class MemberItemImage extends StatelessWidget {
   const MemberItemImage({super.key, required this.user, this.radius = 20});
@@ -35,7 +35,7 @@ class MemberItemImage extends StatelessWidget {
       return CircleAvatar(
         radius: radius,
         backgroundColor: AppColors.primary.withValues(alpha: 0.5),
-        child: const UserProfileDefaultAvatar(size: 22),
+        child: const UserDefaultAvatar(size: 22),
       );
     }
 

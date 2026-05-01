@@ -2,13 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/features/group/presentation/views/group_settings_view/widgets/members_pending_list_view.dart';
 
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/widgets/custom_circular_loading.dart';
 import '../../../../data/models/group_model.dart';
 import '../../../view_model/members_cubit/members_cubit.dart';
 import '../../create_group_view/widgets/members_list_view.dart';
-import 'pending_member_item.dart';
 
 class CustomAccordionBody extends StatelessWidget {
   const CustomAccordionBody({super.key, required this.groupModel});
@@ -49,17 +49,7 @@ class CustomAccordionBody extends StatelessWidget {
                   if (state.pendingInvitations.isNotEmpty) ...[
                     const SizedBox(height: 24),
                     _buildSectionTitle('Pending Invitations'),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.pendingInvitations.length,
-
-                      itemBuilder: (context, index) {
-                        return PendingMemberItem(
-                          invitation: state.pendingInvitations[index],
-                        );
-                      },
-                    ),
+                    MembersPendingListView(state: state),
                   ],
                 ],
               ),

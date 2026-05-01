@@ -30,6 +30,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   accordion: ^2.6.0
+  animations: ^2.2.0
   cached_network_image: ^3.4.1
   cloud_firestore: ^6.1.2
   crypto: ^3.0.7

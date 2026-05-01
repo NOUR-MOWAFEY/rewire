@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/show_toastification.dart';
 import '../../../../../core/widgets/custom_circular_loading.dart';
@@ -20,8 +21,6 @@ class ProfileViewBody extends StatelessWidget {
         final user = context.read<UserCubit>().currentUser;
 
         if (user != null) context.read<UserCubit>().listenToUser(user.uid);
-
-        
 
         await Future.delayed(Duration(seconds: 5));
       },

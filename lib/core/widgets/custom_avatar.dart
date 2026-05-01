@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rewire/core/widgets/user_default_avatar.dart';
+
+import '../../features/profile_view/presentation/view_model/profile_view_model.dart';
 import '../utils/app_colors.dart';
 import '../utils/show_toastification.dart';
 import 'custom_circular_loading.dart';
-import '../../features/profile_view/presentation/view_model/profile_view_model.dart';
 
 class CustomAvatar extends StatelessWidget {
   const CustomAvatar({
@@ -91,9 +93,9 @@ class CustomAvatar extends StatelessWidget {
                           placeholder: (context, url) =>
                               const CustomCircularLoading(size: 28),
                           errorWidget: (context, url, error) =>
-                              const UserProfileDefaultAvatar(),
+                              const UserDefaultAvatar(),
                         )
-                      : const UserProfileDefaultAvatar(),
+                      : const UserDefaultAvatar(),
                 ),
                 Positioned(
                   bottom: 5,
@@ -118,20 +120,6 @@ class CustomAvatar extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class UserProfileDefaultAvatar extends StatelessWidget {
-  const UserProfileDefaultAvatar({super.key, this.size = 48});
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Icon(
-      FontAwesomeIcons.user,
-      size: size,
-      color: Color.fromARGB(218, 224, 224, 224),
     );
   }
 }

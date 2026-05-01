@@ -33,15 +33,10 @@ class _GroupImageBuilderState extends State<GroupImageBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: viewModel,
-      builder: (BuildContext context, Widget? child) {
-        return CustomAvatar(
-          viewModel: viewModel,
-          imageType: ImageType.group,
-          groupId: widget.groupModel.id,
-        );
-      },
+    return CustomAvatar(
+      viewModel: viewModel,
+      imageType: ImageType.group,
+      groupId: widget.groupModel.id,
     );
   }
 }

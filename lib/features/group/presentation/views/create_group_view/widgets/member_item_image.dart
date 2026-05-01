@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:rewire/core/widgets/user_default_avatar.dart';
 
 import '../../../../../../core/services/supabase_storage_service.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/service_locator.dart';
-import '../../../../../../core/widgets/custom_avatar.dart';
 import '../../../../../../core/widgets/custom_circular_loading.dart';
 import '../../../../../profile_view/data/models/user_model.dart';
 
@@ -36,7 +36,7 @@ class MemberItemImage extends StatelessWidget {
       return CircleAvatar(
         radius: radius,
         backgroundColor: AppColors.primary.withValues(alpha: 0.5),
-        child: const UserProfileDefaultAvatar(size: 22),
+        child: const UserDefaultAvatar(size: 22),
       );
     }
 

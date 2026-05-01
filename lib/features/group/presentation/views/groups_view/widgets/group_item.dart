@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import '../../../../../../core/utils/app_colors.dart';
-import 'group_item_image.dart';
 
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_router.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../data/models/group_model.dart';
+import 'group_item_image.dart';
 
 class GroupItem extends StatelessWidget {
   const GroupItem({
@@ -29,7 +29,6 @@ class GroupItem extends StatelessWidget {
         InkWell(
           onTap: () =>
               context.push(AppRouter.groupDetailsView, extra: groupModel),
-
           borderRadius: BorderRadius.circular(28),
 
           child: Container(

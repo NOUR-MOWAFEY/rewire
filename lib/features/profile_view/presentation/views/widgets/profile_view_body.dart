@@ -38,6 +38,8 @@ class ProfileViewBody extends StatelessWidget {
                 const SizedBox(height: 40),
 
                 const UserDataForm(),
+
+                const SizedBox(height: 100),
               ],
             );
           }

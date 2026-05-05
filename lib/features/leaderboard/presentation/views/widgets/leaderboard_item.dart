@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rewire/core/services/firestore/firestore_service.dart';
+import 'package:rewire/features/group/data/models/group_details_view_model.dart';
 
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_router.dart';
@@ -36,8 +37,13 @@ class LeaderboardItem extends StatelessWidget {
 
         child: InkWell(
           borderRadius: BorderRadius.circular(28),
-          onTap: () =>
-              context.push(AppRouter.groupDetailsView, extra: groupModel),
+          onTap: () => context.push(
+            AppRouter.groupDetailsView,
+            extra: GroupDetailsViewModel(
+              groupModel: groupModel,
+              fromViewPath: AppRouter.leaderboardView,
+            ),
+          ),
           child: Column(
             children: [
               LeaderboardItemHeader(groupModel: groupModel),

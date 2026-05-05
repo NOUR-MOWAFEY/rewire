@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:rewire/features/group/data/models/group_details_view_model.dart';
 
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_router.dart';
@@ -27,8 +28,13 @@ class GroupItem extends StatelessWidget {
       children: [
         isFirstItem ? const SizedBox(height: 30) : const SizedBox(),
         InkWell(
-          onTap: () =>
-              context.push(AppRouter.groupDetailsView, extra: groupModel),
+          onTap: () => context.push(
+            AppRouter.groupDetailsView,
+            extra: GroupDetailsViewModel(
+              groupModel: groupModel,
+              fromViewPath: AppRouter.groupsView,
+            ),
+          ),
           borderRadius: BorderRadius.circular(28),
 
           child: Container(
@@ -43,13 +49,13 @@ class GroupItem extends StatelessWidget {
             child: ListTile(
               // group image
               leading: Hero(
-                tag: 'group_image_${groupModel.id}',
+                tag: '${AppRouter.groupsView}_image_${groupModel.id}',
                 child: GroupItemImage(groupModel: groupModel),
               ),
 
               // group name
               title: Hero(
-                tag: 'group_name_${groupModel.id}',
+                tag: '${AppRouter.groupsView}_name_${groupModel.id}',
                 child: Material(
                   color: Colors.transparent,
                   child: Text(

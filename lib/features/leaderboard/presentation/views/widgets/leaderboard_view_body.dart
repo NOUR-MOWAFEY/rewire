@@ -26,7 +26,7 @@ class LeaderboardViewBody extends StatelessWidget {
 
         final displayableGroups = state is GroupSuccess
             ? state.groups?.where((g) => g.members.length >= 2).toList() ?? []
-            : <GroupModel>[]; // 👈 empty while loading
+            : <GroupModel>[];
 
         if (!isLoading && displayableGroups.isEmpty) {
           return const LeaderboardViewEmptyBody();

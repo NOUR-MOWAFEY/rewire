@@ -40,7 +40,7 @@ class LeaderboardItem extends StatelessWidget {
               context.push(AppRouter.groupDetailsView, extra: groupModel),
           child: Column(
             children: [
-              LeaderboardItemHeader(groupName: groupModel.name),
+              LeaderboardItemHeader(groupModel: groupModel),
 
               LeaderboardItemBody(groupModel: groupModel),
             ],

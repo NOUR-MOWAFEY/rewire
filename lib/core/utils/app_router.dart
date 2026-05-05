@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rewire/core/services/firestore/firestore_service.dart';
+import 'package:rewire/core/utils/app_colors.dart';
+import 'package:rewire/features/group/presentation/view_model/days_cubit/days_cubit.dart';
+import 'package:rewire/features/group/presentation/view_model/members_cubit/members_cubit.dart';
 
 import '../../../main_navigation_view.dart';
 import '../../features/auth/presentation/view_model/user_cubit/user_cubit.dart';
@@ -96,10 +100,87 @@ abstract class AppRouter {
           GoRoute(
             path: groupDetailsView,
 
-            builder: (context, state) =>
-                GroupDetailsView(groupModel: state.extra as GroupModel),
+            pageBuilder: (context, state) {
+              final groupModel = state.extra as GroupModel;
+
+              return CustomTransitionPage(
+                child: MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => DaysCubit(
+                        _fireStoreService,
+                        groupModel.id,
+                        groupCubit: context.read<GroupCubit>(),
+                      )..listenToDays(),
+                    ),
+                    BlocProvider(
+                      lazy: false,
+                      create: (context) =>
+                          MembersCubit()..listenToAllMembers(groupModel.id),
+                    ),
+                  ],
+                  child: Material(
+                    child: GroupDetailsView(
+                      groupModel: state.extra as GroupModel,
+                    ),
+                  ),
+                ),
+                transitionDuration: const Duration(milliseconds: 250),
+                reverseTransitionDuration: const Duration(milliseconds: 250),
+                transitionsBuilder: AppAnimation.rightToLeft,
+                opaque: false,
+                barrierColor: AppColors.background2,
+              );
+            },
           ),
 
+          // GoRoute(
+          //   path: groupDetailsView,
+          //   pageBuilder: (context, state) {
+          //     final groupModel = state.extra as GroupModel;
+          //     return CustomTransitionPage(
+          //       key: state.pageKey,
+          //       opaque: true,
+          //       transitionDuration: const Duration(milliseconds: 300),
+          //       reverseTransitionDuration: const Duration(milliseconds: 200),
+          //       child: MultiBlocProvider(
+          //         providers: [
+          //           BlocProvider(
+          //             create: (context) => DaysCubit(
+          //               _fireStoreService,
+          //               groupModel.id,
+          //               groupCubit: context.read<GroupCubit>(),
+          //             )..listenToDays(),
+          //           ),
+          //           BlocProvider(
+          //             lazy: false,
+          //             create: (context) =>
+          //                 MembersCubit()..listenToAllMembers(groupModel.id),
+          //           ),
+          //         ],
+          //         child: GroupDetailsView(groupModel: groupModel),
+          //       ),
+          //       transitionsBuilder:
+          //           (context, animation, secondaryAnimation, child) {
+          //             return FadeTransition(
+          //               opacity: CurvedAnimation(
+          //                 parent: animation,
+          //                 curve: Curves.easeOut,
+          //               ),
+          //               child: ScaleTransition(
+          //                 scale: Tween<double>(begin: 0.94, end: 1.0).animate(
+          //                   CurvedAnimation(
+          //                     parent: animation,
+          //                     curve: Curves.bounceIn,
+          //                   ),
+          //                 ),
+          //                 child: child,
+          //               ),
+          //             );
+          //           },
+          //     );
+          //   },
+          // ),
           GoRoute(
             path: createGroupView,
             builder: (context, state) => const CreateGroupView(),

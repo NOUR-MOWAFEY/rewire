@@ -1,17 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
 import '../../../../../../core/services/firebase_auth_service.dart';
 import '../../../../../../core/services/supabase_storage_service.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/service_locator.dart';
 import '../../../../../profile_view/presentation/view_model/profile_view_model.dart';
-
 import '../../../../data/models/group_model.dart';
 
 class GroupItemImage extends StatefulWidget {
-  const GroupItemImage({super.key, required this.groupModel});
+  const GroupItemImage({super.key, required this.groupModel, this.size});
 
   final GroupModel groupModel;
+  final double? size;
 
   @override
   State<GroupItemImage> createState() => _GroupItemImageState();
@@ -60,8 +61,8 @@ class _GroupItemImageState extends State<GroupItemImage> {
       animation: viewModel,
       builder: (BuildContext context, Widget? child) {
         return Container(
-          height: 55,
-          width: 55,
+          height: widget.size ?? 55,
+          width: widget.size ?? 55,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
             color: AppColors.transparentPrimary,
@@ -74,11 +75,11 @@ class _GroupItemImageState extends State<GroupItemImage> {
                     fit: BoxFit.cover,
                     imageUrl: viewModel.imageUrl!,
                     placeholder: (context, url) =>
-                        const GroupProfileDefaultAvatar(),
+                        GroupProfileDefaultAvatar(size: widget.size),
                     errorWidget: (context, url, error) =>
-                        const GroupProfileDefaultAvatar(),
+                        GroupProfileDefaultAvatar(size: widget.size),
                   )
-                : const GroupProfileDefaultAvatar(),
+                : GroupProfileDefaultAvatar(size: widget.size),
           ),
         );
       },
@@ -87,13 +88,14 @@ class _GroupItemImageState extends State<GroupItemImage> {
 }
 
 class GroupProfileDefaultAvatar extends StatelessWidget {
-  const GroupProfileDefaultAvatar({super.key});
+  const GroupProfileDefaultAvatar({super.key, required this.size});
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
     return Icon(
       Icons.group_rounded,
-      size: 32,
+      size: size != null ? size! * 0.6 : 32,
       color: Color.fromARGB(218, 224, 224, 224),
     );
   }

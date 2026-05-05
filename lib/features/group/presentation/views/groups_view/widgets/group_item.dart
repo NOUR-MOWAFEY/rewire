@@ -42,16 +42,25 @@ class GroupItem extends StatelessWidget {
 
             child: ListTile(
               // group image
-              leading: GroupItemImage(groupModel: groupModel),
+              leading: Hero(
+                tag: 'group_image_${groupModel.id}',
+                child: GroupItemImage(groupModel: groupModel),
+              ),
 
               // group name
-              title: Text(
-                groupModel.name,
-                style: AppStyles.textStyle20.copyWith(
-                  fontWeight: FontWeight.bold,
+              title: Hero(
+                tag: 'group_name_${groupModel.id}',
+                child: Material(
+                  color: Colors.transparent,
+                  child: Text(
+                    groupModel.name,
+                    style: AppStyles.textStyle20.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
 
               //  created at

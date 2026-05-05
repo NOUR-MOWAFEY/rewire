@@ -46,7 +46,7 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
             IconButton(
               onPressed: () {
                 final joinGroupCubit = context.read<JoinGroupCubit>();
-                
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -55,7 +55,7 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
                   ),
                 );
               },
-              icon: const Icon(FontAwesomeIcons.qrcode),
+              icon: const Icon(FontAwesomeIcons.qrcode, color: Colors.white),
             ),
           ],
         ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:rewire/features/group/data/models/group_model.dart';
 
 import '../../../../../core/utils/app_styles.dart';
 
 class LeaderboardItemHeader extends StatelessWidget {
-  const LeaderboardItemHeader({super.key, required this.groupName});
+  const LeaderboardItemHeader({super.key, required this.groupModel});
 
-  final String groupName;
+  final GroupModel groupModel;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class LeaderboardItemHeader extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 20, top: 18, right: 20),
         child: Text(
-          groupName,
+          groupModel.name,
           style: AppStyles.textStyle22.copyWith(
             letterSpacing: 2,
             fontWeight: FontWeight.bold,

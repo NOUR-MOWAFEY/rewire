@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:rewire/features/group/data/models/group_details_view_model.dart';
+import 'package:rewire/features/group/presentation/views/groups_view/widgets/group_item_date.dart';
+import 'package:rewire/features/group/presentation/views/groups_view/widgets/group_item_name.dart';
+import 'package:rewire/features/group/presentation/views/groups_view/widgets/group_item_trailing_item.dart';
 
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_router.dart';
@@ -56,39 +57,26 @@ class GroupItem extends StatelessWidget {
               // group name
               title: Hero(
                 tag: '${AppRouter.groupsView}_name_${groupModel.id}',
-                child: Material(
+                placeholderBuilder: (context, heroSize, child) => Material(
                   color: Colors.transparent,
                   child: Text(
-                    groupModel.name,
+                    '',
                     style: AppStyles.textStyle20.copyWith(
-                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: GroupItemName(groupModel: groupModel),
                 ),
               ),
 
               //  created at
-              subtitle: Text(
-                groupModel.createdAt == null
-                    ? 'Created at: '
-                    : 'Created at: ${DateFormat('dd/MM/yyyy').format(groupModel.createdAt!.toDate())}',
-                style: AppStyles.textStyle12.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+              subtitle: GroupItemDate(groupModel: groupModel),
 
               // arrow icon
-              trailing: Padding(
-                padding: const EdgeInsets.only(right: 4),
-                child: Icon(
-                  FontAwesomeIcons.angleRight,
-                  color: AppColors.white,
-                ),
-              ),
+              trailing: const GroupItemTrailingIcon(),
             ),
           ),
         ),

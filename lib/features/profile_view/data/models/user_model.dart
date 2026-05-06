@@ -35,4 +35,14 @@ class UserModel {
       if (imageUpdatedAt != null) 'imageUpdatedAt': imageUpdatedAt,
     };
   }
+
+  static UserModel fakeData() {
+    return UserModel(
+      uid: ' ',
+      name: ' ',
+      email: ' ',
+      joinedAt: DateTime(2000),
+      overallScore: 100,
+    );
+  }
 }

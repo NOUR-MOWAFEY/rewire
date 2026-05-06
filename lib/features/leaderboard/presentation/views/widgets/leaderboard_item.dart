@@ -26,7 +26,6 @@ class LeaderboardItem extends StatelessWidget {
 
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 12),
-        height: 290,
         width: double.infinity,
         clipBehavior: Clip.antiAlias,
 
@@ -48,6 +47,7 @@ class LeaderboardItem extends StatelessWidget {
             children: [
               LeaderboardItemHeader(groupModel: groupModel),
 
+              // SizedBox(height: 24),
               LeaderboardItemBody(groupModel: groupModel),
             ],
           ),

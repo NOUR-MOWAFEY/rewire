@@ -128,7 +128,7 @@ abstract class AppRouter {
                     ),
                   ),
                 ),
-                // transitionDuration: const Duration(milliseconds: 3),
+                // transitionDuration: const Duration(milliseconds: 1000),
                 // reverseTransitionDuration: const Duration(milliseconds: 1000),
                 transitionsBuilder: AppAnimation.rightToLeft,
                 opaque: false,

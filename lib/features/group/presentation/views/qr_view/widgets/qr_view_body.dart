@@ -19,7 +19,11 @@ class QrViewBody extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 48),
-            child: Text(groupModel.name, style: AppStyles.textStyle24),
+            child: Text(
+              groupModel.name,
+              style: AppStyles.textStyle24.copyWith(overflow: .ellipsis),
+              maxLines: 3,
+            ),
           ),
 
           const SizedBox(height: 8),

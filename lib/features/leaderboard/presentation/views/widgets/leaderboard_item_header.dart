@@ -11,20 +11,16 @@ class LeaderboardItemHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: .topLeft,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20, top: 18, right: 20),
-        child: Hero(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      child: ListTile(
+        title: Hero(
           tag: '${AppRouter.leaderboardView}_name_${groupModel.id}',
           child: Material(
             color: Colors.transparent,
             child: Text(
               groupModel.name,
-              style: AppStyles.textStyle22.copyWith(
-                letterSpacing: 2,
-                fontWeight: FontWeight.bold,
-              ),
+              style: AppStyles.textStyle20.copyWith(overflow: .ellipsis),
             ),
           ),
         ),

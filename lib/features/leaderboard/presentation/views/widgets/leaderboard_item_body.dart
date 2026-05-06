@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../group/data/models/group_model.dart';
 import '../../../../profile_view/data/models/user_model.dart';
 import '../../view_model/leaderboard_cubit/leaderboard_cubit.dart';
@@ -22,34 +23,20 @@ class LeaderboardItemBody extends StatelessWidget {
               return scoreB.compareTo(scoreA);
             });
 
-          return Expanded(
-            child: LeaderboardItemStages(
-              members: sortedMembers,
-              groupModel: groupModel,
-            ),
+          return LeaderboardItemStages(
+            members: sortedMembers,
+            groupModel: groupModel,
           );
         } else if (state is LeaderboardFailure) {
           return Center(child: Text(state.errMessage));
         } else {
-          return Expanded(
-            child: LeaderboardItemStages(
-              members: List.generate(3, (index) => _fakeData()),
-              groupModel: groupModel,
-              isLoading: true,
-            ),
+          return LeaderboardItemStages(
+            members: List.generate(3, (index) => UserModel.fakeData()),
+            groupModel: groupModel,
+            isLoading: true,
           );
         }
       },
-    );
-  }
-
-  UserModel _fakeData() {
-    return UserModel(
-      uid: ' ',
-      name: ' ',
-      email: ' ',
-      joinedAt: DateTime(2000),
-      overallScore: 100,
     );
   }
 }

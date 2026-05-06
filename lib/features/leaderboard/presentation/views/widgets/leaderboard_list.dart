@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../group/data/models/group_model.dart';
 import 'leaderboard_item.dart';
 import 'leaderboard_view_header.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class LeaderboardList extends StatelessWidget {
   const LeaderboardList({

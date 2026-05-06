@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rewire/core/utils/app_router.dart';
 import 'package:rewire/features/group/data/models/group_details_view_model.dart';
 
 import '../../../../../../core/utils/app_styles.dart';
@@ -46,10 +45,7 @@ class GroupDetailsViewAppBar extends StatelessWidget
                   children: [
                     Hero(
                       tag:
-                          groupDetailsViewModel.fromViewPath ==
-                              AppRouter.leaderboardView
-                          ? ''
-                          : '${groupDetailsViewModel.fromViewPath}_image_${groupModel.id}',
+                          '${groupDetailsViewModel.fromViewPath}_image_${groupModel.id}',
                       child: GroupItemImage(groupModel: groupModel, size: 40),
                     ),
                     const SizedBox(width: 10),
@@ -61,7 +57,7 @@ class GroupDetailsViewAppBar extends StatelessWidget
                           color: Colors.transparent,
                           child: Text(
                             name,
-                            style: AppStyles.textStyle24.copyWith(
+                            style: AppStyles.textStyle20.copyWith(
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),

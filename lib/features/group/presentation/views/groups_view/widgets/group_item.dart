@@ -7,7 +7,6 @@ import 'package:rewire/features/group/presentation/views/groups_view/widgets/gro
 
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_router.dart';
-import '../../../../../../core/utils/app_styles.dart';
 import '../../../../data/models/group_model.dart';
 import 'group_item_image.dart';
 
@@ -29,18 +28,11 @@ class GroupItem extends StatelessWidget {
       children: [
         isFirstItem ? const SizedBox(height: 30) : const SizedBox(),
         InkWell(
-          onTap: () => context.push(
-            AppRouter.groupDetailsView,
-            extra: GroupDetailsViewModel(
-              groupModel: groupModel,
-              fromViewPath: AppRouter.groupsView,
-            ),
-          ),
+          onTap: () => _groupItemOnTap(context),
           borderRadius: BorderRadius.circular(28),
 
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 6),
-            width: double.infinity,
 
             decoration: BoxDecoration(
               color: AppColors.transparentPrimary,
@@ -54,25 +46,10 @@ class GroupItem extends StatelessWidget {
                 child: GroupItemImage(groupModel: groupModel),
               ),
 
-              // group name
-              title: Hero(
-                tag: '${AppRouter.groupsView}_name_${groupModel.id}',
-                placeholderBuilder: (context, heroSize, child) => Material(
-                  color: Colors.transparent,
-                  child: Text(
-                    '',
-                    style: AppStyles.textStyle20.copyWith(
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: GroupItemName(groupModel: groupModel),
-                ),
-              ),
+              // group name with hero animation
+              title: GroupItemName(groupModel: groupModel),
 
-              //  created at
+              // created at
               subtitle: GroupItemDate(groupModel: groupModel),
 
               // arrow icon
@@ -83,6 +60,16 @@ class GroupItem extends StatelessWidget {
 
         isLastItem ? const SizedBox(height: 100) : const SizedBox(),
       ],
+    );
+  }
+
+  Future<Object?> _groupItemOnTap(BuildContext context) {
+    return context.push(
+      AppRouter.groupDetailsView,
+      extra: GroupDetailsViewModel(
+        groupModel: groupModel,
+        fromViewPath: AppRouter.groupsView,
+      ),
     );
   }
 }

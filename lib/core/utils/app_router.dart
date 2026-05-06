@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rewire/core/services/firestore/firestore_service.dart';
 import 'package:rewire/features/group/data/models/group_details_view_model.dart';
+import 'package:rewire/features/group/data/models/group_model.dart';
 import 'package:rewire/features/group/presentation/view_model/days_cubit/days_cubit.dart';
 import 'package:rewire/features/group/presentation/view_model/members_cubit/members_cubit.dart';
+import 'package:rewire/features/group/presentation/views/qr_view/qr_view.dart';
 
 import '../../../main_navigation_view.dart';
 import '../../features/auth/presentation/view_model/user_cubit/user_cubit.dart';
@@ -35,6 +37,7 @@ abstract class AppRouter {
   static const groupInfoView = '/GroupInfoView';
   static const invitationsView = '/InvitationsView';
   static const leaderboardView = '/LeaderboardView';
+  static const qrView = '/QrView';
 
   static final _firebaseAuthService = getIt.get<FirebaseAuthService>();
   static final _fireStoreService = getIt.get<FirestoreService>();
@@ -131,73 +134,35 @@ abstract class AppRouter {
                 // transitionDuration: const Duration(milliseconds: 1000),
                 // reverseTransitionDuration: const Duration(milliseconds: 1000),
                 transitionsBuilder: AppAnimation.rightToLeft,
-                opaque: false,
                 barrierColor: Color.fromARGB(214, 39, 64, 53),
               );
             },
           ),
 
-          // GoRoute(
-          //   path: groupDetailsView,
-          //   pageBuilder: (context, state) {
-          //     final groupModel = state.extra as GroupModel;
-          //     return CustomTransitionPage(
-          //       key: state.pageKey,
-          //       opaque: true,
-          //       transitionDuration: const Duration(milliseconds: 300),
-          //       reverseTransitionDuration: const Duration(milliseconds: 200),
-          //       child: MultiBlocProvider(
-          //         providers: [
-          //           BlocProvider(
-          //             create: (context) => DaysCubit(
-          //               _fireStoreService,
-          //               groupModel.id,
-          //               groupCubit: context.read<GroupCubit>(),
-          //             )..listenToDays(),
-          //           ),
-          //           BlocProvider(
-          //             lazy: false,
-          //             create: (context) =>
-          //                 MembersCubit()..listenToAllMembers(groupModel.id),
-          //           ),
-          //         ],
-          //         child: GroupDetailsView(groupModel: groupModel),
-          //       ),
-          //       transitionsBuilder:
-          //           (context, animation, secondaryAnimation, child) {
-          //             return FadeTransition(
-          //               opacity: CurvedAnimation(
-          //                 parent: animation,
-          //                 curve: Curves.easeOut,
-          //               ),
-          //               child: ScaleTransition(
-          //                 scale: Tween<double>(begin: 0.94, end: 1.0).animate(
-          //                   CurvedAnimation(
-          //                     parent: animation,
-          //                     curve: Curves.bounceIn,
-          //                   ),
-          //                 ),
-          //                 child: child,
-          //               ),
-          //             );
-          //           },
-          //     );
-          //   },
-          // ),
           GoRoute(
             path: createGroupView,
-            builder: (context, state) => const CreateGroupView(),
+            pageBuilder: (context, state) => CustomTransitionPage(
+              child: const CreateGroupView(),
+              transitionsBuilder: AppAnimation.rightToLeft,
+              barrierColor: Color.fromARGB(214, 39, 64, 53),
+            ),
           ),
 
           GoRoute(
             path: groupSettingsView,
 
-            builder: (context, state) => BlocProvider(
-              create: (context) =>
-                  DeleteGroupCubit(_fireStoreService, _supabaseStorageService),
-              child: GroupSettingsView(
-                groupDataModel: state.extra as GroupDataModel,
+            pageBuilder: (context, state) => CustomTransitionPage(
+              child: BlocProvider(
+                create: (context) => DeleteGroupCubit(
+                  _fireStoreService,
+                  _supabaseStorageService,
+                ),
+                child: GroupSettingsView(
+                  groupDataModel: state.extra as GroupDataModel,
+                ),
               ),
+              transitionsBuilder: AppAnimation.rightToLeft,
+              barrierColor: Color.fromARGB(214, 39, 64, 53),
             ),
           ),
 
@@ -222,8 +187,20 @@ abstract class AppRouter {
           GoRoute(
             path: groupInfoView,
 
-            builder: (context, state) =>
-                GroupInfoView(dataModel: state.extra as GroupDataModel),
+            pageBuilder: (context, state) => CustomTransitionPage(
+              child: GroupInfoView(dataModel: state.extra as GroupDataModel),
+              transitionsBuilder: AppAnimation.rightToLeft,
+              barrierColor: Color.fromARGB(214, 39, 64, 53),
+            ),
+          ),
+
+          GoRoute(
+            path: qrView,
+            pageBuilder: (context, state) => CustomTransitionPage(
+              child: QrView(groupModel: state.extra as GroupModel),
+              transitionsBuilder: AppAnimation.rightToLeft,
+              barrierColor: Color.fromARGB(214, 39, 64, 53),
+            ),
           ),
         ],
       ),

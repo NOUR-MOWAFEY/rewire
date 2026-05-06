@@ -27,7 +27,7 @@ class GroupDetailsViewAppBar extends StatelessWidget
       title: Row(
         children: [
           const CustomBackButton(color: Colors.transparent),
-          const SizedBox(width: 12),
+          const SizedBox(width: 10),
           Expanded(
             child: BlocBuilder<GroupCubit, GroupState>(
               buildWhen: (previous, current) => current is GroupSuccess,

@@ -16,7 +16,7 @@ class LeaderboardCubit extends Cubit<LeaderboardState> {
   LeaderboardCubit(this._firestoreService) : super(LeaderboardInitial());
 
   void getLeaderboard(String groupId) {
-    if(!isClosed)   emit(LeaderboardLoading());
+    if (!isClosed) emit(LeaderboardLoading());
 
     _membersSubscription?.cancel();
 

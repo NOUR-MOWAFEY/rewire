@@ -59,10 +59,20 @@ class _MainNavigationViewState extends State<MainNavigationView> {
     );
   }
 
+  NavBarAnimationSettings _screenTransitionAnimation() {
+    return NavBarAnimationSettings(
+      screenTransitionAnimation: ScreenTransitionAnimationSettings(
+        screenTransitionAnimationType: ScreenTransitionAnimationType.slide,
+        animateTabTransition: true,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
       context,
+      animationSettings: _screenTransitionAnimation(),
       controller: _controller,
       screens: _screens(),
       items: _items(),

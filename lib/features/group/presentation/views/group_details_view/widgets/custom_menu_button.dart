@@ -11,7 +11,6 @@ import '../../../../data/models/group_info_view_data.dart';
 import '../../../../data/models/group_model.dart';
 import '../../../view_model/group_cubit/group_cubit.dart';
 import '../../../view_model/members_cubit/members_cubit.dart';
-import '../../qr_view/qr_view.dart';
 import 'leave_group_alert_dialog.dart';
 
 class CustomMenuButton extends StatelessWidget {
@@ -74,12 +73,7 @@ class CustomMenuButton extends StatelessWidget {
               ),
             );
           case MenubuttonItems.qr:
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => QrView(groupModel: groupModel),
-              ),
-            );
+            context.push(AppRouter.qrView, extra: groupModel);
         }
       },
 

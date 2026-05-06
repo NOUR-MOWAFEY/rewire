@@ -15,8 +15,7 @@ class LeaderboardViewBody extends StatelessWidget {
       buildWhen: (previous, current) =>
           current is GroupSuccess ||
           current is GroupFailure ||
-          current is GroupLoading ||
-          current is GroupInitial,
+          current is GroupLoading,
       builder: (context, state) {
         final isLoading = state is GroupLoading || state is GroupInitial;
 

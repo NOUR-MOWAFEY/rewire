@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rewire/core/utils/constants.dart';
 
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/show_toastification.dart';
@@ -39,7 +40,7 @@ class ProfileViewBody extends StatelessWidget {
 
                 const UserDataForm(),
 
-                const SizedBox(height: 100),
+                const SizedBox(height: AppConstants.spaceForBottomNavBar),
               ],
             );
           }

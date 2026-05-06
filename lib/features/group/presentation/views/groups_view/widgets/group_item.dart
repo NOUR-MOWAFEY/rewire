@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rewire/core/utils/constants.dart';
 import 'package:rewire/features/group/data/models/group_details_view_model.dart';
 import 'package:rewire/features/group/presentation/views/groups_view/widgets/group_item_date.dart';
 import 'package:rewire/features/group/presentation/views/groups_view/widgets/group_item_name.dart';
@@ -58,7 +59,9 @@ class GroupItem extends StatelessWidget {
           ),
         ),
 
-        isLastItem ? const SizedBox(height: 100) : const SizedBox(),
+        isLastItem
+            ? const SizedBox(height: AppConstants.spaceForBottomNavBar)
+            : const SizedBox(),
       ],
     );
   }

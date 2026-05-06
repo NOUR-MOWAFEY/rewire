@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rewire/core/services/firestore/firestore_service.dart';
+import 'package:rewire/core/utils/app_colors.dart';
 import 'package:rewire/features/group/data/models/group_details_view_model.dart';
 import 'package:rewire/features/group/data/models/group_model.dart';
 import 'package:rewire/features/group/presentation/view_model/days_cubit/days_cubit.dart';
@@ -134,7 +135,7 @@ abstract class AppRouter {
                 // transitionDuration: const Duration(milliseconds: 1000),
                 // reverseTransitionDuration: const Duration(milliseconds: 1000),
                 transitionsBuilder: AppAnimation.rightToLeft,
-                barrierColor: Color.fromARGB(214, 39, 64, 53),
+                barrierColor: AppColors.transitionColor,
               );
             },
           ),
@@ -144,7 +145,8 @@ abstract class AppRouter {
             pageBuilder: (context, state) => CustomTransitionPage(
               child: const CreateGroupView(),
               transitionsBuilder: AppAnimation.rightToLeft,
-              barrierColor: Color.fromARGB(214, 39, 64, 53),
+              barrierColor: AppColors.transitionColor,
+              
             ),
           ),
 
@@ -162,7 +164,7 @@ abstract class AppRouter {
                 ),
               ),
               transitionsBuilder: AppAnimation.rightToLeft,
-              barrierColor: Color.fromARGB(214, 39, 64, 53),
+              barrierColor: AppColors.transitionColor,
             ),
           ),
 
@@ -190,7 +192,7 @@ abstract class AppRouter {
             pageBuilder: (context, state) => CustomTransitionPage(
               child: GroupInfoView(dataModel: state.extra as GroupDataModel),
               transitionsBuilder: AppAnimation.rightToLeft,
-              barrierColor: Color.fromARGB(214, 39, 64, 53),
+              barrierColor: AppColors.transitionColor,
             ),
           ),
 
@@ -199,7 +201,7 @@ abstract class AppRouter {
             pageBuilder: (context, state) => CustomTransitionPage(
               child: QrView(groupModel: state.extra as GroupModel),
               transitionsBuilder: AppAnimation.rightToLeft,
-              barrierColor: Color.fromARGB(214, 39, 64, 53),
+              barrierColor: AppColors.transitionColor,
             ),
           ),
         ],

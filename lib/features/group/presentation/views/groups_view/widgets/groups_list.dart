@@ -32,7 +32,7 @@ class GroupsList extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: GroupItem(
-                groupModel: isLoading ? GroupModel.fakeData() : groups![index],
+                groupModel: isLoading ? GroupModel.fakeData().copyWith(id: 'fake_$index') : groups![index],
                 isFirstItem: index == 0,
                 isLastItem: index == itemCount - 1,
               ),

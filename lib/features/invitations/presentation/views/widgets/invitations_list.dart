@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rewire/core/utils/constants.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../../core/utils/app_colors.dart';
@@ -31,7 +32,7 @@ class InvitationsList extends StatelessWidget {
                 invitation: invitations?[index] ?? InvitationModel.fakeData(),
               ),
               index == itemCount - 1
-                  ? const SizedBox(height: 100)
+                  ? const SizedBox(height: AppConstants.spaceForBottomNavBar)
                   : const SizedBox(height: 0),
             ],
           ),

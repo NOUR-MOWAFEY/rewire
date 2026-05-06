@@ -19,6 +19,7 @@ class AppColors {
   static const white = Colors.white;
   static const red = Colors.red;
   static const green = Colors.green;
+  static const transitionColor = Color.fromARGB(214, 39, 64, 53);
 
   // skeleton loading colors
   static const skeletonBaseColor = Color.fromARGB(150, 94, 147, 108);

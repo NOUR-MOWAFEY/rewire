@@ -128,4 +128,10 @@ class GroupFirestoreService {
     if (!doc.exists) return null;
     return GroupModel.fromMap(doc.data()!);
   }
+
+  Future<void> updateGroupImageTimestamp(String groupId) async {
+    await _groups.doc(groupId).update({
+      'imageUpdatedAt': DateTime.now().millisecondsSinceEpoch,
+    });
+  }
 }

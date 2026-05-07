@@ -69,4 +69,10 @@ class UserFirestoreService {
       return user;
     });
   }
+
+  Future<void> updateUserImageTimestamp(String groupId) async {
+    await _users.doc(_currentUser!.uid).update({
+      'imageUpdatedAt': DateTime.now().millisecondsSinceEpoch,
+    });
+  }
 }

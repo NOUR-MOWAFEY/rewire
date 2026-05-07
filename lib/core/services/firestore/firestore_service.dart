@@ -66,6 +66,9 @@ class FirestoreService {
   Stream<UserModel?> listenToUser(String userId) =>
       _userService.listenToUser(userId);
 
+  Future<void> updateUserImageTimestamp(String userId) =>
+      _userService.updateUserImageTimestamp(userId);
+
   // =====================
   // Groups
   // =====================
@@ -100,6 +103,9 @@ class FirestoreService {
 
   Future<GroupModel?> getGroupById(String groupId) =>
       _groupService.getGroupById(groupId);
+
+  Future<void> updateGroupImageTimestamp(String groupId) =>
+      _groupService.updateGroupImageTimestamp(groupId);
 
   // =====================
   // Group Membership

@@ -12,7 +12,7 @@ class LeaderboardItemHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       child: ListTile(
         title: Hero(
           tag: '${AppRouter.leaderboardView}_name_${groupModel.id}',
@@ -20,7 +20,7 @@ class LeaderboardItemHeader extends StatelessWidget {
             color: Colors.transparent,
             child: Text(
               groupModel.name,
-              style: AppStyles.textStyle20.copyWith(overflow: .ellipsis),
+              style: AppStyles.textStyle24.copyWith(overflow: .ellipsis),
             ),
           ),
         ),

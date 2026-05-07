@@ -83,7 +83,7 @@ class FirestoreService {
       _groupService.filterGroupsWithLeaderboard(groups);
 
   Future<void> addMembers({required String groupId, required String userId}) =>
-      _groupService.addMembers(groupId: groupId, userId: userId);
+      _groupService.addMember(groupId: groupId, userId: userId);
 
   Stream<List<GroupModel>> listenToGroups(String userId) =>
       _groupService.listenToGroups(userId);

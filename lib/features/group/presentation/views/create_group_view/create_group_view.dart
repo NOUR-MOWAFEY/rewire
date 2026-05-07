@@ -25,9 +25,12 @@ class CreateGroupView extends StatelessWidget {
         ),
         BlocProvider(create: (context) => MembersCubit()),
       ],
-      child: const ViewBackGroundContainer(
-        bottomNavigationBar: CreategroupButton(),
-        viewBody: CreateGroupViewBody(),
+      child: ViewBackGroundContainer(
+        bottomNavigationBar: const CreateGroupButton(),
+        viewBody: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: const CreateGroupViewBody(),
+        ),
       ),
     );
   }

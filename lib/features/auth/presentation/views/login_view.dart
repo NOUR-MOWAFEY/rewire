@@ -8,6 +8,11 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ViewBackGroundContainer(viewBody: LoginViewBody());
+    return ViewBackGroundContainer(
+      viewBody: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: const LoginViewBody(),
+      ),
+    );
   }
 }

@@ -7,6 +7,11 @@ class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
   @override
   Widget build(BuildContext context) {
-    return const ViewBackGroundContainer(viewBody: ProfileViewBody());
+    return ViewBackGroundContainer(
+      viewBody: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: const ProfileViewBody(),
+      ),
+    );
   }
 }

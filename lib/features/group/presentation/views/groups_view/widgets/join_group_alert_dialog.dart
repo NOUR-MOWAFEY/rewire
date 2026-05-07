@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../../core/utils/app_colors.dart';
 import 'join_group_form.dart';
 
@@ -15,21 +16,24 @@ class JoinGroupAlertDialog extends StatelessWidget {
         backgroundColor: AppColors.secondary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
 
-        content: Container(
-          padding: const EdgeInsets.all(32),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            gradient: const LinearGradient(
-              begin: AlignmentGeometry.topLeft,
-              end: AlignmentGeometry.bottomRight,
-              colors: AppColors.gradientColors,
+        content: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Container(
+            padding: const EdgeInsets.all(32),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              gradient: const LinearGradient(
+                begin: AlignmentGeometry.topLeft,
+                end: AlignmentGeometry.bottomRight,
+                colors: AppColors.gradientColors,
+              ),
             ),
+
+            height: 380,
+            width: MediaQuery.of(context).size.width,
+
+            child: const JoinGroupForm(),
           ),
-
-          height: 380,
-          width: MediaQuery.of(context).size.width,
-
-          child: const JoinGroupForm(),
         ),
       ),
     );

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'login_form.dart';
 
 import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/constants.dart';
 import 'auth_footer.dart';
 import 'auth_header.dart';
+import 'login_form.dart';
 
 class LoginViewBody extends StatelessWidget {
   const LoginViewBody({super.key});
@@ -33,6 +33,7 @@ class LoginViewBody extends StatelessWidget {
             text: 'Don\'t have an account?',
             buttonTitle: 'Register',
             onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
               context.push(AppRouter.registerView);
             },
           ),

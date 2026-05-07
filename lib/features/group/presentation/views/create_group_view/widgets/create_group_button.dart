@@ -6,8 +6,8 @@ import '../../../../../../core/widgets/custom_button.dart';
 import '../../../view_model/create_group_cubit/create_group_cubit.dart';
 import '../../../view_model/members_cubit/members_cubit.dart';
 
-class CreategroupButton extends StatelessWidget {
-  const CreategroupButton({super.key});
+class CreateGroupButton extends StatelessWidget {
+  const CreateGroupButton({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -13,6 +13,7 @@ class AppColors {
   static const secondary2 = Color(0xFF97B067);
   static const transparentDarkBackground = Color.fromARGB(136, 32, 49, 29);
   static const alertDialogColor = Color.fromARGB(255, 60, 107, 80);
+  static const bottomNavBar = Color.fromARGB(189, 44, 68, 51);
 
   // other colors
   static const black = Colors.black;

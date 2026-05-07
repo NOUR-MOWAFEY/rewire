@@ -33,7 +33,7 @@ class MainNavigationView extends StatelessWidget {
           itemPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
 
           navBarDecoration: NavBarDecoration(
-            color: const Color.fromARGB(189, 44, 68, 51),
+            color: AppColors.bottomNavBar,
             border: Border.all(
               color: AppColors.transparentPrimary.withValues(alpha: 0.5),
             ),

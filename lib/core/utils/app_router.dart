@@ -63,11 +63,21 @@ abstract class AppRouter {
     },
 
     routes: [
-      GoRoute(path: loginView, builder: (context, state) => const LoginView()),
+      GoRoute(
+        path: loginView,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const LoginView(),
+          transitionsBuilder: AppAnimation.fade,
+        ),
+      ),
 
       GoRoute(
         path: registerView,
-        builder: (context, state) => const RegisterView(),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          child: const RegisterView(),
+          transitionsBuilder: AppAnimation.rightToLeft,
+          barrierColor: AppColors.transitionColor,
+        ),
       ),
 
       ShellRoute(
@@ -96,9 +106,10 @@ abstract class AppRouter {
         routes: [
           GoRoute(
             path: groupsView,
-            builder: (context, state) {
-              return const GroupsView();
-            },
+            pageBuilder: (context, state) => CustomTransitionPage(
+              child: const GroupsView(),
+              transitionsBuilder: AppAnimation.fade,
+            ),
           ),
 
           GoRoute(
@@ -146,7 +157,6 @@ abstract class AppRouter {
               child: const CreateGroupView(),
               transitionsBuilder: AppAnimation.rightToLeft,
               barrierColor: AppColors.transitionColor,
-              
             ),
           ),
 

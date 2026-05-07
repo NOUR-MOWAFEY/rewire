@@ -19,33 +19,30 @@ class GroupMainInfo extends StatelessWidget {
     final groupModel = groupDetailsViewModel.groupModel;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-      child: Expanded(
-        child: Row(
-          children: [
-            Hero(
+      child: Row(
+        children: [
+          Hero(
+            tag: '${groupDetailsViewModel.fromViewPath}_image_${groupModel.id}',
+            child: GroupItemImage(groupModel: groupModel, size: 40),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Hero(
               tag:
-                  '${groupDetailsViewModel.fromViewPath}_image_${groupModel.id}',
-              child: GroupItemImage(groupModel: groupModel, size: 40),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Hero(
-                tag:
-                    '${groupDetailsViewModel.fromViewPath}_name_${groupModel.id}',
-                child: Material(
-                  color: Colors.transparent,
-                  child: Text(
-                    name,
-                    style: AppStyles.textStyle20.copyWith(
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  '${groupDetailsViewModel.fromViewPath}_name_${groupModel.id}',
+              child: Material(
+                color: Colors.transparent,
+                child: Text(
+                  name,
+                  style: AppStyles.textStyle20.copyWith(
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 6),
-          ],
-        ),
+          ),
+          const SizedBox(width: 6),
+        ],
       ),
     );
   }

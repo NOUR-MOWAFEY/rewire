@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // gradient background colors
-  static const background = Color.fromARGB(171, 32, 49, 29);
-  static const background2 = Color.fromARGB(197, 51, 88, 74);
-  static const background3 = Color.fromARGB(218, 84, 153, 136);
+  static const background = Color.fromARGB(255, 29, 44, 26);
+  static const background2 = Color.fromARGB(255, 49, 85, 72);
+  static const background3 = Color.fromARGB(255, 77, 141, 125);
 
   // main colors
   static const primary = Color(0xFF5E936C);

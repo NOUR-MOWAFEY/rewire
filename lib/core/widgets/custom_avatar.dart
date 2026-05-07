@@ -47,7 +47,7 @@ class CustomAvatar extends StatelessWidget {
                 try {
                   if (imageType == ImageType.group && groupId != null) {
                     await FirebaseFirestore.instance
-                        .collection('habits')
+                        .collection('groups')
                         .doc(groupId)
                         .update({
                           'imageUpdatedAt':

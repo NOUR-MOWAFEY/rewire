@@ -25,7 +25,7 @@ class PopUpMenu extends StatelessWidget {
         children: [
           PopUpMenuHeader(checkIn: checkIn),
 
-          SizedBox(height: 4),
+          SizedBox(height: 8),
 
           Expanded(
             child: SingleChildScrollView(

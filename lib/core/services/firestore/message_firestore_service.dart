@@ -11,22 +11,22 @@ class MessageFirestoreService {
   // =====================
 
   CollectionReference<Map<String, dynamic>> get _groups =>
-      _firestore.collection('habits');
+      _firestore.collection('groups');
 
   // =====================
   // Public Messages
   // =====================
 
   Future<void> addPublicMessage({
-    required String habitId,
+    required String groupId,
     required PublicMessageModel message,
   }) async {
-    await _groups.doc(habitId).collection('messages').add(message.toMap());
+    await _groups.doc(groupId).collection('messages').add(message.toMap());
   }
 
-  Future<List<PublicMessageModel>> getMessages(String habitId) async {
+  Future<List<PublicMessageModel>> getMessages(String groupId) async {
     final query = await _groups
-        .doc(habitId)
+        .doc(groupId)
         .collection('messages')
         .orderBy('createdAt', descending: true)
         .get();

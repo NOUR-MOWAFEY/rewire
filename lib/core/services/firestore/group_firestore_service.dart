@@ -15,7 +15,7 @@ class GroupFirestoreService {
   // =====================
 
   CollectionReference<Map<String, dynamic>> get _groups =>
-      _firestore.collection('habits');
+      _firestore.collection('groups');
 
   // =====================
   // Groups
@@ -57,7 +57,7 @@ class GroupFirestoreService {
       'memberCommitments.$userId': 0,
     });
 
-    await _checkinService.createDayIfNotExist(habitId: groupId, userId: userId);
+    await _checkinService.createDayIfNotExist(groupId: groupId, userId: userId);
   }
 
   Stream<List<GroupModel>> listenToGroups(String userId) {
@@ -72,17 +72,17 @@ class GroupFirestoreService {
         );
   }
 
-  Future<void> deleteGroup(String habitId) async {
-    final habitRef = _groups.doc(habitId);
+  Future<void> deleteGroup(String groupId) async {
+    final groupRef = _groups.doc(groupId);
 
     // Delete messages
-    final messages = await habitRef.collection('messages').get();
+    final messages = await groupRef.collection('messages').get();
     for (var doc in messages.docs) {
       await doc.reference.delete();
     }
 
     // Delete days + checkins
-    final days = await habitRef.collection('days').get();
+    final days = await groupRef.collection('days').get();
     for (var day in days.docs) {
       final checkins = await day.reference.collection('checkins').get();
 
@@ -93,8 +93,8 @@ class GroupFirestoreService {
       await day.reference.delete();
     }
 
-    // Delete habit document
-    await habitRef.delete();
+    // Delete group document
+    await groupRef.delete();
   }
 
   Future<void> updateGroup({

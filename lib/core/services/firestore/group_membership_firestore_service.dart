@@ -24,7 +24,7 @@ class GroupMembershipFirestoreService {
   // =====================
 
   CollectionReference<Map<String, dynamic>> get _groups =>
-      _firestore.collection('habits');
+      _firestore.collection('groups');
 
   // =====================
   // Join Group
@@ -70,10 +70,7 @@ class GroupMembershipFirestoreService {
       'memberCommitments.$userId': 0,
     });
 
-    await _checkinService.createDayIfNotExist(
-      habitId: doc.id,
-      userId: userId,
-    );
+    await _checkinService.createDayIfNotExist(groupId: doc.id, userId: userId);
   }
 
   Future<void> joinGroupViaId({
@@ -98,10 +95,7 @@ class GroupMembershipFirestoreService {
       'memberCommitments.$userId': 0,
     });
 
-    await _checkinService.createDayIfNotExist(
-      habitId: groupId,
-      userId: userId,
-    );
+    await _checkinService.createDayIfNotExist(groupId: groupId, userId: userId);
   }
 
   Future<String> generateUniqueJoinCode() async {
@@ -119,8 +113,8 @@ class GroupMembershipFirestoreService {
   // Get Join Code
   // =====================
 
-  Future<String?> getJoinCode(String habitId) async {
-    final doc = await _groups.doc(habitId).get();
+  Future<String?> getJoinCode(String groupId) async {
+    final doc = await _groups.doc(groupId).get();
 
     if (!doc.exists) return null;
 
@@ -141,10 +135,8 @@ class GroupMembershipFirestoreService {
     });
   }
 
-  Future<void> leaveGroup({
-    required String groupId,
-    required String userId,
-  }) => removeMember(groupId: groupId, userId: userId);
+  Future<void> leaveGroup({required String groupId, required String userId}) =>
+      removeMember(groupId: groupId, userId: userId);
 
   // =====================
   // Group Members
@@ -174,13 +166,15 @@ class GroupMembershipFirestoreService {
       // Fetch all users in parallel with a safety timeout per fetch
       final userModels = await Future.wait(
         memberIds.map(
-          (id) => _userService.getUser(id).timeout(
-            const Duration(seconds: 5),
-            onTimeout: () {
-              log('Timeout fetching user: $id');
-              return null;
-            },
-          ),
+          (id) => _userService
+              .getUser(id)
+              .timeout(
+                const Duration(seconds: 5),
+                onTimeout: () {
+                  log('Timeout fetching user: $id');
+                  return null;
+                },
+              ),
         ),
       );
 

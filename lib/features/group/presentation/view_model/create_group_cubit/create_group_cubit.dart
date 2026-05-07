@@ -50,7 +50,7 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
       // Only the creator is an initial member
       final List<String> groupMembers = [_user!.uid];
 
-      GroupModel habitModel = GroupModel(
+      GroupModel groupModel = GroupModel(
         id: '',
         joinCode: await _firestoreService.generateUniqueJoinCode(),
         passwordHash: password.isNotEmpty
@@ -62,7 +62,7 @@ class CreateGroupCubit extends Cubit<CreateGroupState> {
         isActive: true,
       );
 
-      final createdGroup = await _firestoreService.createGroup(habitModel);
+      final createdGroup = await _firestoreService.createGroup(groupModel);
 
       // Send invitations to other users
       if (invitedUsers != null && invitedUsers.isNotEmpty) {

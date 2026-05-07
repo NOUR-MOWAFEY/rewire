@@ -165,11 +165,11 @@ class GroupCubit extends Cubit<GroupState> {
 
   // get Join code
 
-  Future<void> getJoinCode(String habitId) async {
+  Future<void> getJoinCode(String groupId) async {
     if (!isClosed) emit(GroupJoinCodeLoading());
 
     try {
-      final code = await _firestoreService.getJoinCode(habitId);
+      final code = await _firestoreService.getJoinCode(groupId);
 
       if (code == null) {
         if (!isClosed) emit(GroupJoinCodeFailure("Join code not found"));

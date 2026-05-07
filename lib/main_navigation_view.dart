@@ -18,15 +18,15 @@ class MainNavigationView extends StatelessWidget {
     return PersistentTabView(
       tabs: _tabs,
 
+      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
       navBarOverlap: const NavBarOverlap.full(),
       backgroundColor: Colors.transparent,
       keepNavigatorHistory: false,
-      resizeToAvoidBottomInset: true,
-
-      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+      resizeToAvoidBottomInset: false,
 
       navBarBuilder: (navBarConfig) => ClipRRect(
         borderRadius: BorderRadiusGeometry.circular(32),
+
         child: Style2BottomNavBar(
           navBarConfig: navBarConfig,
 
@@ -43,7 +43,7 @@ class MainNavigationView extends StatelessWidget {
           ),
 
           itemAnimationProperties: const ItemAnimation(
-            duration: Duration(milliseconds: 400),
+            duration: Duration(milliseconds: 350),
           ),
         ),
       ),

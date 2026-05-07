@@ -20,9 +20,9 @@ class PopupMenuCheckInIcons extends StatelessWidget {
       child: const Row(
         mainAxisAlignment: .center,
         children: [
-          PopupMenuCheckInIconbutton(icon: FontAwesomeIcons.circleCheck),
-          SizedBox(width: 6),
-          PopupMenuCheckInIconbutton(icon: FontAwesomeIcons.circleXmark),
+          PopupMenuCheckInIconbutton(icon: FontAwesomeIcons.check),
+          SizedBox(width: 8),
+          PopupMenuCheckInIconbutton(icon: FontAwesomeIcons.xmark),
         ],
       ),
     );
@@ -42,19 +42,19 @@ class PopupMenuCheckInIconbutton extends StatelessWidget {
           final daysCubit = context.read<DaysCubit>();
 
           switch (icon) {
-            case FontAwesomeIcons.circleCheck:
+            case FontAwesomeIcons.check:
               daysCubit.updateCheckInStatus(userId, CheckInStatus.success);
               context.pop();
               break;
 
-            case FontAwesomeIcons.circleXmark:
+            case FontAwesomeIcons.xmark:
               daysCubit.updateCheckInStatus(userId, CheckInStatus.fail);
               context.pop();
               break;
             default:
           }
         },
-        child: Icon(icon, size: 30, color: AppColors.white),
+        child: Icon(icon, size: 21, color: AppColors.white),
       ),
     );
   }

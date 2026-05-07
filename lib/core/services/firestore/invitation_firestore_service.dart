@@ -14,7 +14,7 @@ class InvitationFirestoreService {
   // =====================
 
   CollectionReference<Map<String, dynamic>> get _groups =>
-      _firestore.collection('habits');
+      _firestore.collection('groups');
 
   CollectionReference<Map<String, dynamic>> get _invitations =>
       _firestore.collection('invitations');
@@ -68,7 +68,7 @@ class InvitationFirestoreService {
 
       // Initialize today's check-in for the new member
       await _checkinService.createDayIfNotExist(
-        habitId: invitation.groupId,
+        groupId: invitation.groupId,
         userId: invitation.receiverId,
       );
     }

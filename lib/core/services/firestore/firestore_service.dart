@@ -34,7 +34,10 @@ class FirestoreService {
       _checkinService,
       _userService,
     );
-    _invitationService = InvitationFirestoreService(_firestore, _checkinService);
+    _invitationService = InvitationFirestoreService(
+      _firestore,
+      _checkinService,
+    );
     _messageService = MessageFirestoreService(_firestore);
     _coreService = CoreFirestoreService(_firestore);
   }
@@ -76,26 +79,24 @@ class FirestoreService {
   List<GroupModel> filterGroupsWithLeaderboard(List<GroupModel> groups) =>
       _groupService.filterGroupsWithLeaderboard(groups);
 
-  Future<void> addMembers({
-    required String groupId,
-    required String userId,
-  }) => _groupService.addMembers(groupId: groupId, userId: userId);
+  Future<void> addMembers({required String groupId, required String userId}) =>
+      _groupService.addMembers(groupId: groupId, userId: userId);
 
   Stream<List<GroupModel>> listenToGroups(String userId) =>
       _groupService.listenToGroups(userId);
 
-  Future<void> deleteGroup(String habitId) =>
-      _groupService.deleteGroup(habitId);
+  Future<void> deleteGroup(String groupId) =>
+      _groupService.deleteGroup(groupId);
 
   Future<void> updateGroup({
     required String groupId,
     required String? newName,
     required String? newPassword,
   }) => _groupService.updateGroup(
-        groupId: groupId,
-        newName: newName,
-        newPassword: newPassword,
-      );
+    groupId: groupId,
+    newName: newName,
+    newPassword: newPassword,
+  );
 
   Future<GroupModel?> getGroupById(String groupId) =>
       _groupService.getGroupById(groupId);
@@ -109,10 +110,10 @@ class FirestoreService {
     required String password,
     required String userId,
   }) => _membershipService.joinGroup(
-        joinCode: joinCode,
-        password: password,
-        userId: userId,
-      );
+    joinCode: joinCode,
+    password: password,
+    userId: userId,
+  );
 
   Future<void> joinGroupViaId({
     required String groupId,
@@ -122,18 +123,16 @@ class FirestoreService {
   Future<String> generateUniqueJoinCode() =>
       _membershipService.generateUniqueJoinCode();
 
-  Future<String?> getJoinCode(String habitId) =>
-      _membershipService.getJoinCode(habitId);
+  Future<String?> getJoinCode(String groupId) =>
+      _membershipService.getJoinCode(groupId);
 
   Future<void> removeMember({
     required String groupId,
     required String userId,
   }) => _membershipService.removeMember(groupId: groupId, userId: userId);
 
-  Future<void> leaveGroup({
-    required String groupId,
-    required String userId,
-  }) => _membershipService.leaveGroup(groupId: groupId, userId: userId);
+  Future<void> leaveGroup({required String groupId, required String userId}) =>
+      _membershipService.leaveGroup(groupId: groupId, userId: userId);
 
   Future<List<UserModel>> getGroupMembers(String groupId) =>
       _membershipService.getGroupMembers(groupId);
@@ -145,65 +144,65 @@ class FirestoreService {
   // Check-ins
   // =====================
 
-  Future<void> fillMissingDays({required String habitId}) =>
-      _checkinService.fillMissingDays(habitId: habitId);
+  Future<void> fillMissingDays({required String groupId}) =>
+      _checkinService.fillMissingDays(groupId: groupId);
 
   Future<void> createDayIfNotExist({
-    required String habitId,
+    required String groupId,
     required String userId,
-  }) => _checkinService.createDayIfNotExist(habitId: habitId, userId: userId);
+  }) => _checkinService.createDayIfNotExist(groupId: groupId, userId: userId);
 
   Stream<List<CheckInModel>> getTodayCheckInsStream({
-    required String habitId,
+    required String groupId,
     required String date,
-  }) => _checkinService.getTodayCheckInsStream(habitId: habitId, date: date);
+  }) => _checkinService.getTodayCheckInsStream(groupId: groupId, date: date);
 
   Future<void> updateCheckInStatus({
-    required String habitId,
+    required String groupId,
     required String date,
     required String userId,
     required CheckInStatus status,
   }) => _checkinService.updateCheckInStatus(
-        habitId: habitId,
-        date: date,
-        userId: userId,
-        status: status,
-      );
+    groupId: groupId,
+    date: date,
+    userId: userId,
+    status: status,
+  );
 
   Future<void> updateCheckInMessage({
-    required String habitId,
+    required String groupId,
     required String date,
     required String userId,
     required String message,
   }) => _checkinService.updateCheckInMessage(
-        habitId: habitId,
-        date: date,
-        userId: userId,
-        message: message,
-      );
+    groupId: groupId,
+    date: date,
+    userId: userId,
+    message: message,
+  );
 
-  Stream<List<DayModel>> getAllDaysStream(String habitId) =>
-      _checkinService.getAllDaysStream(habitId);
+  Stream<List<DayModel>> getAllDaysStream(String groupId) =>
+      _checkinService.getAllDaysStream(groupId);
 
-  Future<List<DayModel>> getAllDaysFuture(String habitId) =>
-      _checkinService.getAllDaysFuture(habitId);
+  Future<List<DayModel>> getAllDaysFuture(String groupId) =>
+      _checkinService.getAllDaysFuture(groupId);
 
   Future<List<CheckInModel>> getDayCheckInsFuture({
-    required String habitId,
+    required String groupId,
     required String date,
-  }) => _checkinService.getDayCheckInsFuture(habitId: habitId, date: date);
+  }) => _checkinService.getDayCheckInsFuture(groupId: groupId, date: date);
 
   // =====================
   // Public Messages
   // =====================
 
   Future<void> addPublicMessage({
-    required String habitId,
+    required String groupId,
     required PublicMessageModel message,
-  }) => _messageService.addPublicMessage(habitId: habitId, message: message);
+  }) => _messageService.addPublicMessage(groupId: groupId, message: message);
 
-  Future<List<PublicMessageModel>> getMessages(String habitId) =>
-      _messageService.getMessages(habitId);
+  Future<List<PublicMessageModel>> getMessages(String groupId) =>
+      _messageService.getMessages(groupId);
 
   // =====================
   // Invitations
@@ -219,9 +218,9 @@ class FirestoreService {
     required InvitationModel invitation,
     required bool accept,
   }) => _invitationService.respondToInvitation(
-        invitation: invitation,
-        accept: accept,
-      );
+    invitation: invitation,
+    accept: accept,
+  );
 
   Stream<List<InvitationModel>> listenToGroupInvitations(String groupId) =>
       _invitationService.listenToGroupInvitations(groupId);

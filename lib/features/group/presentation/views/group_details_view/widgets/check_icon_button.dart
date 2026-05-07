@@ -62,7 +62,7 @@ class CheckIconButton extends StatelessWidget {
           },
           size: 38,
           color: isCurrentUser
-              ? const Color.fromARGB(255, 128, 227, 209)
+              ? const Color.fromARGB(255, 155, 234, 176)
               : color,
         ),
       ),

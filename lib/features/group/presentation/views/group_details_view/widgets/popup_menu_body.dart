@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/widgets/custom_circular_loading.dart';
+import '../../../../../../core/widgets/custom_underline_text_field.dart';
 import '../../../../../auth/presentation/view_model/auth_cubit/auth_cubit.dart';
 import '../../../../data/models/checkin_model.dart';
 import '../../../view_model/days_cubit/days_cubit.dart';
-import '../../../../../../core/widgets/custom_underline_text_field.dart';
 
 class PopUpMenuBody extends StatefulWidget {
   const PopUpMenuBody({
@@ -40,9 +41,12 @@ class _PopUpMenuBodyState extends State<PopUpMenuBody> {
   @override
   Widget build(BuildContext context) {
     return !widget.isCurrentUser || !widget.isTodayItem
-        ? Text(
-            'Message: ${widget.checkIn.messagePublic ?? "No message"}',
-            style: AppStyles.textStyle16,
+        ? Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Text(
+              'Message: ${widget.checkIn.messagePublic ?? "No message"}',
+              style: AppStyles.textStyle16,
+            ),
           )
         : BlocConsumer<DaysCubit, DaysState>(
             listener: (context, state) {

@@ -18,7 +18,7 @@ part 'days_state.dart';
 class DaysCubit extends Cubit<DaysState> {
   DaysCubit(
     this._firestoreService,
-    this._habitId, {
+    this._groupId, {
     required GroupCubit groupCubit,
   }) : _groupCubit = groupCubit,
        super(DaysInitial()) {
@@ -31,7 +31,7 @@ class DaysCubit extends Cubit<DaysState> {
   final FirestoreService _firestoreService;
   StreamSubscription? _daysSubscription;
   final User? _user = getIt.get<FirebaseAuthService>().getCurrentUser();
-  final String _habitId;
+  final String _groupId;
   late String today;
 
   final Map<String, List<CheckInModel>> daysCheckins = {};
@@ -42,9 +42,9 @@ class DaysCubit extends Cubit<DaysState> {
   Future<void> addDays() async {
     if (!isClosed) emit(DaysLoading());
 
-    await _firestoreService.fillMissingDays(habitId: _habitId);
+    await _firestoreService.fillMissingDays(groupId: _groupId);
     await _firestoreService.createDayIfNotExist(
-      habitId: _habitId,
+      groupId: _groupId,
       userId: _user!.uid,
     );
   }
@@ -54,16 +54,16 @@ class DaysCubit extends Cubit<DaysState> {
   void listenToDays() async {
     if (!isClosed) emit(DaysLoading());
     // Check cache first
-    final cachedDays = _groupCubit.daysCache[_habitId];
+    final cachedDays = _groupCubit.daysCache[_groupId];
     if (cachedDays != null && cachedDays.isNotEmpty) {
       daysList = cachedDays;
       // Load checkins from cache too if they exist
-      final cachedCheckins = _groupCubit.checkinsCache[_habitId];
+      final cachedCheckins = _groupCubit.checkinsCache[_groupId];
       if (cachedCheckins != null) {
         daysCheckins.addAll(cachedCheckins);
       }
       if (!isClosed) emit(DaysLoaded(days: daysList));
-      log('Loaded days from cache for habit: $_habitId');
+      log('Loaded days from cache for group: $_groupId');
     } else {
       if (!isClosed) emit(DaysLoading());
     }
@@ -74,21 +74,21 @@ class DaysCubit extends Cubit<DaysState> {
     try {
       // 0. Ensure today's day & checkin exist before fetching (run in parallel)
       await Future.wait([
-        _firestoreService.fillMissingDays(habitId: _habitId),
+        _firestoreService.fillMissingDays(groupId: _groupId),
         _firestoreService.createDayIfNotExist(
-          habitId: _habitId,
+          groupId: _groupId,
           userId: _user!.uid,
         ),
       ]);
 
       // 1. Fetch all days once
-      daysList = await _firestoreService.getAllDaysFuture(_habitId);
+      daysList = await _firestoreService.getAllDaysFuture(_groupId);
 
       // 2. Fetch checkins for all days in parallel
       final checkinResults = await Future.wait(
         daysList.map(
           (day) => _firestoreService.getDayCheckInsFuture(
-            habitId: _habitId,
+            groupId: _groupId,
             date: day.day,
           ),
         ),
@@ -101,9 +101,9 @@ class DaysCubit extends Cubit<DaysState> {
       if (!isClosed) emit(DaysLoaded(days: daysList));
 
       // 4. Update Cache
-      _groupCubit.cacheDays(_habitId, daysList);
+      _groupCubit.cacheDays(_groupId, daysList);
       for (var entry in daysCheckins.entries) {
-        _groupCubit.cacheCheckins(_habitId, entry.key, entry.value);
+        _groupCubit.cacheCheckins(_groupId, entry.key, entry.value);
       }
 
       // 5. Start listening to today's checkins only
@@ -120,7 +120,7 @@ class DaysCubit extends Cubit<DaysState> {
   void updateCheckInStatus(String userId, CheckInStatus checkInStatus) async {
     try {
       _firestoreService.updateCheckInStatus(
-        habitId: _habitId,
+        groupId: _groupId,
         date: today,
         userId: userId,
         status: checkInStatus,
@@ -138,7 +138,7 @@ class DaysCubit extends Cubit<DaysState> {
 
     try {
       await _firestoreService.updateCheckInMessage(
-        habitId: _habitId,
+        groupId: _groupId,
         date: today,
         userId: userId,
         message: message,
@@ -160,13 +160,13 @@ class DaysCubit extends Cubit<DaysState> {
     final targetDate = date ?? today;
 
     _checkinSub = _firestoreService
-        .getTodayCheckInsStream(habitId: _habitId, date: targetDate)
+        .getTodayCheckInsStream(groupId: _groupId, date: targetDate)
         .listen((checkins) {
           // Update the specific day's checkins in our map
           daysCheckins[targetDate] = checkins;
 
           // Update Cache
-          _groupCubit.cacheCheckins(_habitId, targetDate, checkins);
+          _groupCubit.cacheCheckins(_groupId, targetDate, checkins);
 
           // Emit loaded to rebuild UI with updated data from the stream
           if (!isClosed) emit(DaysLoaded(days: daysList));

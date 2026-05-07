@@ -26,8 +26,7 @@ class GroupJoinCodeWidget extends StatelessWidget {
 
       builder: (context, state) {
         if (state is GroupJoinCodeLoaded) {
-          return InkWell(
-            borderRadius: BorderRadius.circular(32),
+          return GestureDetector(
             onTap: () {
               Clipboard.setData(ClipboardData(text: state.joinCode)).then((
                 value,

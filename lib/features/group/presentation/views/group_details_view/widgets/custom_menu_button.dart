@@ -42,7 +42,7 @@ class CustomMenuButton extends StatelessWidget {
             final groupCubit = context.read<GroupCubit>();
 
             context.push(
-              AppRouter.groupSettingsView,
+            AppRouter.groupSettingsView,
               extra: GroupDataModel(
                 groupModel: groupModel,
                 membersCubit: membersCubit,
